@@ -1,0 +1,95 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background ="@drawable/background" 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:background ="@drawable/register_topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageButton
+                android:id="@+id/register_cancelbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="10dp"
+                android:padding="1dp"
+                android:background="@drawable/cancel_button_effect" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        android:gravity="center_vertical"
+	        android:layout_marginTop="20dp"
+            android:orientation="vertical" >
+            
+            <EditText
+	            android:id="@+id/register_userNameET"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:inputType="textPersonName"
+	            android:background="@drawable/blankbar"
+	            android:ems="10"
+	            android:hint="用户名（6-10字符）"
+	            android:paddingLeft="10dp" />
+            <EditText
+	            android:id="@+id/register_realNameET"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:inputType="textPersonName"
+	            android:background="@drawable/blankbar"
+	            android:ems="10"
+	            android:hint= "真实姓名"
+	            android:paddingLeft="10dp" />
+            <EditText
+	            android:id="@+id/register_mobilephoneET"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:inputType="textPersonName"
+	            android:background="@drawable/blankbar"
+	            android:ems="10"
+	            android:hint= "手机号"
+	            android:paddingLeft="10dp" />
+            <EditText
+	            android:id="@+id/register_pwdET"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/blankbar"
+	            android:ems="10"
+	            android:hint= "密码"
+	            android:inputType="textPassword"
+	            android:paddingLeft="10dp" />
+            <EditText
+	            android:id="@+id/register_pwdConfigET"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/blankbar"
+	            android:ems="10"
+	            android:inputType="textPassword"
+	            android:hint= "确认密码"
+	            android:paddingLeft="10dp" />
+            <ImageButton
+	            android:id="@+id/register_registerbutton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="20dp"
+	            android:paddingBottom="5dp"
+	            android:paddingTop="5dp"
+	            android:src="@drawable/register_registerbutton" />
+        </LinearLayout>
+
+        
+            
+    </LinearLayout>
+
+</FrameLayout>

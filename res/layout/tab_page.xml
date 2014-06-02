@@ -1,0 +1,187 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+	<LinearLayout
+		  android:id="@+id/layout_taskpage"
+	      android:layout_width="match_parent"
+	      android:layout_height="wrap_content"
+	      android:visibility="gone"
+	      android:background="@drawable/homepage_topbar">
+	      <RadioGroup
+			android:id="@+id/task_bottomRg"
+			android:gravity="center"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="horizontal" >
+			
+			<RadioButton
+			    android:id="@+id/rb_task_accepted"
+			    android:button = "@null"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:checked="true"
+			    android:background="@drawable/rb_task_accepted_selector" />
+			
+			<RadioButton
+			    android:id="@+id/rb_mytask"
+			    android:button = "@null"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:background="@drawable/rb_mytask_selector" />
+		</RadioGroup>
+	</LinearLayout>
+     
+    <!-- 上边主页面 -->
+
+    <fragment
+        android:id="@+id/fragement_homepage"
+        android:name="com.example.helpandgetfun.FragmentHomePage"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="10" />
+
+    <fragment
+        android:id="@+id/fragement_other"
+        android:name="com.example.helpandgetfun.FragmentOtherPage"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="10" />
+    
+    <fragment
+        android:id="@+id/fragement_task_accepted"
+        android:name="com.example.helpandgetfun.FragmentTaskAcceptedPage"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="10" />
+    
+	<fragment
+        android:id="@+id/fragement_mytask"
+        android:name="com.example.helpandgetfun.FragmentMyTaskPage"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="10" />
+    <!-- 底部菜单页面 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/homepage_toolbar_bg">
+		<!-- 这是每一个tab -->>
+        <LinearLayout 
+		    android:layout_width="wrap_content"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+		    android:gravity="center"
+		    android:orientation="vertical" >
+		
+		    <ImageButton
+		        android:id="@+id/tab_homepage_bnt"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:background="@drawable/toolbar_homepage_bnt_effect" />
+
+		
+		    <TextView     
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" 
+		        android:text="首页"
+		        android:textSize="10sp"
+		        android:textColor="#ffffff">
+		    </TextView>
+        </LinearLayout>
+        
+        <LinearLayout 
+		    android:layout_width="wrap_content"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+		    android:gravity="center"
+		    android:orientation="vertical" >
+		
+		    <ImageButton
+		        android:id="@+id/tab_task_bnt"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:background="@drawable/toolbar_task_bnt_effect" />
+
+		
+		    <TextView     
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" 
+		        android:text="任务"
+		        android:textSize="10sp"
+		        android:textColor="#ffffff">
+		    </TextView>
+        </LinearLayout>
+        
+        <LinearLayout 
+		    android:layout_width="wrap_content"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+		    android:gravity="center"
+		    android:orientation="vertical" >
+		
+		    <ImageButton
+		        android:id="@+id/tab_addtask_bnt"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:background="@drawable/toolbar_addtask_bnt_effect" />
+
+        </LinearLayout>
+        
+        <LinearLayout 
+		    android:layout_width="wrap_content"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+		    android:gravity="center"
+		    android:orientation="vertical" >
+		
+		    <ImageButton
+		        android:id="@+id/tab_other_bnt"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:background="@drawable/toolbar_other_bnt_effect" />
+
+		
+		    <TextView     
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" 
+		        android:text="其他"
+		        android:textSize="10sp"
+		        android:textColor="#ffffff">
+		    </TextView>
+        </LinearLayout>
+        
+        <LinearLayout 
+		    android:layout_width="wrap_content"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+		    android:gravity="center"
+		    android:orientation="vertical" >
+		
+		    <ImageButton
+		        android:id="@+id/tab_aboutme_bnt"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:background="@drawable/toolbar_aboutme_bnt_effect" />
+
+		
+		    <TextView     
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" 
+		        android:text="我的"
+		        android:textSize="10sp"
+		        android:textColor="#ffffff">
+		    </TextView>
+        </LinearLayout>
+        
+    </LinearLayout>
+
+</LinearLayout>

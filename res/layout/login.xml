@@ -1,0 +1,91 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background ="@drawable/background" 
+    tools:context="com.example.helpandgetfun.LoginActivity"
+    tools:ignore="MergeRootFrame" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/login_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="center"
+            android:src="@drawable/login_logo" />
+
+        <EditText
+            android:id="@+id/userNameET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_user"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:paddingLeft="50dp" >
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/pwdET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_pwd"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:paddingLeft="50dp" />
+
+        <ImageButton
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:background="@drawable/login_button_effect" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/login_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:textSize="16dp"
+                android:text="快速注册" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:text="|" />
+
+            <Button
+                android:id="@+id/login_forgetpwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:layout_weight="0.2"
+                android:text="忘记密码" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
