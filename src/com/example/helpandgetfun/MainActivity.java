@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
@@ -22,6 +23,7 @@ public class MainActivity extends FragmentActivity {
 	private FragmentManager fragmentManager; 
 	private FragmentTransaction fragmentTransaction;  
 	private LinearLayout mTaskPageLayout;
+	private RelativeLayout mPageLayout;
 	private RadioGroup mButtomRg;
 	private RadioButton mTaskAcceptedRb, mMyTaskRb;
 	
@@ -41,6 +43,7 @@ public class MainActivity extends FragmentActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				mTaskPageLayout.setVisibility(View.GONE);
+				mPageLayout.setVisibility(View.VISIBLE);
 				hideAllFragment();
 				fragmentTransaction.show(mHomePageFragment).commit();  
 			}
@@ -52,6 +55,7 @@ public class MainActivity extends FragmentActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				mTaskPageLayout.setVisibility(View.VISIBLE);
+				mPageLayout.setVisibility(View.GONE);
 				mTaskAcceptedRb.setChecked(true);
 				hideAllFragment();
 				fragmentTransaction.show(mTaskAcceptedFragment).commit();  
@@ -64,6 +68,7 @@ public class MainActivity extends FragmentActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				mTaskPageLayout.setVisibility(View.GONE);
+				mPageLayout.setVisibility(View.VISIBLE);
 				hideAllFragment();
 				fragmentTransaction.show(mOtherFragment).commit();  
 			}
@@ -109,6 +114,7 @@ public class MainActivity extends FragmentActivity {
 		mAboutMeBnt = (ImageButton) findViewById(R.id.tab_aboutme_bnt);
 		
 		mTaskPageLayout = (LinearLayout)findViewById(R.id.layout_taskpage);
+		mPageLayout = (RelativeLayout) findViewById(R.id.layout_page);
 		
 		mButtomRg = (RadioGroup) findViewById(R.id.task_bottomRg);
 		mTaskAcceptedRb = (RadioButton) findViewById(R.id.rb_task_accepted);

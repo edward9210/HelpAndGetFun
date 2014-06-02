@@ -33,7 +33,7 @@ public class FragmentOtherPage extends Fragment implements RefreshListener{
 	
 	@Override  
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {  
-		return inflater.inflate(R.layout.homepage, container, false); 
+		return inflater.inflate(R.layout.task_page, container, false); 
     }  
 	
 	@Override

@@ -5,33 +5,74 @@
     android:background="@drawable/background"
     android:orientation="vertical" >
 	<LinearLayout
-		  android:id="@+id/layout_taskpage"
 	      android:layout_width="match_parent"
 	      android:layout_height="wrap_content"
-	      android:visibility="gone"
+	      android:orientation="vertical"
+	      android:gravity="center"
 	      android:background="@drawable/homepage_topbar">
-	      <RadioGroup
-			android:id="@+id/task_bottomRg"
-			android:gravity="center"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:orientation="horizontal" >
-			
-			<RadioButton
-			    android:id="@+id/rb_task_accepted"
-			    android:button = "@null"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:checked="true"
-			    android:background="@drawable/rb_task_accepted_selector" />
-			
-			<RadioButton
-			    android:id="@+id/rb_mytask"
-			    android:button = "@null"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:background="@drawable/rb_mytask_selector" />
-		</RadioGroup>
+	      <LinearLayout
+			  android:id="@+id/layout_taskpage"
+		      android:layout_width="match_parent"
+		      android:layout_height="wrap_content"
+		      android:gravity="center"
+		      android:visibility="gone">
+		      <RadioGroup
+				android:id="@+id/task_bottomRg"
+				android:gravity="center"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="horizontal" >
+
+		          <RadioButton
+		              android:id="@+id/rb_task_accepted"
+		              android:layout_width="wrap_content"
+		              android:layout_height="wrap_content"
+		              android:background="@drawable/rb_task_accepted_selector"
+		              android:button="@null"
+		              android:checked="true" />
+				
+				<RadioButton
+				    android:id="@+id/rb_mytask"
+				    android:button = "@null"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:background="@drawable/rb_mytask_selector" />
+			</RadioGroup>
+		</LinearLayout>
+		<RelativeLayout 
+		    android:id="@+id/layout_page"
+		    android:background="@drawable/homepage_topbar"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content" >
+		
+		    <ImageView
+		        android:id="@+id/topbar_image"
+		        android:layout_width="50dp"
+		        android:layout_height="50dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_centerVertical="true"
+		        android:layout_marginLeft="10dp"
+		        android:src="@drawable/homepage_headimg" />
+		
+		    <TextView
+		        android:id="@+id/topbar_username"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerInParent="true"
+		        android:textSize= "22dp"
+		        android:text="Edward" />
+		
+		    <ImageButton
+		        android:id="@+id/friendlist_bnt"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentRight="true"
+		        android:layout_marginRight="10dp"
+		        android:layout_centerVertical="true"
+		        android:background="@drawable/friendlist_bnt_effect" />
+	
+		
+		</RelativeLayout>
 	</LinearLayout>
      
     <!-- 上边主页面 -->
