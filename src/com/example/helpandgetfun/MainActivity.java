@@ -20,7 +20,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 
 public class MainActivity extends FragmentActivity {  
 	private Fragment mHomePageFragment, mTaskAcceptedFragment, mMyTaskFragment, mAddTaskFragment, mOtherFragment, mAboutMeFragment;  
-	private ImageButton mHomePageBnt, mTaskBnt, mAddTaskBnt, mOtherBnt, mAboutMeBnt;
+	private ImageButton mHomePageBnt, mTaskBnt, mAddTaskBnt, mOtherBnt, mAboutMeBnt, mFriendList;
 	private FragmentManager fragmentManager; 
 	private FragmentTransaction fragmentTransaction;  
 	private LinearLayout mTaskPageLayout;
@@ -31,7 +31,7 @@ public class MainActivity extends FragmentActivity {
     @Override  
     protected void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
-        setContentView(R.layout.tab_page);
+        setContentView(R.layout.main_page);
         
         initAndsetAllWidget();
         setAllListener();
@@ -89,6 +89,19 @@ public class MainActivity extends FragmentActivity {
 		
 		});
 		
+		mFriendList.setOnClickListener(new Button.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(); 
+	        	intent.setClass(MainActivity.this, FriendListActivity.class); /* 调用一个新的Activity */
+	        	startActivity(intent);
+	        	/* 关闭原本的Activity */ 
+	        	MainActivity.this.finish();
+			}
+		
+		});
+		
 		mButtomRg.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
@@ -126,6 +139,7 @@ public class MainActivity extends FragmentActivity {
 		mAddTaskBnt	= (ImageButton) findViewById(R.id.tab_addtask_bnt);
 		mOtherBnt = (ImageButton) findViewById(R.id.tab_other_bnt);
 		mAboutMeBnt = (ImageButton) findViewById(R.id.tab_aboutme_bnt);
+		mFriendList = (ImageButton) findViewById(R.id.friendlist_bnt);
 		
 		mTaskPageLayout = (LinearLayout)findViewById(R.id.layout_taskpage);
 		mPageLayout = (RelativeLayout) findViewById(R.id.layout_page);

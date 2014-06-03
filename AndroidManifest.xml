@@ -33,7 +33,10 @@
         <activity android:name="MainActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >></activity>
         <activity android:name="AddTaskActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >></activity>   
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >></activity>
+        <activity android:name="FriendListActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >></activity>    
+            
     </application>
 
 </manifest>

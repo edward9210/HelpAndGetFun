@@ -22,7 +22,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 public class DataModel {
-	private static List< Map<String, Object> > homePageList, otherList, taskAcceptedList, myTaskList;
+	private static List< Map<String, Object> > homePageList, otherList, taskAcceptedList, myTaskList, myFriendList;
 	private static String ServerURL = "http://172.18.156.140";
 	
 	public static List<Map<String, Object> > getHomePageData() {
@@ -101,11 +101,36 @@ public class DataModel {
 		return myTaskList;
 	} 
 	
+	//获取好友列表
+	public static List<Map<String, Object> > getFriendList() {
+		myFriendList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("headImg", R.drawable.homepage_headimg);
+		map.put("userName", "XuBin");
+		
+		for (int i = 0; i < 50; i++)
+			myFriendList.add(map);
+		
+		return myFriendList;
+	}
+	
+	
 	//进行登陆操作
 	public static boolean login(String name, String password) {
-		HttpPost httpRequest = new HttpPost(ServerURL);
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("laolu", "sasad"));
+		if (sendMesToServer(params, "")) {
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	//发送数据，使用的时http
+	//List<NameValuePair> params 是指数据的（key，value）的list
+	//whichUrl是指发到哪个进行处理
+	private static boolean sendMesToServer(List<NameValuePair> params, String whichUrl) {
+		HttpPost httpRequest = new HttpPost(ServerURL + whichUrl);
 		try {
 			httpRequest.setEntity(new UrlEncodedFormEntity(params,HTTP.UTF_8));
 			HttpResponse httpResponse = new DefaultHttpClient().execute(httpRequest);
@@ -125,7 +150,7 @@ public class DataModel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//注意这里，为了调试设为true
+		//注意这里，为了调试设为true，默认应该返回false
 		return true;
 	}
 }
