@@ -16,8 +16,8 @@ import android.os.Build;
 
 public class RegisterActivity extends Activity {
 	private EditText userNameEditText, realNameEditText ,mobilePhoneEditText, pwdEditText, pwdConfigEditText;
-	private ImageButton registerButton, cancelButton;
-	
+	private ImageButton cancelButton;
+	private Button registerButton;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,7 +34,7 @@ public class RegisterActivity extends Activity {
 		mobilePhoneEditText = (EditText) findViewById(R.id.register_mobilephoneET);
 		pwdEditText = (EditText) findViewById(R.id.register_pwdET);
 		pwdConfigEditText = (EditText) findViewById(R.id.register_pwdConfigET);
-		registerButton = (ImageButton) findViewById(R.id.register_registerbutton);
+		registerButton = (Button) findViewById(R.id.register_registerbutton);
 		cancelButton = (ImageButton) findViewById(R.id.register_cancelbutton);
 	}
 

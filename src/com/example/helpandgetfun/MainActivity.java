@@ -1,6 +1,7 @@
 package com.example.helpandgetfun;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.*;
 import android.support.v4.app.Fragment;  
 import android.support.v4.app.FragmentActivity;  
@@ -13,22 +14,24 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 public class MainActivity extends FragmentActivity {  
 	private Fragment mHomePageFragment, mTaskAcceptedFragment, mMyTaskFragment, mAddTaskFragment, mOtherFragment, mAboutMeFragment;  
-	private ImageButton mHomePageBnt, mTaskBnt, mAddTaskBnt, mOtherBnt, mAboutMeBnt;
+	private ImageButton mHomePageBnt, mTaskBnt, mAddTaskBnt, mOtherBnt, mAboutMeBnt, mFriendList;
 	private FragmentManager fragmentManager; 
 	private FragmentTransaction fragmentTransaction;  
 	private LinearLayout mTaskPageLayout;
+	private RelativeLayout mPageLayout;
 	private RadioGroup mButtomRg;
 	private RadioButton mTaskAcceptedRb, mMyTaskRb;
 	
     @Override  
     protected void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
-        setContentView(R.layout.tab_page);
+        setContentView(R.layout.main_page);
         
         initAndsetAllWidget();
         setAllListener();
@@ -41,6 +44,7 @@ public class MainActivity extends FragmentActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				mTaskPageLayout.setVisibility(View.GONE);
+				mPageLayout.setVisibility(View.VISIBLE);
 				hideAllFragment();
 				fragmentTransaction.show(mHomePageFragment).commit();  
 			}
@@ -52,6 +56,7 @@ public class MainActivity extends FragmentActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				mTaskPageLayout.setVisibility(View.VISIBLE);
+				mPageLayout.setVisibility(View.GONE);
 				mTaskAcceptedRb.setChecked(true);
 				hideAllFragment();
 				fragmentTransaction.show(mTaskAcceptedFragment).commit();  
@@ -64,8 +69,35 @@ public class MainActivity extends FragmentActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				mTaskPageLayout.setVisibility(View.GONE);
+				mPageLayout.setVisibility(View.VISIBLE);
 				hideAllFragment();
 				fragmentTransaction.show(mOtherFragment).commit();  
+			}
+		
+		});
+		
+		mAddTaskBnt.setOnClickListener(new Button.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(); 
+	        	intent.setClass(MainActivity.this, AddTaskActivity.class); /* 调用一个新的Activity */
+	        	startActivity(intent);
+	        	/* 关闭原本的Activity */ 
+	        	MainActivity.this.finish();
+			}
+		
+		});
+		
+		mFriendList.setOnClickListener(new Button.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(); 
+	        	intent.setClass(MainActivity.this, FriendListActivity.class); /* 调用一个新的Activity */
+	        	startActivity(intent);
+	        	/* 关闭原本的Activity */ 
+	        	MainActivity.this.finish();
 			}
 		
 		});
@@ -107,8 +139,10 @@ public class MainActivity extends FragmentActivity {
 		mAddTaskBnt	= (ImageButton) findViewById(R.id.tab_addtask_bnt);
 		mOtherBnt = (ImageButton) findViewById(R.id.tab_other_bnt);
 		mAboutMeBnt = (ImageButton) findViewById(R.id.tab_aboutme_bnt);
+		mFriendList = (ImageButton) findViewById(R.id.friendlist_bnt);
 		
 		mTaskPageLayout = (LinearLayout)findViewById(R.id.layout_taskpage);
+		mPageLayout = (RelativeLayout) findViewById(R.id.layout_page);
 		
 		mButtomRg = (RadioGroup) findViewById(R.id.task_bottomRg);
 		mTaskAcceptedRb = (RadioButton) findViewById(R.id.rb_task_accepted);

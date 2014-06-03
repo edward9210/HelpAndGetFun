@@ -45,15 +45,13 @@
             android:inputType="textPassword"
             android:paddingLeft="50dp" />
 
-        <ImageButton
+        <Button
             android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            style="@style/btn_style"
             android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:padding="5dp"
-            android:background="@drawable/login_button_effect" />
+	        android:text = "登陆" />
 
         <LinearLayout
             android:layout_width="match_parent"
