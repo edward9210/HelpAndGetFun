@@ -1,6 +1,7 @@
 package com.example.helpandgetfun;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.*;
 import android.support.v4.app.Fragment;  
 import android.support.v4.app.FragmentActivity;  
@@ -71,6 +72,19 @@ public class MainActivity extends FragmentActivity {
 				mPageLayout.setVisibility(View.VISIBLE);
 				hideAllFragment();
 				fragmentTransaction.show(mOtherFragment).commit();  
+			}
+		
+		});
+		
+		mAddTaskBnt.setOnClickListener(new Button.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(); 
+	        	intent.setClass(MainActivity.this, AddTaskActivity.class); /* 调用一个新的Activity */
+	        	startActivity(intent);
+	        	/* 关闭原本的Activity */ 
+	        	MainActivity.this.finish();
 			}
 		
 		});

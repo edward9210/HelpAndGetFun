@@ -7,7 +7,8 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="15" />
-
+	<uses-permission android:name="android.permission.INTERNET" /> 
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -30,7 +31,9 @@
         <activity android:name="ResetPwdActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >></activity> 
         <activity android:name="MainActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >></activity>  
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >></activity>
+        <activity android:name="AddTaskActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >></activity>   
     </application>
 
 </manifest>

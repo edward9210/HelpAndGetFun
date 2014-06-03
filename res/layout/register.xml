@@ -78,14 +78,12 @@
 	            android:inputType="textPassword"
 	            android:hint= "确认密码"
 	            android:paddingLeft="10dp" />
-            <ImageButton
+            <Button
 	            android:id="@+id/register_registerbutton"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_marginTop="20dp"
-	            android:paddingBottom="5dp"
-	            android:paddingTop="5dp"
-	            android:src="@drawable/register_registerbutton" />
+	            style="@style/btn_style"
+	            android:text = "注册" />
         </LinearLayout>
 
         
