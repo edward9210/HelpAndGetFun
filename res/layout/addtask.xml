@@ -1,0 +1,131 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:background ="@drawable/homepage_topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageButton
+                android:id="@+id/addtask_cancelbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentLeft="true"
+		        android:layout_centerVertical="true"
+                android:padding="1dp"
+                android:background="@drawable/cancel_button_effect" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:text="发布新任务"
+                android:textColor="@color/black" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        android:gravity="center_vertical"
+	        android:layout_marginTop="20dp"
+            android:orientation="vertical" >
+            
+            <EditText
+	            android:id="@+id/addtask_task_content"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:inputType="textMultiLine"
+	            android:hint="任务主要内容"
+	            android:scrollHorizontally="false" 
+	            android:lines="3"
+	            android:gravity="top"
+	            android:paddingLeft="10dp" />
+            
+            <EditText
+	            android:id="@+id/addtask_task_location"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:hint="执行地点"
+	            android:paddingLeft="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+                <EditText
+		            android:id="@+id/addtask_year"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1.0"
+		            android:hint="年"
+		            android:paddingLeft="10dp" />
+                <EditText
+		            android:id="@+id/addtask_month"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1.0"
+		            android:hint="月"
+		            android:paddingLeft="10dp" />
+                <EditText
+		            android:id="@+id/addtask_day"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1.0"
+		            android:hint="日"
+		            android:paddingLeft="10dp" />
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+                <EditText
+		            android:id="@+id/addtask_hour"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1.0"
+		            android:hint="时（24小时制）"
+		            android:paddingLeft="10dp" />
+                <EditText
+		            android:id="@+id/addtask_minute"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1.0"
+		            android:hint="分"
+		            android:paddingLeft="10dp" />
+            </LinearLayout>
+            
+            <EditText
+	            android:id="@+id/addtask_task_postscript"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:hint="P.S."
+	            android:paddingLeft="10dp" />
+
+
+           
+            <Button
+	            android:id="@+id/addtask_bnt"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            style="@style/btn_style"
+	            android:text = "发布任务"/>
+        </LinearLayout>
+
+        
+            
+    </LinearLayout>
+
+</FrameLayout>

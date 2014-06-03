@@ -16,7 +16,8 @@ import android.os.Build;
 
 public class ResetPwdActivity extends Activity {
 	private EditText userNameEditText, realNameEditText ,mobilePhoneEditText, pwdEditText, pwdConfigEditText;
-	private ImageButton resetpwdButton, cancelButton;
+	private ImageButton cancelButton;
+	private Button resetpwdButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class ResetPwdActivity extends Activity {
 		mobilePhoneEditText = (EditText) findViewById(R.id.resetpwd_mobilephoneET);
 		pwdEditText = (EditText) findViewById(R.id.resetpwd_pwdET);
 		pwdConfigEditText = (EditText) findViewById(R.id.resetpwd_pwdConfigET);
-		resetpwdButton = (ImageButton) findViewById(R.id.resetpwd_button);
+		resetpwdButton = (Button) findViewById(R.id.resetpwd_button);
 		cancelButton = (ImageButton) findViewById(R.id.resetpwd_cancelbutton);
 	}
 
