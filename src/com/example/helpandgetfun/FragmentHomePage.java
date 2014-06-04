@@ -11,6 +11,10 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,6 +42,28 @@ public class FragmentHomePage extends Fragment implements RefreshListener{
 		mListView.setOnRefreshListener(this);
 		mListView.setAdapter(adapter);
 		setListViewHeightBasedOnChildren(mListView);
+		
+		mListView.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				Button b = (Button) view.findViewById(R.id.task_info_accept);
+				if (b.getVisibility() == View.GONE)
+					b.setVisibility(View.VISIBLE);
+				else if (b.getVisibility() == View.VISIBLE)
+					b.setVisibility(View.GONE);
+				b.setOnClickListener(new Button.OnClickListener(){
+					@Override
+					public void onClick(View v) {
+						
+					}
+				});
+			}
+			
+		});
+		
 	}
 	
 	@Override

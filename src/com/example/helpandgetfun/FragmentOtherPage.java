@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.*;
+import android.widget.AdapterView.OnItemClickListener;
 import android.os.Build;
 
 public class FragmentOtherPage extends Fragment implements RefreshListener{
@@ -48,6 +49,27 @@ public class FragmentOtherPage extends Fragment implements RefreshListener{
 		mListView.setOnRefreshListener(this);
 		mListView.setAdapter(adapter);
 		setListViewHeightBasedOnChildren(mListView);
+		
+		mListView.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				Button b = (Button) view.findViewById(R.id.task_info_accept);
+				if (b.getVisibility() == View.GONE)
+					b.setVisibility(View.VISIBLE);
+				else if (b.getVisibility() == View.VISIBLE)
+					b.setVisibility(View.GONE);
+				b.setOnClickListener(new Button.OnClickListener(){
+					@Override
+					public void onClick(View v) {
+						
+					}
+				});
+			}
+			
+		});
 	}
 	
 	@Override
