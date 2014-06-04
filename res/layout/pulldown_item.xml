@@ -53,7 +53,7 @@
                android:layout_alignParentRight="true"
                android:layout_marginBottom="14dp"
                android:layout_marginRight="16dp"
-               android:text="等待接受"
+               android:text="进行中"
                android:textColor="@color/red"
                android:textSize="15dp" />
         
@@ -146,6 +146,23 @@
             android:text="无" />
 
     </LinearLayout>
-    
+    <Button
+	    android:id="@+id/task_info_accept"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_margin="10dp"
+	    android:visibility="gone"
+	    style="@style/btn_style"
+	    android:focusable="false"
+	    android:text = "接受任务" />
+	<Button
+	    android:id="@+id/task_info_delete"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_margin="10dp"
+	    style="@style/btn_red_style"
+	    android:visibility="gone"
+	    android:focusable="false"
+	    android:text = "删除任务" />
 
 </LinearLayout>
