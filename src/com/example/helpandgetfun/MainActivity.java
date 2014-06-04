@@ -76,6 +76,18 @@ public class MainActivity extends FragmentActivity {
 		
 		});
 		
+		mAboutMeBnt.setOnClickListener(new Button.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mTaskPageLayout.setVisibility(View.GONE);
+				mPageLayout.setVisibility(View.VISIBLE);
+				hideAllFragment();
+				fragmentTransaction.show(mAboutMeFragment).commit();  
+			}
+		
+		});
+		
 		mAddTaskBnt.setOnClickListener(new Button.OnClickListener(){
 			@Override
 			public void onClick(View v) {
@@ -129,6 +141,7 @@ public class MainActivity extends FragmentActivity {
 		mOtherFragment = fragmentManager.findFragmentById(R.id.fragement_other);
 		mTaskAcceptedFragment = fragmentManager.findFragmentById(R.id.fragement_task_accepted);
 		mMyTaskFragment = fragmentManager.findFragmentById(R.id.fragement_mytask);
+		mAboutMeFragment = fragmentManager.findFragmentById(R.id.fragement_aboutme);
 		
 		hideAllFragment();
 		 
@@ -151,7 +164,7 @@ public class MainActivity extends FragmentActivity {
 
 	private void hideAllFragment() {
 		// TODO Auto-generated method stub
-		fragmentTransaction = fragmentManager.beginTransaction().hide(mHomePageFragment).hide(mOtherFragment).hide(mTaskAcceptedFragment).hide(mMyTaskFragment);
+		fragmentTransaction = fragmentManager.beginTransaction().hide(mHomePageFragment).hide(mOtherFragment).hide(mTaskAcceptedFragment).hide(mMyTaskFragment).hide(mAboutMeFragment);
 	}
   
 }  
