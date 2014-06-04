@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
@@ -27,6 +28,8 @@ public class MainActivity extends FragmentActivity {
 	private RelativeLayout mPageLayout;
 	private RadioGroup mButtomRg;
 	private RadioButton mTaskAcceptedRb, mMyTaskRb;
+	private TextView mTopBarUserName;
+	private Button mLogoutBnt;
 	
     @Override  
     protected void onCreate(Bundle savedInstanceState) {  
@@ -94,9 +97,10 @@ public class MainActivity extends FragmentActivity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(); 
 	        	intent.setClass(MainActivity.this, AddTaskActivity.class); /* 调用一个新的Activity */
+	        	//mTopBarUserName.setText("CD");
 	        	startActivity(intent);
 	        	/* 关闭原本的Activity */ 
-	        	MainActivity.this.finish();
+	        	//MainActivity.this.finish();
 			}
 		
 		});
@@ -107,6 +111,19 @@ public class MainActivity extends FragmentActivity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(); 
 	        	intent.setClass(MainActivity.this, FriendListActivity.class); /* 调用一个新的Activity */
+	        	startActivity(intent);
+	        	/* 关闭原本的Activity */ 
+	        	//MainActivity.this.finish();
+			}
+		
+		});
+		
+		mLogoutBnt.setOnClickListener(new Button.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(); 
+	        	intent.setClass(MainActivity.this, LoginActivity.class); /* 调用一个新的Activity */
 	        	startActivity(intent);
 	        	/* 关闭原本的Activity */ 
 	        	MainActivity.this.finish();
@@ -154,12 +171,16 @@ public class MainActivity extends FragmentActivity {
 		mAboutMeBnt = (ImageButton) findViewById(R.id.tab_aboutme_bnt);
 		mFriendList = (ImageButton) findViewById(R.id.friendlist_bnt);
 		
+		mTopBarUserName = (TextView) findViewById(R.id.topbar_username);
+		
 		mTaskPageLayout = (LinearLayout)findViewById(R.id.layout_taskpage);
 		mPageLayout = (RelativeLayout) findViewById(R.id.layout_page);
 		
 		mButtomRg = (RadioGroup) findViewById(R.id.task_bottomRg);
 		mTaskAcceptedRb = (RadioButton) findViewById(R.id.rb_task_accepted);
 		mMyTaskRb = (RadioButton) findViewById(R.id.rb_mytask);
+		
+		mLogoutBnt = (Button) findViewById(R.id.about_logout);
 	}
 
 	private void hideAllFragment() {

@@ -52,7 +52,7 @@
 		        android:layout_alignParentLeft="true"
 		        android:layout_centerVertical="true"
 		        android:layout_marginLeft="10dp"
-		        android:src="@drawable/homepage_headimg" />
+		        android:src="@drawable/homepage_headimg3" />
 		
 		    <TextView
 		        android:id="@+id/topbar_username"

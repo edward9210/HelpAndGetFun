@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+    	android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/aboutme_bar_effect" >
 
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+    	android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/aboutme_bar_effect" >
 
@@ -71,5 +71,14 @@
             android:src="@drawable/notification" />
 
     </RelativeLayout>
+    
+    <Button
+	    android:id="@+id/about_logout"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="10dp"
+    	android:layout_marginRight="10dp"
+	    style="@style/btn_red_style"
+	    android:text = "退出" />
 
 </LinearLayout>

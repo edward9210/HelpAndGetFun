@@ -26,4 +26,14 @@
         <item name="android:drawablePadding">4dip</item>
         <item name="android:background">@drawable/button_effect</item>
     </style>
+    <style name="btn_red_style">
+	    <item name="android:layout_marginTop">20dp</item>
+	    <item name="android:paddingBottom">5dp</item>
+	    <item name="android:paddingTop">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:drawablePadding">4dip</item>
+        <item name="android:background">@drawable/button_red_effect</item>
+    </style>
 </resources>
