@@ -1,0 +1,133 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background ="@drawable/background" 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:background ="@drawable/homepage_topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageButton
+                android:id="@+id/friend_info_cancelbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentLeft="true"
+		        android:layout_centerVertical="true"
+                android:padding="1dp"
+                android:background="@drawable/cancel_button_effect" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:text="个人信息"
+                android:textColor="@color/black" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            
+            <ImageView
+	            android:id="@+id/friend_info_headimg"
+	            android:layout_width="80dp"
+	            android:layout_height="80dp"
+	            android:src="@drawable/homepage_headimg2" />
+
+            <TextView
+                android:id="@+id/friend_info_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/blankbar"
+                android:gravity="center"
+                android:text="Edward"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+            
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="@drawable/blankbar"
+            android:gravity="center|left"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:text="真实名字" />
+
+            <TextView
+                android:id="@+id/friend_info_realname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/blankbar"
+                android:gravity="center"
+                android:inputType="textPersonName"
+                android:textColor="@color/black"
+                android:text="吴国诚" />
+
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:background="@drawable/blankbar"
+            android:gravity="center|left"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:text="手机号" />
+
+            <TextView
+                android:id="@+id/friend_info_mobilephone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:layout_marginLeft="20dp"
+                android:inputType="textPersonName"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:background="@drawable/blankbar"
+                android:text="1358051xxxx" />
+
+        </LinearLayout>
+        
+        <Button
+            android:id="@+id/friend_info_delete"
+            android:layout_margin="10dp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        style="@style/btn_red_style"            
+	        android:text = "删除" />
+        
+        
+	</LinearLayout>
+</LinearLayout>

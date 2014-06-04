@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:background="@drawable/bg_friendlist_item_effect"
+    android:background="@drawable/aboutme_bar_effect"
     android:paddingBottom="5dp"
     android:paddingTop="5dp" >
 	<RelativeLayout

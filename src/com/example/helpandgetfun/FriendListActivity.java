@@ -11,11 +11,13 @@ import android.os.Message;
 import android.text.Layout;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 
 public class FriendListActivity extends Activity{
@@ -101,6 +103,18 @@ public class FriendListActivity extends Activity{
 				}).start();
 			}
 		
+		});
+		
+		mListView.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				//封装bundle，传到FriendInfoActivity
+				//...
+				Intent intent = new Intent(); 
+	        	intent.setClass(FriendListActivity.this, FriendInfoActivity.class); /* 调用一个新的Activity */
+	        	startActivity(intent);
+			}
 		});
 	}
 	

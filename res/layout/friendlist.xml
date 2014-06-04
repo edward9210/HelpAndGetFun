@@ -41,6 +41,10 @@
 
     <ListView
         android:id="@+id/friendlist_lv"
+        android:listSelector="@android:color/transparent"
+        android:divider="@android:color/transparent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </ListView>
