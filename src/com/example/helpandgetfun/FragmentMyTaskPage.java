@@ -1,5 +1,7 @@
 package com.example.helpandgetfun;
 
+import org.json.JSONException;
+
 import com.example.helpandgetfun.RefreshListView.RefreshListener;
 
 import android.graphics.Point;
@@ -20,6 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 	private final int MORE_FINISHED = 0;
+	private final int REFRESHED = 1;
 	
 	private RefreshListView mListView;
 	private MyAdapter adapter;
@@ -33,7 +36,14 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		adapter = new MyAdapter(getActivity().getApplicationContext(), DataModel.getMyTaskData(), R.layout.pulldown_item,
+		try {
+			DataModel.getMyTaskData();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		adapter = new MyAdapter(getActivity().getApplicationContext(), DataModel.myTaskList , R.layout.pulldown_item,
 					new String[]{"headImg", "userName", "date", "state", "taskContent", "executeTime", "Location", "postscript"},
 					new int[]{R.id.item_head_image, R.id.item_username, R.id.item_date, R.id.item_state, R.id.item_task_content,  R.id.item_time_content, R.id.item_location_content, R.id.item_addition_content});
 		
@@ -68,7 +78,12 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 	public Object refreshing() {
 		// TODO Auto-generated method stub
 		//Toast.makeText(HomePage.this, "refreshing!!!" , Toast.LENGTH_SHORT).show();
-		
+		try {
+			return DataModel.getMyTaskData();	 
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -78,6 +93,13 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 	public void refreshed(Object obj) {
 		// TODO Auto-generated method stub
 		//Toast.makeText(HomePage.this, "refreshed!!!" , Toast.LENGTH_SHORT).show();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {		
+				Message msg = mUIHandler.obtainMessage(REFRESHED);
+				msg.sendToTarget();
+			}
+		}).start();
 	}
 
 
@@ -148,6 +170,9 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 				adapter.notifyDataSetChanged();
 				mListView.finishFootView();
 				//Toast.makeText(HomePage.this, "more!!!" , Toast.LENGTH_SHORT).show();
+		    	break;
+		    case REFRESHED:
+		    	adapter.notifyDataSetChanged();
 		    	break;
 		    }
 		}

@@ -1,0 +1,78 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:background ="@drawable/homepage_topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageButton
+                android:id="@+id/addfriend_cancelbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentLeft="true"
+		        android:layout_centerVertical="true"
+                android:padding="1dp"
+                android:background="@drawable/cancel_button_effect" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:text="添加好友"
+                android:textColor="@color/black" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        android:gravity="center_vertical"
+	        android:layout_marginTop="20dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </LinearLayout>
+            
+            <EditText
+	            android:id="@+id/addfriend_username"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:hint="好友名字"
+	            android:paddingLeft="10dp" />
+
+
+           
+            <Button
+	            android:id="@+id/addfriend_bnt"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            style="@style/btn_style"
+	            android:text = "添加好友"/>
+        </LinearLayout>
+
+        
+            
+    </LinearLayout>
+
+</FrameLayout>

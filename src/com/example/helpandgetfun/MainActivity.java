@@ -38,6 +38,8 @@ public class MainActivity extends FragmentActivity {
         
         initAndsetAllWidget();
         setAllListener();
+        
+        mTopBarUserName.setText(DataModel.mUserName);
     }
     
 	private void setAllListener() {
