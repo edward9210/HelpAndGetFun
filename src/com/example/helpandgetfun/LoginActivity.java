@@ -91,6 +91,7 @@ public class LoginActivity extends Activity {
 							json = DataModel.getUserInfo(name);
 							DataModel.mRealName = json.getString("realname");
 							DataModel.mPhone = json.getString("phone");
+							DataModel.mPassword = json.getString("password");
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -120,7 +121,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(LoginActivity.this, "registerButton!!!" , Toast.LENGTH_SHORT).show();
+				//Toast.makeText(LoginActivity.this, "registerButton!!!" , Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(); 
 	        	intent.setClass(LoginActivity.this, RegisterActivity.class); /* 调用一个新的Activity */
 	        	startActivity(intent);
@@ -134,7 +135,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(LoginActivity.this, "forgetPwdButton!!!" , Toast.LENGTH_SHORT).show();
+				//Toast.makeText(LoginActivity.this, "forgetPwdButton!!!" , Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(); 
 	        	intent.setClass(LoginActivity.this, ResetPwdActivity.class); /* 调用一个新的Activity */
 	        	startActivity(intent);

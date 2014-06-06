@@ -26,7 +26,7 @@
 	        android:layout_centerInParent="true"
 	        android:textSize= "22dp"
 	        android:textColor="@color/black"
-	        android:text="我的好友" />
+	        android:text="关注好友" />
 	
 	    <ImageButton
 	        android:id="@+id/friendlist_addfriend_bnt"

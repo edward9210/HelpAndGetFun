@@ -31,15 +31,19 @@ import android.widget.ListView;
 public class DataModel {
 	public static List< Map<String, Object> > homePageList, otherList, taskAcceptedList, myTaskList, myFriendList;
 	private static String ServerURL = "http://172.18.156.140";
-	public static String mUserName, mRealName, mPhone;
+	public static String mUserName, mRealName, mPhone, mPassword;
 	public static String CONECTION_ERROR = "Connection_Error";
 	public static String CONECTION_FAIL = "Connection_Fail";
 	public static String LOGIN_SUCCESS = "success";
 	public static String REGISTER_SUCCESS = "success";
 	public static String ADDTASK_SUCCESS = "success";
 	public static String ADDFRIEND_SUCCESS = "success";
+	public static String ACCEPTTASK_SUCCESS = "success";
+	public static String DELETETASK_SUCCESS = "success";
+	public static String DELETEFRIEND_SUCCESS = "success";
+	public static String UPDATE_SUCCESS = "success";
 	
-	public static List<Map<String, Object> > getHomePageData() {
+	public static List<Map<String, Object> > getHomePageData() throws JSONException{
 		/* 测试用数据
 		homePageList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -55,15 +59,42 @@ public class DataModel {
 		for (int i = 0; i < 100; i++)
 			homePageList.add(map);
 		 */
-		if (homePageList == null)
-			homePageList = new ArrayList<Map<String, Object>>();
+		List< Map<String, Object> > homePageListTmp = new ArrayList<Map<String, Object>>();
 		
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("label", "queryfriendmission"));
+		params.add(new BasicNameValuePair("name", mUserName));
+		JSONArray jsonArray = sendMesToServerJSONArray(params);
+		//String str = jsonArray.toString();
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject json = (JSONObject)jsonArray.get(i);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("headImg", R.drawable.homepage_friendlist);
+			map.put("userName", json.getString("user"));
+			map.put("date", json.getString("missiontime"));
+			if (json.getString("missionstate").equals("0"))
+				map.put("state", "等待中");
+			else
+				map.put("state", "进行中");
+			map.put("taskContent", json.getString("missionname"));
+			map.put("executeTime", json.getString("missiondeadline"));
+			map.put("Location", json.getString("missionplace"));
+			map.put("postscript", json.getString("missionps"));
+			homePageListTmp.add(map);
+		}
+		if (homePageList == null)
+			homePageList =homePageListTmp;
+		else {
+			homePageList.clear();
+			homePageList.addAll(homePageListTmp);
+		}
 		return homePageList;
 	} 
 	
 	
 	//获取陌生人发布的任务
-	public static List<Map<String, Object> > getOtherData() {
+	public static List<Map<String, Object> > getOtherData() throws JSONException{
+		/* 测试用数据
 		otherList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("headImg", R.drawable.homepage_friendlist);
@@ -76,13 +107,43 @@ public class DataModel {
 		map.put("postscript", "=.=");
 		
 		for (int i = 0; i < 2; i++)
-			otherList.add(map);
+			otherList.add(map);*/
+		List< Map<String, Object> > otherListTmp = new ArrayList<Map<String, Object>>();
+		
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("label", "queryothermission"));
+		params.add(new BasicNameValuePair("name", mUserName));
+		JSONArray jsonArray = sendMesToServerJSONArray(params);
+		//String str = jsonArray.toString();
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject json = (JSONObject)jsonArray.get(i);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("headImg", R.drawable.homepage_friendlist);
+			map.put("userName", json.getString("user"));
+			map.put("date", json.getString("missiontime"));
+			if (json.getString("missionstate").equals("0"))
+				map.put("state", "等待中");
+			else
+				map.put("state", "进行中");
+			map.put("taskContent", json.getString("missionname"));
+			map.put("executeTime", json.getString("missiondeadline"));
+			map.put("Location", json.getString("missionplace"));
+			map.put("postscript", json.getString("missionps"));
+			otherListTmp.add(map);
+		}
+		if (otherList == null)
+			otherList =otherListTmp;
+		else {
+			otherList.clear();
+			otherList.addAll(otherListTmp);
+		}
 		
 		return otherList;
 	} 
 	
 	//获取已接任务列表
-	public static List<Map<String, Object> > getTaskAcceptedData() {
+	public static List<Map<String, Object> > getTaskAcceptedData() throws JSONException {
+		/*
 		taskAcceptedList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("headImg", R.drawable.homepage_friendlist);
@@ -95,7 +156,36 @@ public class DataModel {
 		map.put("postscript", "=.=");
 		
 		for (int i = 0; i < 4; i++)
-			taskAcceptedList.add(map);
+			taskAcceptedList.add(map);*/
+		List< Map<String, Object> > taskAcceptedListTmp = new ArrayList<Map<String, Object>>();
+		
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("label", "queryparticipated"));
+		params.add(new BasicNameValuePair("uname", mUserName));
+		JSONArray jsonArray = sendMesToServerJSONArray(params);
+		//String str = jsonArray.toString();
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject json = (JSONObject)jsonArray.get(i);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("headImg", R.drawable.homepage_friendlist);
+			map.put("userName", json.getString("user"));
+			map.put("date", json.getString("missiontime"));
+			if (json.getString("missionstate").equals("0"))
+				map.put("state", "等待中");
+			else
+				map.put("state", "进行中");
+			map.put("taskContent", json.getString("missionname"));
+			map.put("executeTime", json.getString("missiondeadline"));
+			map.put("Location", json.getString("missionplace"));
+			map.put("postscript", json.getString("missionps"));
+			taskAcceptedListTmp.add(map);
+		}
+		if (taskAcceptedList == null)
+			taskAcceptedList = taskAcceptedListTmp;
+		else {
+			taskAcceptedList.clear();
+			taskAcceptedList.addAll(taskAcceptedListTmp);
+		}
 		
 		return taskAcceptedList;
 	} 
@@ -155,7 +245,7 @@ public class DataModel {
 		
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("label", "queryfriend"));
-		params.add(new BasicNameValuePair("name", mUserName));
+		params.add(new BasicNameValuePair("uname", mUserName));
 		JSONArray jsonArray = sendMesToServerJSONArray(params);
 		//String str = jsonArray.toString();
 		for (int i = 0; i < jsonArray.length(); i++) {
@@ -189,6 +279,27 @@ public class DataModel {
 		return sendMesToServer(params);
 	}
 	
+	//进行重置密码操作
+	public static String resetPwd(String name, String realname, String mobliePhone, String password) {
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("label", "forgetpassword"));
+		params.add(new BasicNameValuePair("name", name));
+		params.add(new BasicNameValuePair("realname", realname));
+		params.add(new BasicNameValuePair("phone", mobliePhone));
+		params.add(new BasicNameValuePair("password", password));
+		return sendMesToServer(params);
+	}
+	
+	//更新信息
+	public static String updateInfo(String name, String realname, String mobliePhone) {
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("label", "changeinfo"));
+		params.add(new BasicNameValuePair("name", name));
+		params.add(new BasicNameValuePair("realname", realname));
+		params.add(new BasicNameValuePair("phone", mobliePhone));
+		return sendMesToServer(params);
+	}
+	
 	//获取用户信息，返回JSONObject
 	public static JSONObject getUserInfo(String name) throws JSONException  {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -219,6 +330,38 @@ public class DataModel {
 		return sendMesToServer(params);
 	}
 	
+	//取消关注好友
+	public static String deleteFriend(String friendName) {
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("label", "deletefriends"));
+		params.add(new BasicNameValuePair("name1", mUserName));
+		params.add(new BasicNameValuePair("name2", friendName));
+		return sendMesToServer(params);
+	}
+	
+	public static String acceptTask(String taskName) {
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("label", "participatemission"));
+		params.add(new BasicNameValuePair("uname", mUserName));
+		params.add(new BasicNameValuePair("mname", taskName));
+		return sendMesToServer(params);
+	}
+	
+	public static String quitAcceptedTask(String taskName) {
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("label", "quitmission"));
+		params.add(new BasicNameValuePair("uname", mUserName));
+		params.add(new BasicNameValuePair("mname", taskName));
+		return sendMesToServer(params);
+	}
+	
+	public static String deleteMyTask(String taskName) {
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("label", "deletemission"));
+		params.add(new BasicNameValuePair("uname", mUserName));
+		params.add(new BasicNameValuePair("mname", taskName));
+		return sendMesToServer(params);
+	}
 	
 	//发送数据，使用的时http
 	//List<NameValuePair> params 是指数据的（key，value）的list

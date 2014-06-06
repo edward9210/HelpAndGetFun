@@ -22,8 +22,13 @@ public class FriendInfoActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.friend_info);
+		Bundle bundle = this.getIntent().getExtras();
 		setAllWidget();
 		setAllListener();
+		
+		userNameTv.setText(bundle.getString("name"));
+		realNameTv.setText(bundle.getString("realname"));
+		mobilePhoneTv.setText(bundle.getString("phone"));
 	}
 
 
@@ -43,7 +48,18 @@ public class FriendInfoActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(FriendInfoActivity.this, "deleteButton!!!" , Toast.LENGTH_SHORT).show();
+				//Toast.makeText(FriendInfoActivity.this, "deleteButton!!!" , Toast.LENGTH_SHORT).show();
+				String friendName = userNameTv.getText().toString();
+				if (DataModel.deleteFriend(friendName).equals(DataModel.DELETEFRIEND_SUCCESS)) {
+					Toast.makeText(FriendInfoActivity.this, "删除成功" , Toast.LENGTH_SHORT).show();
+					Intent intent = new Intent(); 
+		        	intent.setClass(FriendInfoActivity.this, FriendListActivity.class); /* 调用一个新的Activity */
+		        	startActivity(intent);
+		        	/* 关闭原本的Activity */ 
+		        	FriendInfoActivity.this.finish();
+				}
+				else
+					Toast.makeText(FriendInfoActivity.this, "删除失败" , Toast.LENGTH_SHORT).show();
 			}
 		
 		});
@@ -52,7 +68,7 @@ public class FriendInfoActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(FriendInfoActivity.this, "cancelButton!!!" , Toast.LENGTH_SHORT).show();
+				//Toast.makeText(FriendInfoActivity.this, "cancelButton!!!" , Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(); 
 	        	intent.setClass(FriendInfoActivity.this, FriendListActivity.class); /* 调用一个新的Activity */
 	        	startActivity(intent);

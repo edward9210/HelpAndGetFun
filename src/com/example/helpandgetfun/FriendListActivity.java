@@ -1,7 +1,10 @@
 package com.example.helpandgetfun;
 
 
+import java.util.Date;
+
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
@@ -18,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -123,10 +127,22 @@ public class FriendListActivity extends Activity{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				//封装bundle，传到FriendInfoActivity
-				//...
-				Intent intent = new Intent(); 
-	        	intent.setClass(FriendListActivity.this, FriendInfoActivity.class); /* 调用一个新的Activity */
-	        	startActivity(intent);
+				TextView friendName = (TextView) view.findViewById(R.id.friendlist_username);
+				try {
+					JSONObject json = DataModel.getUserInfo(friendName.getText().toString());
+					Bundle bundle = new Bundle();
+					bundle.putString("name", friendName.getText().toString());
+					bundle.putString("realname", json.getString("realname"));
+					bundle.putString("phone", json.getString("phone"));
+					Intent intent = new Intent(); 
+					intent.putExtras(bundle);
+		        	intent.setClass(FriendListActivity.this, FriendInfoActivity.class); /* 调用一个新的Activity */
+		        	startActivity(intent);
+		        	FriendListActivity.this.finish();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 	}
