@@ -128,6 +128,14 @@
 	        style="@style/btn_red_style"            
 	        android:text = "删除" />
         
+        <Button
+            android:id="@+id/friend_info_add"
+            android:layout_margin="10dp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:visibility="gone"
+	        style="@style/btn_style"            
+	        android:text = "添加" />
         
 	</LinearLayout>
 </LinearLayout>

@@ -1,6 +1,8 @@
 package com.example.helpandgetfun;
 
 
+import org.json.JSONException;
+
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
@@ -42,7 +44,14 @@ public class FriendListActivity extends Activity{
 		mCancelbnt = (ImageButton) findViewById(R.id.friendlist_cancelbutton);
 		mAddFriend = (ImageButton) findViewById(R.id.friendlist_addfriend_bnt);
 		
-		adapter = new MyAdapter(this, DataModel.getFriendList(), R.layout.friendlist_item,
+		try {
+			DataModel.getFriendList();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		adapter = new MyAdapter(this, DataModel.myFriendList , R.layout.friendlist_item,
 				new String[]{"headImg", "userName"},
 				new int[]{R.id.friendlist_headimg, R.id.friendlist_username});
 	
@@ -80,6 +89,8 @@ public class FriendListActivity extends Activity{
 				Intent intent = new Intent(); 
 	        	intent.setClass(FriendListActivity.this, AddFriendActivity.class); /* 调用一个新的Activity */
 	        	startActivity(intent);
+	        	/* 关闭原本的Activity */ 
+	        	FriendListActivity.this.finish();
 			}
 		
 		});

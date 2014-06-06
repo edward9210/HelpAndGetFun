@@ -53,7 +53,11 @@ public class FragmentAboutMePage extends Fragment{
 		mInfoCenterRL.setOnClickListener(new Button.OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				
+				Intent intent = new Intent(); 
+	        	intent.setClass(getActivity().getApplicationContext(), InfoCenterActivity.class); /* 调用一个新的Activity */
+	        	startActivity(intent);
+	        	/* 关闭原本的Activity */ 
+	        	//MainActivity.this.finish();
 			}
 		});
 	}

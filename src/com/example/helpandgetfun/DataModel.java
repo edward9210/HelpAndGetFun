@@ -2,6 +2,7 @@ package com.example.helpandgetfun;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ public class DataModel {
 	public static String LOGIN_SUCCESS = "success";
 	public static String REGISTER_SUCCESS = "success";
 	public static String ADDTASK_SUCCESS = "success";
+	public static String ADDFRIEND_SUCCESS = "success";
 	
 	public static List<Map<String, Object> > getHomePageData() {
 		/* 测试用数据
@@ -115,7 +117,7 @@ public class DataModel {
 		for (int i = 0; i < 5; i++)
 			myTaskList.add(map);*/
 		
-		myTaskList = new ArrayList<Map<String, Object>>();
+		List< Map<String, Object> > myTaskListTmp = new ArrayList<Map<String, Object>>();
 		
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("label", "querycreated"));
@@ -136,21 +138,33 @@ public class DataModel {
 			map.put("executeTime", json.getString("missiondeadline"));
 			map.put("Location", json.getString("missionplace"));
 			map.put("postscript", json.getString("missionps"));
-			myTaskList.add(map);
+			myTaskListTmp.add(map);
+		}
+		if (myTaskList == null)
+			myTaskList = myTaskListTmp;
+		else {
+			myTaskList.clear();
+			myTaskList.addAll(myTaskListTmp);
 		}
 		return myTaskList;
 	} 
 	
 	//获取好友列表
-	public static List<Map<String, Object> > getFriendList() {
+	public static List<Map<String, Object> > getFriendList() throws JSONException {
 		myFriendList = new ArrayList<Map<String, Object>>();
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("headImg", R.drawable.homepage_headimg);
-		map.put("userName", "XuBin");
 		
-		for (int i = 0; i < 50; i++)
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("label", "queryfriend"));
+		params.add(new BasicNameValuePair("name", mUserName));
+		JSONArray jsonArray = sendMesToServerJSONArray(params);
+		//String str = jsonArray.toString();
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject json = (JSONObject)jsonArray.get(i);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("headImg", R.drawable.homepage_headimg);
+			map.put("userName", json.getString("user2"));
 			myFriendList.add(map);
-		
+		}
 		return myFriendList;
 	}
 	
@@ -196,6 +210,16 @@ public class DataModel {
 		return sendMesToServer(params);
 	}
 	
+	//关注好友
+	public static String addFriend(String friendName) {
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("label", "makefriends"));
+		params.add(new BasicNameValuePair("name1", mUserName));
+		params.add(new BasicNameValuePair("name2", friendName));
+		return sendMesToServer(params);
+	}
+	
+	
 	//发送数据，使用的时http
 	//List<NameValuePair> params 是指数据的（key，value）的list
 	private static String sendMesToServer(List<NameValuePair> params) {
@@ -229,11 +253,15 @@ public class DataModel {
 			HttpResponse httpResponse = new DefaultHttpClient().execute(httpRequest);
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
 				httpResponse = new DefaultHttpClient().execute(httpRequest);
-				StringBuilder str = new StringBuilder();
-				BufferedReader buffer = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
-				for(String s = buffer.readLine(); s != null ; s = buffer.readLine())
-					str.append(s);
-				JSONObject json = new JSONObject(str.toString());  
+				InputStream inputStream = httpResponse.getEntity().getContent();
+				byte[] buffer = new byte[4096];
+				int ch = -1;
+				String str = "";
+				while ((ch = inputStream.read(buffer)) != -1) {
+					String tmp = new String(buffer, "GB2312");
+					str += tmp;
+				}
+				JSONObject json = new JSONObject(str);  
 				return json;
 			}
 
@@ -244,7 +272,7 @@ public class DataModel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return new JSONObject();
 	}
 
 	private static JSONArray sendMesToServerJSONArray(List<NameValuePair> params) {
@@ -254,12 +282,18 @@ public class DataModel {
 			HttpResponse httpResponse = new DefaultHttpClient().execute(httpRequest);
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
 				httpResponse = new DefaultHttpClient().execute(httpRequest);
-				StringBuilder str = new StringBuilder();
-				BufferedReader buffer = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
-				for(String s = buffer.readLine(); s != null ; s = buffer.readLine())
-					str.append(s);
-				JSONArray jsonArray = new JSONArray(str.toString());  
-				return jsonArray;
+				InputStream inputStream = httpResponse.getEntity().getContent();
+				byte[] buffer = new byte[4096];
+				int ch = -1;
+				String str = "";
+				while ((ch = inputStream.read(buffer)) != -1) {
+					String tmp = new String(buffer, "GB2312");
+					str += tmp;
+				}
+				if (str != null) {
+					JSONArray jsonArray = new JSONArray(str);  
+					return jsonArray;
+				}
 			}
 
 		} catch (ClientProtocolException e) {
@@ -269,6 +303,6 @@ public class DataModel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return new JSONArray();
 	}
 }

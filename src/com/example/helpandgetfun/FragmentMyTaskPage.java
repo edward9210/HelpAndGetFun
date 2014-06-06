@@ -1,5 +1,10 @@
 package com.example.helpandgetfun;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.json.JSONException;
 
 import com.example.helpandgetfun.RefreshListView.RefreshListener;
@@ -76,10 +81,8 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 	
 	@Override
 	public Object refreshing() {
-		// TODO Auto-generated method stub
-		//Toast.makeText(HomePage.this, "refreshing!!!" , Toast.LENGTH_SHORT).show();
 		try {
-			return DataModel.getMyTaskData();	 
+			DataModel.getMyTaskData();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -96,6 +99,7 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 		new Thread(new Runnable() {
 			@Override
 			public void run() {		
+				
 				Message msg = mUIHandler.obtainMessage(REFRESHED);
 				msg.sendToTarget();
 			}
@@ -155,8 +159,11 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 		  if (totalHeight < height) {
 			  params.height = totalHeight
 			    + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-			  listView.setLayoutParams(params);
 		  }
+		  else {
+			  params.height = ViewGroup.LayoutParams.WRAP_CONTENT;  
+		  }
+		  listView.setLayoutParams(params);
 	}
 	
 	
@@ -173,6 +180,7 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 		    	break;
 		    case REFRESHED:
 		    	adapter.notifyDataSetChanged();
+		    	setListViewHeightBasedOnChildren(mListView);
 		    	break;
 		    }
 		}

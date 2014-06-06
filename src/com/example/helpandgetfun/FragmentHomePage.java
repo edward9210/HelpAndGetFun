@@ -135,10 +135,12 @@ public class FragmentHomePage extends Fragment implements RefreshListener{
 		  if (totalHeight < height) {
 			  params.height = totalHeight
 			    + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-			  listView.setLayoutParams(params);
 		  }
+		  else {
+			  params.height = ViewGroup.LayoutParams.WRAP_CONTENT;  
+		  }
+		  listView.setLayoutParams(params);
 	}
-	
 	
 	/* UIHandler负责更新页面 */
 	private Handler mUIHandler = new Handler(){

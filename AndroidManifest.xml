@@ -42,6 +42,8 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>
         <activity android:name="AddFriendActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>  
+        <activity android:name="InfoCenterActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>
             
     </application>
 

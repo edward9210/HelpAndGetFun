@@ -133,8 +133,11 @@ public class FragmentTaskAcceptedPage extends Fragment implements RefreshListene
 		  if (totalHeight < height) {
 			  params.height = totalHeight
 			    + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-			  listView.setLayoutParams(params);
 		  }
+		  else {
+			  params.height = ViewGroup.LayoutParams.WRAP_CONTENT;  
+		  }
+		  listView.setLayoutParams(params);
 	}
 	
 	

@@ -41,7 +41,23 @@ public class AddFriendActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(AddFriendActivity.this, "addFriendButton!!!" , Toast.LENGTH_SHORT).show();
+				//Toast.makeText(AddFriendActivity.this, "addFriendButton!!!" , Toast.LENGTH_SHORT).show();
+				String friendName = userNameEt.getText().toString();
+				if (friendName.length() > 0) {
+					if (DataModel.addFriend(friendName).equals(DataModel.ADDFRIEND_SUCCESS)) {
+						Toast.makeText(AddFriendActivity.this, "关注成功" , Toast.LENGTH_SHORT).show();
+						Intent intent = new Intent(); 
+			        	intent.setClass(AddFriendActivity.this, FriendListActivity.class); /* 调用一个新的Activity */
+			        	startActivity(intent);
+			        	/* 关闭原本的Activity */ 
+			        	AddFriendActivity.this.finish();
+					}
+					else
+						Toast.makeText(AddFriendActivity.this, "关注失败" , Toast.LENGTH_SHORT).show();
+				}
+				else {
+					Toast.makeText(AddFriendActivity.this, "请输入想关注人的名字" , Toast.LENGTH_SHORT).show();
+				}
 			}
 		
 		});

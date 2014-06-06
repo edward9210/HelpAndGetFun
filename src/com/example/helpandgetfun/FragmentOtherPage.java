@@ -110,7 +110,6 @@ public class FragmentOtherPage extends Fragment implements RefreshListener{
 		
 	}
 
-	
 	/* 参考 http://blog.sina.com.cn/s/blog_6dc41baf010193zi.html
 	 * 并进行了修改，修补了当listview的item过少时，显示的bug 
 	 * ----注意：每次更新数据时，要调用一次----*/
@@ -141,8 +140,11 @@ public class FragmentOtherPage extends Fragment implements RefreshListener{
 		  if (totalHeight < height) {
 			  params.height = totalHeight
 			    + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-			  listView.setLayoutParams(params);
 		  }
+		  else {
+			  params.height = ViewGroup.LayoutParams.WRAP_CONTENT;  
+		  }
+		  listView.setLayoutParams(params);
 	}
 	
 	

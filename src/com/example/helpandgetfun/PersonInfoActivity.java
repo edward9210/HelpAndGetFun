@@ -16,6 +16,7 @@ import android.os.Build;
 
 public class PersonInfoActivity extends Activity {
 	private EditText realNameEditText ,mobilePhoneEditText;
+	private TextView userNameTextView;
 	private ImageButton cancelButton;
 	private Button saveButton;
 	@Override
@@ -24,12 +25,22 @@ public class PersonInfoActivity extends Activity {
 		setContentView(R.layout.person_info);
 		setAllWidget();
 		setAllListener();
+		init();
+	}
+
+
+	private void init() {
+		// TODO Auto-generated method stub
+		userNameTextView.setText(DataModel.mUserName);
+		realNameEditText.setText(DataModel.mRealName);
+		mobilePhoneEditText.setText(DataModel.mPhone);
 	}
 
 
 	private void setAllWidget() {
 		// TODO Auto-generated method stub
 		
+		userNameTextView = (TextView) findViewById(R.id.person_info_username);
 		realNameEditText = (EditText) findViewById(R.id.person_info_realname);
 		mobilePhoneEditText = (EditText) findViewById(R.id.person_info_mobilephone);
 		saveButton = (Button) findViewById(R.id.person_info_save);
