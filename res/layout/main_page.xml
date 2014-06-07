@@ -52,7 +52,7 @@
 		        android:layout_alignParentLeft="true"
 		        android:layout_centerVertical="true"
 		        android:layout_marginLeft="10dp"
-		        android:src="@drawable/homepage_headimg" />
+		        android:src="@drawable/homepage_headimg3" />
 		
 		    <TextView
 		        android:id="@+id/topbar_username"
@@ -105,6 +105,14 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="10" />
+	
+	<fragment
+        android:id="@+id/fragement_aboutme"
+        android:name="com.example.helpandgetfun.FragmentAboutMePage"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="10" />
+	
     <!-- 底部菜单页面 -->
 
     <LinearLayout

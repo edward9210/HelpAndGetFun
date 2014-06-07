@@ -28,7 +28,7 @@ public class DataModel {
 	public static List<Map<String, Object> > getHomePageData() {
 		homePageList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("headImg", R.drawable.homepage_friendlist);
+		map.put("headImg", R.drawable.homepage_headimg2);
 		map.put("userName", "Edward");
 		map.put("date", "2014.5.20");
 		map.put("state", "waiting");
