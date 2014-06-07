@@ -30,6 +30,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +47,14 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
+		
+	    //参考于 http://blog.csdn.net/dragon08/article/details/7666172 
+		//解决android.os.NetworkOnMainThreadException的问题
+	    StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()  
+	            .detectDiskWrites().detectNetwork().penaltyLog().build());  
+	    StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects()  
+	            .detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());  
+	    
 		setAllWidget();
 		setAllListener();
 	}
@@ -71,8 +80,24 @@ public class LoginActivity extends Activity {
 				name = userNameEditText.getText().toString();
 				pwd = pwdEditText.getText().toString();
 				if (name.length() != 0 && pwd.length() != 0) {
-					if(DataModel.login(name, pwd)) {
-					
+					String result = DataModel.login(name, pwd);
+					if (result.equals(DataModel.LOGIN_SUCCESS)) {
+						Toast.makeText(LoginActivity.this, "登陆成功" , Toast.LENGTH_SHORT).show();
+						
+						DataModel.mUserName = name;
+						
+						JSONObject json;
+						try {
+							json = DataModel.getUserInfo(name);
+							DataModel.mRealName = json.getString("realname");
+							DataModel.mPhone = json.getString("phone");
+							DataModel.mPassword = json.getString("password");
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						
 						Intent intent = new Intent(); 
 			        	intent.setClass(LoginActivity.this, MainActivity.class); /* 调用一个新的Activity */
 			        	startActivity(intent);
@@ -81,7 +106,7 @@ public class LoginActivity extends Activity {
 						//Toast.makeText(LoginActivity.this, "loginButton!!!" , Toast.LENGTH_SHORT).show();
 					}
 					else {
-						Toast.makeText(LoginActivity.this, "登陆失败" , Toast.LENGTH_SHORT).show();
+						Toast.makeText(LoginActivity.this, result , Toast.LENGTH_SHORT).show();
 					}
 				}
 				else if (name.length() == 0) 
@@ -96,7 +121,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(LoginActivity.this, "registerButton!!!" , Toast.LENGTH_SHORT).show();
+				//Toast.makeText(LoginActivity.this, "registerButton!!!" , Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(); 
 	        	intent.setClass(LoginActivity.this, RegisterActivity.class); /* 调用一个新的Activity */
 	        	startActivity(intent);
@@ -110,7 +135,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(LoginActivity.this, "forgetPwdButton!!!" , Toast.LENGTH_SHORT).show();
+				//Toast.makeText(LoginActivity.this, "forgetPwdButton!!!" , Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(); 
 	        	intent.setClass(LoginActivity.this, ResetPwdActivity.class); /* 调用一个新的Activity */
 	        	startActivity(intent);
@@ -120,5 +145,4 @@ public class LoginActivity extends Activity {
 		
 		});
 	}
-	
 }

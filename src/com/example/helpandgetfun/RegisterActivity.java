@@ -44,7 +44,31 @@ public class RegisterActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(RegisterActivity.this, "registerButton!!!" , Toast.LENGTH_SHORT).show();
+				String name = userNameEditText.getText().toString();
+				String realname = realNameEditText.getText().toString();
+				String mobliePhone = mobilePhoneEditText.getText().toString();
+				String password = pwdEditText.getText().toString();
+				String passwordConfig = pwdConfigEditText.getText().toString();
+				if (name.length() == 0 || realname.length() == 0 || mobliePhone.length() == 0 || password.length() == 0 || passwordConfig.length() == 0)
+					Toast.makeText(RegisterActivity.this, "必填项没填" , Toast.LENGTH_SHORT).show();
+				else if (name.length() < 6 || name.length() > 20)
+					Toast.makeText(RegisterActivity.this, "用户名长度错误" , Toast.LENGTH_SHORT).show();
+				else if (!password.equals(passwordConfig))
+					Toast.makeText(RegisterActivity.this, "两次密码输入不一样" , Toast.LENGTH_SHORT).show();
+				else {
+					String result = DataModel.register(name, realname, mobliePhone, password);
+					if (result.equals(DataModel.REGISTER_SUCCESS)) {
+						Toast.makeText(RegisterActivity.this, "注册成功" , Toast.LENGTH_SHORT).show();
+						Intent intent = new Intent(); 
+			        	intent.setClass(RegisterActivity.this, LoginActivity.class); /* 调用一个新的Activity */
+			        	startActivity(intent);
+			        	/* 关闭原本的Activity */ 
+			        	RegisterActivity.this.finish();
+					}
+					else
+						Toast.makeText(RegisterActivity.this, result , Toast.LENGTH_SHORT).show();
+				}
+				
 			}
 		
 		});
@@ -53,7 +77,7 @@ public class RegisterActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(RegisterActivity.this, "cancelButton!!!" , Toast.LENGTH_SHORT).show();
+				//Toast.makeText(RegisterActivity.this, "cancelButton!!!" , Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(); 
 	        	intent.setClass(RegisterActivity.this, LoginActivity.class); /* 调用一个新的Activity */
 	        	startActivity(intent);

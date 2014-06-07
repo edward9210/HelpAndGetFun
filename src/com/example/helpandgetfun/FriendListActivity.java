@@ -1,6 +1,11 @@
 package com.example.helpandgetfun;
 
 
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
@@ -11,11 +16,14 @@ import android.os.Message;
 import android.text.Layout;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 
 public class FriendListActivity extends Activity{
@@ -40,7 +48,14 @@ public class FriendListActivity extends Activity{
 		mCancelbnt = (ImageButton) findViewById(R.id.friendlist_cancelbutton);
 		mAddFriend = (ImageButton) findViewById(R.id.friendlist_addfriend_bnt);
 		
-		adapter = new MyAdapter(this, DataModel.getFriendList(), R.layout.friendlist_item,
+		try {
+			DataModel.getFriendList();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		adapter = new MyAdapter(this, DataModel.myFriendList , R.layout.friendlist_item,
 				new String[]{"headImg", "userName"},
 				new int[]{R.id.friendlist_headimg, R.id.friendlist_username});
 	
@@ -75,7 +90,11 @@ public class FriendListActivity extends Activity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+				Intent intent = new Intent(); 
+	        	intent.setClass(FriendListActivity.this, AddFriendActivity.class); /* 调用一个新的Activity */
+	        	startActivity(intent);
+	        	/* 关闭原本的Activity */ 
+	        	FriendListActivity.this.finish();
 			}
 		
 		});
@@ -101,6 +120,30 @@ public class FriendListActivity extends Activity{
 				}).start();
 			}
 		
+		});
+		
+		mListView.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				//封装bundle，传到FriendInfoActivity
+				TextView friendName = (TextView) view.findViewById(R.id.friendlist_username);
+				try {
+					JSONObject json = DataModel.getUserInfo(friendName.getText().toString());
+					Bundle bundle = new Bundle();
+					bundle.putString("name", friendName.getText().toString());
+					bundle.putString("realname", json.getString("realname"));
+					bundle.putString("phone", json.getString("phone"));
+					Intent intent = new Intent(); 
+					intent.putExtras(bundle);
+		        	intent.setClass(FriendListActivity.this, FriendInfoActivity.class); /* 调用一个新的Activity */
+		        	startActivity(intent);
+		        	FriendListActivity.this.finish();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		});
 	}
 	

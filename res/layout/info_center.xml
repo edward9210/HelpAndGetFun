@@ -4,14 +4,13 @@
     android:layout_height="fill_parent"
     android:background="@drawable/background"
     android:orientation="vertical" >
-
-    <RelativeLayout 
+<RelativeLayout 
 	    android:background="@drawable/homepage_topbar"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content" >
 	
 	    <ImageButton
-             android:id="@+id/friendlist_cancelbutton"
+             android:id="@+id/info_center_cancelbutton"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:layout_centerVertical="true"
@@ -20,27 +19,16 @@
              android:background="@drawable/cancel_button_effect" />
 	
 	    <TextView
-	        android:id="@+id/topbar_username"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_centerInParent="true"
 	        android:textSize= "22dp"
 	        android:textColor="@color/black"
-	        android:text="关注好友" />
-	
-	    <ImageButton
-	        android:id="@+id/friendlist_addfriend_bnt"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentRight="true"
-	        android:layout_centerVertical="true"
-	        android:background="@drawable/addfriend_bnt_effect" />
-
-	
+	        android:text="消息中心" />
 	</RelativeLayout>
-
-    <ListView
-        android:id="@+id/friendlist_lv"
+	
+	<ListView
+        android:id="@+id/info_center_lv"
         android:listSelector="@android:color/transparent"
         android:divider="@android:color/transparent"
         android:layout_marginLeft="10dp"
@@ -48,6 +36,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </ListView>
-
-
 </LinearLayout>

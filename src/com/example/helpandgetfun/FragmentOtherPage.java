@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
+
 import com.example.helpandgetfun.RefreshListView.RefreshListener;
 
 import android.app.Activity;
@@ -28,6 +30,7 @@ import android.os.Build;
 
 public class FragmentOtherPage extends Fragment implements RefreshListener{
 	private final int MORE_FINISHED = 0;
+	private final int REFRESHED = 1;
 	
 	private RefreshListView mListView;
 	private MyAdapter adapter;
@@ -41,7 +44,14 @@ public class FragmentOtherPage extends Fragment implements RefreshListener{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		adapter = new MyAdapter(getActivity().getApplicationContext(), DataModel.getOtherData(), R.layout.pulldown_item,
+		try {
+			DataModel.getOtherData();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		adapter = new MyAdapter(getActivity().getApplicationContext(), DataModel.otherList, R.layout.pulldown_item,
 					new String[]{"headImg", "userName", "date", "state", "taskContent", "executeTime", "Location", "postscript"},
 					new int[]{R.id.item_head_image, R.id.item_username, R.id.item_date, R.id.item_state, R.id.item_task_content,  R.id.item_time_content, R.id.item_location_content, R.id.item_addition_content});
 		
@@ -57,6 +67,7 @@ public class FragmentOtherPage extends Fragment implements RefreshListener{
 					int position, long id) {
 				// TODO Auto-generated method stub
 				Button b = (Button) view.findViewById(R.id.task_info_accept);
+				final TextView tc = (TextView) view.findViewById(R.id.item_task_content);
 				if (b.getVisibility() == View.GONE)
 					b.setVisibility(View.VISIBLE);
 				else if (b.getVisibility() == View.VISIBLE)
@@ -64,7 +75,15 @@ public class FragmentOtherPage extends Fragment implements RefreshListener{
 				b.setOnClickListener(new Button.OnClickListener(){
 					@Override
 					public void onClick(View v) {
-						
+						String taskContent = tc.getText().toString();
+						String result = DataModel.acceptTask(taskContent);
+						if (result.equals(DataModel.ACCEPTTASK_SUCCESS)) {
+							Toast.makeText(getActivity().getApplicationContext(), "æˆåŠŸæ¥å—ä»»åŠ¡ï¼Œè¯·åˆ·æ–°ä¸€ä¸‹ä»»åŠ¡åˆ—è¡¨" , Toast.LENGTH_SHORT).show();
+						}
+						else {
+							Toast.makeText(getActivity().getApplicationContext(), "æ¥å—ä»»åŠ¡å¤±è´¥ï¼Œè¯·åˆ·æ–°ä¸€ä¸‹ä»»åŠ¡åˆ—è¡¨" , Toast.LENGTH_SHORT).show();
+						}
+						v.setVisibility(View.GONE);
 					}
 				});
 			}
@@ -76,7 +95,12 @@ public class FragmentOtherPage extends Fragment implements RefreshListener{
 	public Object refreshing() {
 		// TODO Auto-generated method stub
 		//Toast.makeText(HomePage.this, "refreshing!!!" , Toast.LENGTH_SHORT).show();
-		
+		try {
+			DataModel.getOtherData();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -86,6 +110,14 @@ public class FragmentOtherPage extends Fragment implements RefreshListener{
 	public void refreshed(Object obj) {
 		// TODO Auto-generated method stub
 		//Toast.makeText(HomePage.this, "refreshed!!!" , Toast.LENGTH_SHORT).show();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {		
+				
+				Message msg = mUIHandler.obtainMessage(REFRESHED);
+				msg.sendToTarget();
+			}
+		}).start();
 	}
 
 
@@ -93,7 +125,7 @@ public class FragmentOtherPage extends Fragment implements RefreshListener{
 	@Override
 	public void more() {
 		// TODO Auto-generated method stub
-		//ÔØÈëÊ±Ğ§¹û¸ú»ñÈ¡Êı¾İ
+		//è½½å…¥æ—¶æ•ˆæœè·Ÿè·å–æ•°æ®
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -110,10 +142,9 @@ public class FragmentOtherPage extends Fragment implements RefreshListener{
 		
 	}
 
-	
-	/* ²Î¿¼ http://blog.sina.com.cn/s/blog_6dc41baf010193zi.html
-	 * ²¢½øĞĞÁËĞŞ¸Ä£¬ĞŞ²¹ÁËµ±listviewµÄitem¹ıÉÙÊ±£¬ÏÔÊ¾µÄbug 
-	 * ----×¢Òâ£ºÃ¿´Î¸üĞÂÊı¾İÊ±£¬Òªµ÷ÓÃÒ»´Î----*/
+	/* å‚è€ƒ http://blog.sina.com.cn/s/blog_6dc41baf010193zi.html
+	 * å¹¶è¿›è¡Œäº†ä¿®æ”¹ï¼Œä¿®è¡¥äº†å½“listviewçš„itemè¿‡å°‘æ—¶ï¼Œæ˜¾ç¤ºçš„bug 
+	 * ----æ³¨æ„ï¼šæ¯æ¬¡æ›´æ–°æ•°æ®æ—¶ï¼Œè¦è°ƒç”¨ä¸€æ¬¡----*/
 	public void setListViewHeightBasedOnChildren(ListView listView) {
 	
 		  ListAdapter listAdapter = listView.getAdapter();
@@ -124,39 +155,46 @@ public class FragmentOtherPage extends Fragment implements RefreshListener{
 	
 		  int totalHeight = 0;
 		  
-		  //²»¼ÆËãheadView£¬ËùÒÔ´Ó1¿ªÊ¼
+		  //ä¸è®¡ç®—headViewï¼Œæ‰€ä»¥ä»1å¼€å§‹
 		  for (int i = 1; i < listAdapter.getCount(); i++) {
 			   View listItem = listAdapter.getView(i, null, listView);
 			   listItem.measure(0, 0);
 			   totalHeight += listItem.getMeasuredHeight();
 		  }
-		  //»ñÈ¡ÆÁÄ»¸ß¶È
+		  //è·å–å±å¹•é«˜åº¦
 		  Display display = getActivity().getWindowManager().getDefaultDisplay();
 		  Point size = new Point();
 		  display.getSize(size);
 		  int height = size.y;
 		  
 		  ViewGroup.LayoutParams params = listView.getLayoutParams();
-		  //Èç¹ûlistview¸ß¶È´óÓÚÆÁÄ»´óĞ¡£¬Ôò²»¸üĞÂ
+		  //å¦‚æœlistviewé«˜åº¦å¤§äºå±å¹•å¤§å°ï¼Œåˆ™ä¸æ›´æ–°
 		  if (totalHeight < height) {
 			  params.height = totalHeight
 			    + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-			  listView.setLayoutParams(params);
 		  }
+		  else {
+			  params.height = ViewGroup.LayoutParams.WRAP_CONTENT;  
+		  }
+		  listView.setLayoutParams(params);
 	}
 	
 	
-	/* UIHandler¸ºÔğ¸üĞÂÒ³Ãæ */
+	/* UIHandlerè´Ÿè´£æ›´æ–°é¡µé¢ */
 	private Handler mUIHandler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
 		    switch (msg.what) {
-		    case MORE_FINISHED:
-		    	adapter.setCount(adapter.getCount() + 10);
-				adapter.notifyDataSetChanged();
-				mListView.finishFootView();
-				//Toast.makeText(HomePage.this, "more!!!" , Toast.LENGTH_SHORT).show();
-		    	break;
+			    case MORE_FINISHED:
+			    	adapter.setCount(adapter.getCount() + 10);
+					adapter.notifyDataSetChanged();
+					mListView.finishFootView();
+					//Toast.makeText(HomePage.this, "more!!!" , Toast.LENGTH_SHORT).show();
+			    	break;
+			    case REFRESHED:
+			    	adapter.notifyDataSetChanged();
+			    	setListViewHeightBasedOnChildren(mListView);
+			    	break;
 		    }
 		}
 	};

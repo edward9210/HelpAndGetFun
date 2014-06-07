@@ -71,6 +71,8 @@
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1.0"
 		            android:hint="年"
+		            android:numeric="integer"
+		            android:singleLine="true"
 		            android:paddingLeft="10dp" />
                 <EditText
 		            android:id="@+id/addtask_month"
@@ -78,12 +80,15 @@
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1.0"
 		            android:hint="月"
+		            android:numeric="integer"
+		            android:singleLine="true"
 		            android:paddingLeft="10dp" />
                 <EditText
 		            android:id="@+id/addtask_day"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1.0"
+		            android:numeric="integer"
 		            android:hint="日"
 		            android:paddingLeft="10dp" />
             </LinearLayout>
@@ -96,6 +101,8 @@
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1.0"
+		            android:numeric="integer"
+		            android:singleLine="true"
 		            android:hint="时（24小时制）"
 		            android:paddingLeft="10dp" />
                 <EditText
@@ -103,6 +110,8 @@
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_weight="1.0"
+		            android:numeric="integer"
+		            android:singleLine="true"
 		            android:hint="分"
 		            android:paddingLeft="10dp" />
             </LinearLayout>

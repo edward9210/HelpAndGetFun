@@ -1,6 +1,10 @@
 package com.example.helpandgetfun;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
@@ -36,6 +40,7 @@ public class AddTaskActivity extends Activity {
 		locationEt = (EditText) findViewById(R.id.addtask_task_location);
 		yearEt = (EditText) findViewById(R.id.addtask_year);
 		monthEt = (EditText) findViewById(R.id.addtask_month);
+		dayEt = (EditText) findViewById(R.id.addtask_day);
 		hourEt = (EditText) findViewById(R.id.addtask_hour);
 		minuteEt = (EditText) findViewById(R.id.addtask_minute);
 		postScriptEt = (EditText) findViewById(R.id.addtask_task_postscript);
@@ -47,7 +52,32 @@ public class AddTaskActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(AddTaskActivity.this, "addTaskButton!!!" , Toast.LENGTH_SHORT).show();
+				//Toast.makeText(AddTaskActivity.this, "addTaskButton!!!" , Toast.LENGTH_SHORT).show();
+				String missonName = taskContentEt.getText().toString();
+				int year = Integer.parseInt(yearEt.getText().toString());
+				int month = Integer.parseInt(monthEt.getText().toString());
+				int day = Integer.parseInt(dayEt.getText().toString());
+				int hour = Integer.parseInt(hourEt.getText().toString());
+				int minute = Integer.parseInt(minuteEt.getText().toString());
+				String startTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
+				Calendar calendar = Calendar.getInstance();
+				calendar.set(year, month - 1, day, hour, minute);		
+				String endTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(calendar.getTime());
+				String place = locationEt.getText().toString();
+				String postScript = postScriptEt.getText().toString();
+				
+				String result = DataModel.addTask(DataModel.mUserName, missonName, startTime, endTime, place, postScript);
+				if (result.equals(DataModel.ADDTASK_SUCCESS)) {
+					Toast.makeText(AddTaskActivity.this, "发布成功" , Toast.LENGTH_SHORT).show();
+					Intent intent = new Intent(); 
+		        	intent.setClass(AddTaskActivity.this, MainActivity.class); /* 调用一个新的Activity */
+		        	startActivity(intent);
+		        	/* 关闭原本的Activity */ 
+		        	AddTaskActivity.this.finish();
+				}
+				else {
+					Toast.makeText(AddTaskActivity.this, result , Toast.LENGTH_SHORT).show();
+				}
 			}
 		
 		});

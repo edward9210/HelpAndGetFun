@@ -1,5 +1,12 @@
 package com.example.helpandgetfun;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONException;
+
 import com.example.helpandgetfun.RefreshListView.RefreshListener;
 
 import android.graphics.Point;
@@ -16,10 +23,12 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 	private final int MORE_FINISHED = 0;
+	private final int REFRESHED = 1;
 	
 	private RefreshListView mListView;
 	private MyAdapter adapter;
@@ -33,7 +42,14 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		adapter = new MyAdapter(getActivity().getApplicationContext(), DataModel.getMyTaskData(), R.layout.pulldown_item,
+		try {
+			DataModel.getMyTaskData();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		adapter = new MyAdapter(getActivity().getApplicationContext(), DataModel.myTaskList , R.layout.pulldown_item,
 					new String[]{"headImg", "userName", "date", "state", "taskContent", "executeTime", "Location", "postscript"},
 					new int[]{R.id.item_head_image, R.id.item_username, R.id.item_date, R.id.item_state, R.id.item_task_content,  R.id.item_time_content, R.id.item_location_content, R.id.item_addition_content});
 		
@@ -49,6 +65,7 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 					int position, long id) {
 				// TODO Auto-generated method stub
 				Button b = (Button) view.findViewById(R.id.task_info_delete);
+				final TextView tc = (TextView) view.findViewById(R.id.item_task_content);
 				if (b.getVisibility() == View.GONE)
 					b.setVisibility(View.VISIBLE);
 				else if (b.getVisibility() == View.VISIBLE)
@@ -56,7 +73,15 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 				b.setOnClickListener(new Button.OnClickListener(){
 					@Override
 					public void onClick(View v) {
-						
+						String taskContent = tc.getText().toString();
+						String result = DataModel.deleteMyTask(taskContent);
+						if (result.equals(DataModel.DELETETASK_SUCCESS)) {
+							Toast.makeText(getActivity().getApplicationContext(), "成功删除任务，请刷新一下任务列表" , Toast.LENGTH_SHORT).show();
+						}
+						else {
+							Toast.makeText(getActivity().getApplicationContext(), "删除任务失败，请刷新一下任务列表" , Toast.LENGTH_SHORT).show();
+						}
+						v.setVisibility(View.GONE);
 					}
 				});
 			}
@@ -66,9 +91,12 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 	
 	@Override
 	public Object refreshing() {
-		// TODO Auto-generated method stub
-		//Toast.makeText(HomePage.this, "refreshing!!!" , Toast.LENGTH_SHORT).show();
-		
+		try {
+			DataModel.getMyTaskData();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -78,6 +106,14 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 	public void refreshed(Object obj) {
 		// TODO Auto-generated method stub
 		//Toast.makeText(HomePage.this, "refreshed!!!" , Toast.LENGTH_SHORT).show();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {		
+				
+				Message msg = mUIHandler.obtainMessage(REFRESHED);
+				msg.sendToTarget();
+			}
+		}).start();
 	}
 
 
@@ -133,8 +169,11 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 		  if (totalHeight < height) {
 			  params.height = totalHeight
 			    + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-			  listView.setLayoutParams(params);
 		  }
+		  else {
+			  params.height = ViewGroup.LayoutParams.WRAP_CONTENT;  
+		  }
+		  listView.setLayoutParams(params);
 	}
 	
 	
@@ -148,6 +187,10 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 				adapter.notifyDataSetChanged();
 				mListView.finishFootView();
 				//Toast.makeText(HomePage.this, "more!!!" , Toast.LENGTH_SHORT).show();
+		    	break;
+		    case REFRESHED:
+		    	adapter.notifyDataSetChanged();
+		    	setListViewHeightBasedOnChildren(mListView);
 		    	break;
 		    }
 		}
