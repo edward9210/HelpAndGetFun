@@ -18,6 +18,8 @@
 --
 -- Table structure for table `cre_par`
 --
+CREATE DATABASE `help_and_fun`;
+USE `help_and_fun`;
 
 DROP TABLE IF EXISTS `cre_par`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
