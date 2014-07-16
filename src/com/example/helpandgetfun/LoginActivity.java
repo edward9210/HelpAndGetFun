@@ -76,38 +76,22 @@ public class LoginActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				/* 发送登陆信息 */
-				String name = "", pwd = "";
-				name = userNameEditText.getText().toString();
-				pwd = pwdEditText.getText().toString();
+				final String name = userNameEditText.getText().toString();
+				final String pwd = pwdEditText.getText().toString();
 				if (name.length() != 0 && pwd.length() != 0) {
-					String result = DataModel.login(name, pwd);
-					if (result.equals(DataModel.LOGIN_SUCCESS)) {
-						Toast.makeText(LoginActivity.this, "登陆成功" , Toast.LENGTH_SHORT).show();
-						
-						DataModel.mUserName = name;
-						
-						JSONObject json;
-						try {
-							json = DataModel.getUserInfo(name);
-							DataModel.mRealName = json.getString("realname");
-							DataModel.mPhone = json.getString("phone");
-							DataModel.mPassword = json.getString("password");
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						
-						
-						Intent intent = new Intent(); 
-			        	intent.setClass(LoginActivity.this, MainActivity.class); /* 调用一个新的Activity */
-			        	startActivity(intent);
-			        	/* 关闭原本的Activity */ 
-			        	LoginActivity.this.finish();
-						//Toast.makeText(LoginActivity.this, "loginButton!!!" , Toast.LENGTH_SHORT).show();
-					}
-					else {
-						Toast.makeText(LoginActivity.this, result , Toast.LENGTH_SHORT).show();
-					}
+					new Thread(new Runnable() {
+					    public void run() {
+					    	String result = DataModel.login(name, pwd);
+					    	Bundle bundle = new Bundle();
+					    	bundle.putString("result", result);
+					    	bundle.putString("name", name);
+					    	Message mes = new Message();
+					    	mes.setData(bundle);
+					    	mUIHandler.sendMessage(mes);
+					    }
+					}).start();
+					
+					
 				}
 				else if (name.length() == 0) 
 					Toast.makeText(LoginActivity.this, "用户名为空" , Toast.LENGTH_SHORT).show();
@@ -145,4 +129,42 @@ public class LoginActivity extends Activity {
 		
 		});
 	}
+	
+	private Handler mUIHandler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			Bundle bundle = msg.getData();
+			String result = bundle.getString("result");
+			String name = bundle.getString("name");
+			if (result.equals(DataModel.LOGIN_SUCCESS)) {
+				Toast.makeText(LoginActivity.this, "登陆成功" , Toast.LENGTH_SHORT).show();
+				
+				DataModel.mUserName = name;
+				
+				JSONObject json;
+				try {
+					json = DataModel.getUserInfo(name);
+					DataModel.mRealName = json.getString("realname");
+					DataModel.mPhone = json.getString("phone");
+					DataModel.mPassword = json.getString("password");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				Intent intent = new Intent(); 
+	        	intent.setClass(LoginActivity.this, MainActivity.class); /* 调用一个新的Activity */
+	        	startActivity(intent);
+	        	/* 关闭原本的Activity */ 
+	        	LoginActivity.this.finish();
+				//Toast.makeText(LoginActivity.this, "loginButton!!!" , Toast.LENGTH_SHORT).show();
+			}
+			else {
+				Toast.makeText(LoginActivity.this, result , Toast.LENGTH_SHORT).show();
+			}
+		}
+	};
+
+		
 }

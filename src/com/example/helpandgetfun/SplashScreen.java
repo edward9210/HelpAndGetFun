@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.os.Build;
 
 public class SplashScreen extends Activity {
-	private final int SPLASH_DISPLAY_LENGHT = 1000; //—”≥ŸŒÂ√Î   
+	private final int SPLASH_DISPLAY_LENGHT = 1000; //—”≥Ÿ1√Î   
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
