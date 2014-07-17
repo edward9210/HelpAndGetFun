@@ -1,5 +1,8 @@
 package com.example.helpandgetfun;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.*;
@@ -39,7 +42,28 @@ public class MainActivity extends FragmentActivity {
         initAndsetAllWidget();
         setAllListener();
         
-        mTopBarUserName.setText(DataModel.mUserName);
+        new Thread(new Runnable() {
+		    public void run() {
+		    	JSONObject json;
+				try {
+					json = DataModel.getUserInfo(DataModel.mUserName);
+					DataModel.mRealName = json.getString("realname");
+					DataModel.mPhone = json.getString("phone");
+					DataModel.mPassword = json.getString("password");
+					
+					Bundle bundle = new Bundle();
+					bundle.putString("type", "GetUserInfo_Success");
+			    	Message mes = new Message();
+			    	mes.setData(bundle);
+			    	mUIHandler.sendMessage(mes);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+		    }
+		}).start();
+        
     }
     
 	private void setAllListener() {
@@ -189,5 +213,16 @@ public class MainActivity extends FragmentActivity {
 		// TODO Auto-generated method stub
 		fragmentTransaction = fragmentManager.beginTransaction().hide(mHomePageFragment).hide(mOtherFragment).hide(mTaskAcceptedFragment).hide(mMyTaskFragment).hide(mAboutMeFragment);
 	}
+	
+	private Handler mUIHandler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			Bundle bundle = msg.getData();
+			String type = bundle.getString("type");
+			if (type == "GetUserInfo_Success")
+				mTopBarUserName.setText(DataModel.mUserName);
+			
+		}
+	};
   
 }  

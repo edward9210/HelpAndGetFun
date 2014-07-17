@@ -141,18 +141,6 @@ public class LoginActivity extends Activity {
 				
 				DataModel.mUserName = name;
 				
-				JSONObject json;
-				try {
-					json = DataModel.getUserInfo(name);
-					DataModel.mRealName = json.getString("realname");
-					DataModel.mPhone = json.getString("phone");
-					DataModel.mPassword = json.getString("password");
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				
 				Intent intent = new Intent(); 
 	        	intent.setClass(LoginActivity.this, MainActivity.class); /* 调用一个新的Activity */
 	        	startActivity(intent);

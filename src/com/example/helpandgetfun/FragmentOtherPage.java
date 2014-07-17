@@ -44,12 +44,7 @@ public class FragmentOtherPage extends Fragment implements RefreshListener{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		try {
-			DataModel.getOtherData();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		refreshing();
 		
 		adapter = new MyAdapter(getActivity().getApplicationContext(), DataModel.otherList, R.layout.pulldown_item,
 					new String[]{"headImg", "userName", "date", "state", "taskContent", "executeTime", "Location", "postscript"},

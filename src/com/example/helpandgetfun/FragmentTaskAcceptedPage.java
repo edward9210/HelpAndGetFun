@@ -37,12 +37,7 @@ public class FragmentTaskAcceptedPage extends Fragment implements RefreshListene
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		try {
-			DataModel.getTaskAcceptedData();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		refreshing();
 		
 		adapter = new MyAdapter(getActivity().getApplicationContext(),DataModel.taskAcceptedList , R.layout.pulldown_item,
 					new String[]{"headImg", "userName", "date", "state", "taskContent", "executeTime", "Location", "postscript"},

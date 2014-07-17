@@ -30,7 +30,7 @@ import android.widget.ListView;
 
 public class DataModel {
 	public static List< Map<String, Object> > homePageList, otherList, taskAcceptedList, myTaskList, myFriendList;
-	private static String ServerURL = "http://172.18.157.167/phpsrc/";
+	private static String ServerURL = "http://192.168.10.153/phpsrc/";
 	public static String mUserName, mRealName, mPhone, mPassword;
 	public static String CONECTION_ERROR = "Connection_Error";
 	public static String CONECTION_FAIL = "Connection_Fail";
