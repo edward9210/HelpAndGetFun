@@ -48,13 +48,11 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 		
-	    //参考于 http://blog.csdn.net/dragon08/article/details/7666172 
-		//解决android.os.NetworkOnMainThreadException的问题
-	    StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()  
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()  
 	            .detectDiskWrites().detectNetwork().penaltyLog().build());  
 	    StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects()  
 	            .detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());  
-	    
+	            
 		setAllWidget();
 		setAllListener();
 	}

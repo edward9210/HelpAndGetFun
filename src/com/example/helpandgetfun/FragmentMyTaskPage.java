@@ -10,6 +10,7 @@ import org.json.JSONException;
 import com.example.helpandgetfun.RefreshListView.RefreshListener;
 
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,9 +43,8 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		refreshing();
-		
-		adapter = new MyAdapter(getActivity().getApplicationContext(), DataModel.myTaskList , R.layout.pulldown_item,
+		DataModel.myTaskList = new ArrayList<Map<String, Object>>();
+		adapter = new MyAdapter(getActivity().getApplicationContext(), DataModel.myTaskList, R.layout.pulldown_item,
 					new String[]{"headImg", "userName", "date", "state", "taskContent", "executeTime", "Location", "postscript"},
 					new int[]{R.id.item_head_image, R.id.item_username, R.id.item_date, R.id.item_state, R.id.item_task_content,  R.id.item_time_content, R.id.item_location_content, R.id.item_addition_content});
 		
@@ -52,6 +52,8 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 		mListView.setOnRefreshListener(this);
 		mListView.setAdapter(adapter);
 		setListViewHeightBasedOnChildren(mListView);
+		
+		refreshing();
 		
 		mListView.setOnItemClickListener(new OnItemClickListener(){
 
@@ -86,12 +88,7 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 	
 	@Override
 	public Object refreshing() {
-		try {
-			DataModel.getMyTaskData();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		new GetDataTask().execute();
 		return null;
 	}
 
@@ -190,5 +187,29 @@ public class FragmentMyTaskPage extends Fragment implements RefreshListener{
 		    }
 		}
 	};
+	
+	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+
+		@Override
+		protected void onPostExecute(String[] result) {
+			
+			adapter.notifyDataSetChanged();
+	    	setListViewHeightBasedOnChildren(mListView);
+
+			super.onPostExecute(result);
+		}
+
+		@Override
+		protected String[] doInBackground(Void... params) {
+			try {
+				DataModel.getMyTaskData();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String[] result = {"result", "ok"};
+			return result;
+		}
+	}
 }
 

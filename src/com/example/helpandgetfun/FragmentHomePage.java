@@ -1,17 +1,25 @@
 package com.example.helpandgetfun;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.json.JSONException;
 
 import com.example.helpandgetfun.RefreshListView.RefreshListener;
 
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.Display;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -38,8 +46,7 @@ public class FragmentHomePage extends Fragment implements RefreshListener{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		refreshing();
-		
+		DataModel.homePageList = new ArrayList<Map<String, Object>>();
 		adapter = new MyAdapter(getActivity().getApplicationContext(), DataModel.homePageList, R.layout.pulldown_item,
 					new String[]{"headImg", "userName", "date", "state", "taskContent", "executeTime", "Location", "postscript"},
 					new int[]{R.id.item_head_image, R.id.item_username, R.id.item_date, R.id.item_state, R.id.item_task_content,  R.id.item_time_content, R.id.item_location_content, R.id.item_addition_content});
@@ -47,7 +54,9 @@ public class FragmentHomePage extends Fragment implements RefreshListener{
 		mListView = (RefreshListView) getView().findViewById(R.id.homepage_itemList);
 		mListView.setOnRefreshListener(this);
 		mListView.setAdapter(adapter);
-		setListViewHeightBasedOnChildren(mListView);
+		setListViewHeightBasedOnChildren(mListView);	
+		
+		refreshing();
 		
 		mListView.setOnItemClickListener(new OnItemClickListener(){
 
@@ -85,12 +94,7 @@ public class FragmentHomePage extends Fragment implements RefreshListener{
 	public Object refreshing() {
 		// TODO Auto-generated method stub
 		//Toast.makeText(HomePage.this, "refreshing!!!" , Toast.LENGTH_SHORT).show();
-		try {
-			DataModel.getHomePageData();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		new GetDataTask().execute();
 		return null;
 	}
 
@@ -190,5 +194,29 @@ public class FragmentHomePage extends Fragment implements RefreshListener{
 		    
 		}
 	};
+	
+	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+
+		@Override
+		protected void onPostExecute(String[] result) {
+			
+			adapter.notifyDataSetChanged();
+	    	setListViewHeightBasedOnChildren(mListView);
+
+			super.onPostExecute(result);
+		}
+
+		@Override
+		protected String[] doInBackground(Void... params) {
+			try {
+				DataModel.getHomePageData();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String[] result = {"result", "ok"};
+			return result;
+		}
+	}
 }
 
