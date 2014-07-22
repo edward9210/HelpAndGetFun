@@ -65,7 +65,7 @@
            
             <Button
 	            android:id="@+id/addfriend_bnt"
-	            android:layout_width="wrap_content"
+	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
 	            style="@style/btn_style"
 	            android:text = "关注好友"/>

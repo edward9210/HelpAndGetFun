@@ -86,7 +86,7 @@ public class AddTaskActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(AddTaskActivity.this, "cancelButton!!!" , Toast.LENGTH_SHORT).show();
+				//Toast.makeText(AddTaskActivity.this, "cancelButton!!!" , Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(); 
 	        	intent.setClass(AddTaskActivity.this, MainActivity.class); /* 调用一个新的Activity */
 	        	startActivity(intent);

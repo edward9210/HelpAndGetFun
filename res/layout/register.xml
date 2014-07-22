@@ -80,7 +80,7 @@
 	            android:paddingLeft="10dp" />
             <Button
 	            android:id="@+id/register_registerbutton"
-	            android:layout_width="wrap_content"
+	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
 	            style="@style/btn_style"
 	            android:text = "注册" />

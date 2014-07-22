@@ -1,7 +1,9 @@
 package com.example.helpandgetfun;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +12,7 @@ import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -48,12 +51,8 @@ public class FriendListActivity extends Activity{
 		mCancelbnt = (ImageButton) findViewById(R.id.friendlist_cancelbutton);
 		mAddFriend = (ImageButton) findViewById(R.id.friendlist_addfriend_bnt);
 		
-		try {
-			DataModel.getFriendList();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		if (DataModel.myFriendList == null)
+			DataModel.myFriendList = new ArrayList<Map<String, Object>>();
 		
 		adapter = new MyAdapter(this, DataModel.myFriendList , R.layout.friendlist_item,
 				new String[]{"headImg", "userName"},
@@ -67,6 +66,8 @@ public class FriendListActivity extends Activity{
 		mMoreBnt.setGravity(Gravity.CENTER);
 		mListView.addFooterView(mMoreBnt);
 		mListView.setAdapter(adapter);
+		
+		new GetDataTask().execute();
 	}
 
 	private void setAllListener() {
@@ -161,5 +162,27 @@ public class FriendListActivity extends Activity{
 		    }
 		}
 	};
+	
+	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+
+		@Override
+		protected void onPostExecute(String[] result) {
+			
+			adapter.notifyDataSetChanged();
+
+			super.onPostExecute(result);
+		}
+
+		@Override
+		protected String[] doInBackground(Void... params) {
+			try {
+				DataModel.getFriendList();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+	}
 }
 

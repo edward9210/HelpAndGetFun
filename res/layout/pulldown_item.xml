@@ -149,7 +149,7 @@
     </LinearLayout>
     <Button
 	    android:id="@+id/task_info_accept"
-	    android:layout_width="wrap_content"
+	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_marginLeft="10dp"
 	    android:layout_marginRight="10dp"
@@ -161,7 +161,7 @@
 	    android:text = "接受任务" />
 	<Button
 	    android:id="@+id/task_info_delete"
-	    android:layout_width="wrap_content"
+	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_marginLeft="10dp"
 	    android:layout_marginRight="10dp"

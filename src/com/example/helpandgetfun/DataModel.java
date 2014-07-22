@@ -241,7 +241,7 @@ public class DataModel {
 	
 	//获取好友列表
 	public static List<Map<String, Object> > getFriendList() throws JSONException {
-		myFriendList = new ArrayList<Map<String, Object>>();
+		List< Map<String, Object> > myFriendListTmp = new ArrayList<Map<String, Object>>();
 		
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("label", "queryfriend"));
@@ -253,7 +253,13 @@ public class DataModel {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("headImg", R.drawable.homepage_headimg);
 			map.put("userName", json.getString("user2"));
-			myFriendList.add(map);
+			myFriendListTmp.add(map);
+		}
+		if (myFriendList == null)
+			myFriendList = myFriendListTmp;
+		else {
+			myFriendList.clear();
+			myFriendList.addAll(myFriendListTmp);
 		}
 		return myFriendList;
 	}
