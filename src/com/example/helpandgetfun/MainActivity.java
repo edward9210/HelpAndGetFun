@@ -5,15 +5,18 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.*;
 import android.support.v4.app.Fragment;  
 import android.support.v4.app.FragmentActivity;  
 import android.support.v4.app.FragmentManager;  
 import android.support.v4.app.FragmentTransaction; 
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -33,6 +36,7 @@ public class MainActivity extends FragmentActivity {
 	private RadioButton mTaskAcceptedRb, mMyTaskRb;
 	private TextView mTopBarUserName;
 	private Button mLogoutBnt;
+	private ImageView notification, aboutmeNotification;
 	
     @Override  
     protected void onCreate(Bundle savedInstanceState) {  
@@ -63,6 +67,41 @@ public class MainActivity extends FragmentActivity {
 				
 		    }
 		}).start();
+        
+        if (DataModel.LOGIN_FLAG == false) {
+        	DataModel.LOGIN_FLAG = true;
+        	new Thread(new Runnable() {
+    		    public void run() {
+    		    	while(true) {
+    		    		if (DataModel.LOGIN_FLAG == false)
+			    			break;
+    			    	try {
+    			    		Log.d("MainActivity", "get message from server");
+    			    		if (DataModel.getUpdateInfo() == true) {
+    			    			Bundle bundle = new Bundle();
+    							bundle.putString("type", "NewMes");
+    					    	Message mes = new Message();
+    					    	mes.setData(bundle);
+    					    	mUIHandler.sendMessage(mes);
+    			    			Log.d("MainActivity", "You get a new message");
+    			    		}
+    			    		else {
+    			    			Bundle bundle = new Bundle();
+    							bundle.putString("type", "NoNewMes");
+    					    	Message mes = new Message();
+    					    	mes.setData(bundle);
+    					    	mUIHandler.sendMessage(mes);
+    			    			Log.d("MainActivity", "No new message");
+    			    		}
+    						Thread.sleep(5000);
+    					} catch (InterruptedException e) {
+    						// TODO Auto-generated catch block
+    						e.printStackTrace();
+    					}
+    		    	}
+    		    }
+    		}).start();
+        }
         
     }
     
@@ -148,6 +187,7 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				DataModel.LOGIN_FLAG = false;
 				Intent intent = new Intent(); 
 	        	intent.setClass(MainActivity.this, LoginActivity.class); /* 调用一个新的Activity */
 	        	startActivity(intent);
@@ -207,6 +247,10 @@ public class MainActivity extends FragmentActivity {
 		mMyTaskRb = (RadioButton) findViewById(R.id.rb_mytask);
 		
 		mLogoutBnt = (Button) findViewById(R.id.about_logout);
+		
+		notification = (ImageView) findViewById(R.id.main_page_notification);
+		
+		aboutmeNotification = (ImageView) findViewById(R.id.aboutme_info_center_notification);
 	}
 
 	private void hideAllFragment() {
@@ -219,9 +263,16 @@ public class MainActivity extends FragmentActivity {
 		public void handleMessage(Message msg) {
 			Bundle bundle = msg.getData();
 			String type = bundle.getString("type");
-			if (type == "GetUserInfo_Success")
+			if (type.equals("GetUserInfo_Success"))
 				mTopBarUserName.setText(DataModel.mUserName);
-			
+			else if (type.equals("NewMes")) {
+				aboutmeNotification.setVisibility(View.VISIBLE);
+				notification.setVisibility(View.VISIBLE);
+			}
+			else if (type.equals("NoNewMes")) {
+				aboutmeNotification.setVisibility(View.INVISIBLE);
+				notification.setVisibility(View.INVISIBLE);
+			}
 		}
 	};
   

@@ -2,6 +2,7 @@
 <?php
   	$uname=$_POST["uname"];
     $mname=$_POST["mname"];
+    $ownername=$_POST["ownername"];
     include 'mysqlconnect.php';
     $sel=mysql_query("select * from cre_par where mission='$mname' and cr_or_pr=1",$id);
     $rownum=mysql_num_rows($sel);
@@ -16,6 +17,8 @@
   	  mysql_query($query2,$id);
   	  $query="update mission set missionstate=1 where missionname='$mname'";
   	  mysql_query($query,$id);
+      $query3="insert into info(sender,receiver,mes) value('$uname','$ownername','accept your task')";
+      mysql_query($query3,$id);
   	  print("success");
   	}
     mysql_close($id);

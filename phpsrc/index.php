@@ -77,5 +77,9 @@
     {
     	include 'changeinfo.php';
     }
+    if ($_POST["label"]=="getupdateinfo") 
+    {
+        include 'getupdateinfo.php';
+    }
     //print_r($_POST);
 ?>

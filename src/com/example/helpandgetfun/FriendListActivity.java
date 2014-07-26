@@ -1,9 +1,7 @@
 package com.example.helpandgetfun;
 
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,7 +10,6 @@ import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,17 +28,17 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class FriendListActivity extends Activity{
 	private final int MORE_FINISHED = 0;
-	
+
 	private MyAdapter adapter;
 	private ListView mListView;
 	private Button mMoreBnt;
 	private ImageButton mCancelbnt, mAddFriend;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.friendlist);
-		
+
 		setAllWidget();
 		setAllListener();
 	}
@@ -50,24 +47,26 @@ public class FriendListActivity extends Activity{
 		// TODO Auto-generated method stub
 		mCancelbnt = (ImageButton) findViewById(R.id.friendlist_cancelbutton);
 		mAddFriend = (ImageButton) findViewById(R.id.friendlist_addfriend_bnt);
-		
-		if (DataModel.myFriendList == null)
-			DataModel.myFriendList = new ArrayList<Map<String, Object>>();
-		
+
+		try {
+			DataModel.getFriendList();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		adapter = new MyAdapter(this, DataModel.myFriendList , R.layout.friendlist_item,
 				new String[]{"headImg", "userName"},
 				new int[]{R.id.friendlist_headimg, R.id.friendlist_username});
-	
+
 		mListView = (ListView) findViewById(R.id.friendlist_lv);
 		mMoreBnt = new Button(this);
-		mMoreBnt.setText("¸ü¶à");
+		mMoreBnt.setText("æ›´å¤š");
 		mMoreBnt.setBackgroundColor(Color.TRANSPARENT);
 		mMoreBnt.setTextSize((float) 20.0);
 		mMoreBnt.setGravity(Gravity.CENTER);
 		mListView.addFooterView(mMoreBnt);
 		mListView.setAdapter(adapter);
-		
-		new GetDataTask().execute();
 	}
 
 	private void setAllListener() {
@@ -78,35 +77,35 @@ public class FriendListActivity extends Activity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(); 
-	        	intent.setClass(FriendListActivity.this, MainActivity.class); /* µ÷ÓÃÒ»¸öĞÂµÄActivity */
+	        	intent.setClass(FriendListActivity.this, MainActivity.class); /* è°ƒç”¨ä¸€ä¸ªæ–°çš„Activity */
 	        	startActivity(intent);
-	        	/* ¹Ø±ÕÔ­±¾µÄActivity */ 
+	        	/* å…³é—­åŸæœ¬çš„Activity */ 
 	        	FriendListActivity.this.finish();
 			}
-		
+
 		});
-		
+
 		mAddFriend.setOnClickListener(new Button.OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(); 
-	        	intent.setClass(FriendListActivity.this, AddFriendActivity.class); /* µ÷ÓÃÒ»¸öĞÂµÄActivity */
+	        	intent.setClass(FriendListActivity.this, AddFriendActivity.class); /* è°ƒç”¨ä¸€ä¸ªæ–°çš„Activity */
 	        	startActivity(intent);
-	        	/* ¹Ø±ÕÔ­±¾µÄActivity */ 
+	        	/* å…³é—­åŸæœ¬çš„Activity */ 
 	        	FriendListActivity.this.finish();
 			}
-		
+
 		});
-		
-		
+
+
 		mMoreBnt.setOnClickListener(new Button.OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				mMoreBnt.setText("¼ÓÔØÖĞ...");
+				mMoreBnt.setText("åŠ è½½ä¸­...");
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -120,14 +119,14 @@ public class FriendListActivity extends Activity{
 					}
 				}).start();
 			}
-		
+
 		});
-		
+
 		mListView.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				//·â×°bundle£¬´«µ½FriendInfoActivity
+				//å°è£…bundleï¼Œä¼ åˆ°FriendInfoActivity
 				TextView friendName = (TextView) view.findViewById(R.id.friendlist_username);
 				try {
 					JSONObject json = DataModel.getUserInfo(friendName.getText().toString());
@@ -137,7 +136,7 @@ public class FriendListActivity extends Activity{
 					bundle.putString("phone", json.getString("phone"));
 					Intent intent = new Intent(); 
 					intent.putExtras(bundle);
-		        	intent.setClass(FriendListActivity.this, FriendInfoActivity.class); /* µ÷ÓÃÒ»¸öĞÂµÄActivity */
+		        	intent.setClass(FriendListActivity.this, FriendInfoActivity.class); /* è°ƒç”¨ä¸€ä¸ªæ–°çš„Activity */
 		        	startActivity(intent);
 		        	FriendListActivity.this.finish();
 				} catch (JSONException e) {
@@ -147,8 +146,8 @@ public class FriendListActivity extends Activity{
 			}
 		});
 	}
-	
-	/* UIHandler¸ºÔğ¸üĞÂÒ³Ãæ */
+
+	/* UIHandlerè´Ÿè´£æ›´æ–°é¡µé¢ */
 	private Handler mUIHandler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
@@ -156,33 +155,10 @@ public class FriendListActivity extends Activity{
 		    case MORE_FINISHED:
 		    	adapter.setCount(adapter.getCount() + 10);
 				adapter.notifyDataSetChanged();
-				mMoreBnt.setText("¸ü¶à");
+				mMoreBnt.setText("æ›´å¤š");
 				//Toast.makeText(HomePage.this, "more!!!" , Toast.LENGTH_SHORT).show();
 		    	break;
 		    }
 		}
 	};
-	
-	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
-
-		@Override
-		protected void onPostExecute(String[] result) {
-			
-			adapter.notifyDataSetChanged();
-
-			super.onPostExecute(result);
-		}
-
-		@Override
-		protected String[] doInBackground(Void... params) {
-			try {
-				DataModel.getFriendList();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;
-		}
-	}
 }
-

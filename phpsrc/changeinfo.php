@@ -4,6 +4,7 @@
     $name=$_POST["realname"];
     //$password=$_POST["password"];
     $phone=$_POST["phone"];
+    $headimg=$_POST["headimg"]
 
 		include 'mysqlconnect.php'; 
 		$query="select * from user where username='$uname'";
@@ -13,7 +14,7 @@
     }
     else
     {
-    	$query="update user set realname='$name',phone='$phone' where username='$uname'";
+    	$query="update user set realname='$name',phone='$phone',headimg='$headimg' where username='$uname'";
       mysql_query($query,$id);
       print("success");
     }

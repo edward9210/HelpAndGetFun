@@ -1,6 +1,9 @@
 package com.example.helpandgetfun;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,6 +26,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.bool;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -42,6 +48,7 @@ public class DataModel {
 	public static String DELETETASK_SUCCESS = "success";
 	public static String DELETEFRIEND_SUCCESS = "success";
 	public static String UPDATE_SUCCESS = "success";
+	public static boolean LOGIN_FLAG = false;
 	
 	public static List<Map<String, Object> > getHomePageData() throws JSONException{
 		/* 测试用数据
@@ -345,11 +352,12 @@ public class DataModel {
 		return sendMesToServer(params);
 	}
 	
-	public static String acceptTask(String taskName) {
+	public static String acceptTask(String taskName, String ownername) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("label", "participatemission"));
 		params.add(new BasicNameValuePair("uname", mUserName));
 		params.add(new BasicNameValuePair("mname", taskName));
+		params.add(new BasicNameValuePair("ownername", ownername));
 		return sendMesToServer(params);
 	}
 	
@@ -367,6 +375,16 @@ public class DataModel {
 		params.add(new BasicNameValuePair("uname", mUserName));
 		params.add(new BasicNameValuePair("mname", taskName));
 		return sendMesToServer(params);
+	}
+	
+	public static boolean getUpdateInfo() {
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("label", "getupdateinfo"));
+		params.add(new BasicNameValuePair("uname", mUserName));
+		String result = sendMesToServer(params);
+		if (result.equals("success"))
+			return true;
+		return false;
 	}
 	
 	//发送数据，使用的时http
@@ -453,5 +471,34 @@ public class DataModel {
 			e.printStackTrace();
 		}
 		return new JSONArray();
+	}
+	
+	public static void writeBitmapFile(Bitmap bitmap) {
+		//将缩小的文件写在sd卡上
+        String newPath = "/mnt/sdcard/" + DataModel.mUserName + ".jpg";
+        File file = new File(newPath);
+        try {
+            FileOutputStream out=new FileOutputStream(file);
+           if(bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)){
+                out.flush();
+                out.close();
+            }
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public static void deleteBitmapFile() {
+		String strFileName = "/mnt/sdcard/" + DataModel.mUserName + ".jpg";
+		File file = new File(strFileName);
+		if (file.exists()) {
+			if(file.delete()){
+				Log.w("deleteBitmapFile", "file delete success!");
+			}else{
+				Log.w("deleteBitmapFile", "file delete fail!");
+		}
+	}
 	}
 }

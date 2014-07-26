@@ -34,7 +34,7 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>
         <activity android:name="AddTaskActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>
-        <activity android:name="FriendListActivity"  android:launchMode="singleTask"
+        <activity android:name="FriendListActivity"  
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>  
         <activity android:name="PersonInfoActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>   

@@ -66,6 +66,7 @@ public class FragmentHomePage extends Fragment implements RefreshListener{
 				// TODO Auto-generated method stub
 				Button b = (Button) view.findViewById(R.id.task_info_accept);
 				final TextView tc = (TextView) view.findViewById(R.id.item_task_content);
+				final TextView on = (TextView) view.findViewById(R.id.item_username);
 				if (b.getVisibility() == View.GONE)
 					b.setVisibility(View.VISIBLE);
 				else if (b.getVisibility() == View.VISIBLE)
@@ -74,7 +75,8 @@ public class FragmentHomePage extends Fragment implements RefreshListener{
 					@Override
 					public void onClick(View v) {
 						String taskContent = tc.getText().toString();
-						String result = DataModel.acceptTask(taskContent);
+						String ownername = on.getText().toString();
+						String result = DataModel.acceptTask(taskContent, ownername);
 						if (result.equals(DataModel.ACCEPTTASK_SUCCESS)) {
 							Toast.makeText(getActivity().getApplicationContext(), "成功接受任务，请刷新一下任务列表" , Toast.LENGTH_SHORT).show();
 						}
