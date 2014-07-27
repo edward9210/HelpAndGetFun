@@ -6,8 +6,12 @@ import java.util.Map;
 
 import org.json.JSONException;
 
-import com.example.helpandgetfun.RefreshListView.RefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +20,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.Display;
 import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,12 +35,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FragmentHomePage extends Fragment implements RefreshListener{
-	private final int MORE_FINISHED = 0;
-	private final int REFRESHED = 1;
-	
-	private RefreshListView mListView;
+public class FragmentHomePage extends Fragment implements OnRefreshListener<ListView>{
+	private PullToRefreshListView mListView;
 	private MyAdapter adapter;
+	private boolean isRefreshing = false;
 	
 	@Override  
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {  
@@ -51,12 +54,21 @@ public class FragmentHomePage extends Fragment implements RefreshListener{
 					new String[]{"headImg", "userName", "date", "state", "taskContent", "executeTime", "Location", "postscript"},
 					new int[]{R.id.item_head_image, R.id.item_username, R.id.item_date, R.id.item_state, R.id.item_task_content,  R.id.item_time_content, R.id.item_location_content, R.id.item_addition_content});
 		
-		mListView = (RefreshListView) getView().findViewById(R.id.homepage_itemList);
+		mListView = (PullToRefreshListView) getView().findViewById(R.id.homepage_itemList);
 		mListView.setOnRefreshListener(this);
 		mListView.setAdapter(adapter);
-		setListViewHeightBasedOnChildren(mListView);	
+
+		//使用方法参考于 http://blog.csdn.net/ueryueryuery/article/details/17440465
+		mListView.setMode(Mode.BOTH);
+		mListView.getLoadingLayoutProxy(false, true).setPullLabel("上拉加载");
+		mListView.getLoadingLayoutProxy(false, true).setRefreshingLabel("加载中...");
+		mListView.getLoadingLayoutProxy(false, true).setReleaseLabel("松手以加载...");
 		
-		refreshing();
+		DataModel.homePageList.clear();
+		if (adapter != null)
+			adapter.notifyDataSetChanged(); 
+		
+		new GetDataTask().execute();
 		
 		mListView.setOnItemClickListener(new OnItemClickListener(){
 
@@ -78,10 +90,11 @@ public class FragmentHomePage extends Fragment implements RefreshListener{
 						String ownername = on.getText().toString();
 						String result = DataModel.acceptTask(taskContent, ownername);
 						if (result.equals(DataModel.ACCEPTTASK_SUCCESS)) {
-							Toast.makeText(getActivity().getApplicationContext(), "成功接受任务，请刷新一下任务列表" , Toast.LENGTH_SHORT).show();
+							new GetDataTask().execute();
+							Toast.makeText(getActivity().getApplicationContext(), "成功接受任务" , Toast.LENGTH_SHORT).show();
 						}
 						else {
-							Toast.makeText(getActivity().getApplicationContext(), "接受任务失败，请刷新一下任务列表" , Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity().getApplicationContext(), "接受任务失败" , Toast.LENGTH_SHORT).show();
 						}
 						v.setVisibility(View.GONE);
 					}
@@ -92,133 +105,79 @@ public class FragmentHomePage extends Fragment implements RefreshListener{
 		
 	}
 	
-	@Override
-	public Object refreshing() {
-		// TODO Auto-generated method stub
-		//Toast.makeText(HomePage.this, "refreshing!!!" , Toast.LENGTH_SHORT).show();
-		new GetDataTask().execute();
-		return null;
-	}
+	private class GetDataTask extends AsyncTask<Void, Void, List<Map<String, Object> > > {
 
-
-
-	@Override
-	public void refreshed(Object obj) {
-		// TODO Auto-generated method stub
-		//Toast.makeText(HomePage.this, "refreshed!!!" , Toast.LENGTH_SHORT).show();
-		new Thread(new Runnable() {
-			@Override
-			public void run() {		
-				
-				Message msg = mUIHandler.obtainMessage(REFRESHED);
-				msg.sendToTarget();
-			}
-		}).start();
-	}
-
-
-
-	@Override
-	public void more() {
-		// TODO Auto-generated method stub
-		//载入时效果跟获取数据
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}				
-				Message msg = mUIHandler.obtainMessage(MORE_FINISHED);
-				msg.sendToTarget();
-			}
-		}).start();
-		
-		
-	}
-
-	
-	/* 参考 http://blog.sina.com.cn/s/blog_6dc41baf010193zi.html
-	 * 并进行了修改，修补了当listview的item过少时，显示的bug 
-	 * ----注意：每次更新数据时，要调用一次----*/
-	public void setListViewHeightBasedOnChildren(ListView listView) {
-	
-		  ListAdapter listAdapter = listView.getAdapter();
-	
-		  if (listAdapter == null) {
-			  return;
-		  }
-	
-		  int totalHeight = 0;
-		  
-		  //不计算headView，所以从1开始
-		  for (int i = 1; i < listAdapter.getCount(); i++) {
-			   View listItem = listAdapter.getView(i, null, listView);
-			   listItem.measure(0, 0);
-			   totalHeight += listItem.getMeasuredHeight();
-		  }
-		  //获取屏幕高度
-		  Display display = getActivity().getWindowManager().getDefaultDisplay();
-		  Point size = new Point();
-		  display.getSize(size);
-		  int height = size.y;
-		  
-		  ViewGroup.LayoutParams params = listView.getLayoutParams();
-		  //如果listview高度大于屏幕大小，则不更新
-		  if (totalHeight < height) {
-			  params.height = totalHeight
-			    + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-		  }
-		  else {
-			  params.height = ViewGroup.LayoutParams.WRAP_CONTENT;  
-		  }
-		  listView.setLayoutParams(params);
-	}
-	
-	/* UIHandler负责更新页面 */
-	private Handler mUIHandler = new Handler(){
 		@Override
-		public void handleMessage(Message msg) {
-		    switch (msg.what) {
-		    case MORE_FINISHED:
-		    	adapter.setCount(adapter.getCount() + 10);
+		protected void onPostExecute(List<Map<String, Object> > result) {
+			if (result != null) {
+				DataModel.homePageList.clear();
+				if (result.size() != 0) {
+					DataModel.homePageList.addAll(result);
+				}
 				adapter.notifyDataSetChanged();
-				mListView.finishFootView();
-				//Toast.makeText(HomePage.this, "more!!!" , Toast.LENGTH_SHORT).show();
-		    	break;
-		    case REFRESHED:
-		    	adapter.notifyDataSetChanged();
-		    	setListViewHeightBasedOnChildren(mListView);
-		    	break;
-		    
-		    }
-		    
+				mListView.onRefreshComplete();
+				isRefreshing = false;
+			}
+			else
+				new GetDataTask().execute();		
+			super.onPostExecute(result);
 		}
-	};
+
+		@Override
+		protected List<Map<String, Object> > doInBackground(Void... params) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+			try {
+				return DataModel.getHomePageData();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+	}
 	
-	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+	private class GetMoreTask extends AsyncTask<Void, Void, String[] > {
 
 		@Override
 		protected void onPostExecute(String[] result) {
-			
-			adapter.notifyDataSetChanged();
-	    	setListViewHeightBasedOnChildren(mListView);
-
+			if (DataModel.homePageList.size() > adapter.getCount()) {
+	    		if (DataModel.homePageList.size() >= adapter.getCount() + 10)
+	    			adapter.setCount(adapter.getCount() + 10);
+	    		else
+	    			adapter.setCount(DataModel.homePageList.size());
+		    	adapter.notifyDataSetChanged();
+	    	}
+			mListView.onRefreshComplete();
+			isRefreshing = false;
 			super.onPostExecute(result);
 		}
 
 		@Override
 		protected String[] doInBackground(Void... params) {
 			try {
-				DataModel.getHomePageData();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
 			}
-			String[] result = {"result", "ok"};
-			return result;
+			return null;
 		}
+	}
+
+	@Override
+	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+		// TODO Auto-generated method stub
+		if (!isRefreshing) {
+            isRefreshing = true;
+            if (mListView.isHeaderShown()) {
+            	new GetDataTask().execute();
+            } else if (mListView.isFooterShown()) {
+            	new GetMoreTask().execute();
+            }
+        } else {
+            mListView.onRefreshComplete();
+        }
 	}
 }
 

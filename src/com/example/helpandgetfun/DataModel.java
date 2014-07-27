@@ -91,13 +91,7 @@ public class DataModel {
 			map.put("postscript", json.getString("missionps"));
 			homePageListTmp.add(map);
 		}
-		if (homePageList == null)
-			homePageList =homePageListTmp;
-		else if (homePageListTmp.size() != 0){
-			homePageList.clear();
-			homePageList.addAll(homePageListTmp);
-		}
-		return homePageList;
+		return homePageListTmp;
 	} 
 	
 	
@@ -140,14 +134,7 @@ public class DataModel {
 			map.put("postscript", json.getString("missionps"));
 			otherListTmp.add(map);
 		}
-		if (otherList == null)
-			otherList =otherListTmp;
-		else if (otherListTmp.size() != 0){
-			otherList.clear();
-			otherList.addAll(otherListTmp);
-		}
-		
-		return otherList;
+		return otherListTmp;
 	} 
 	
 	//获取已接任务列表
@@ -189,14 +176,7 @@ public class DataModel {
 			map.put("postscript", json.getString("missionps"));
 			taskAcceptedListTmp.add(map);
 		}
-		if (taskAcceptedList == null)
-			taskAcceptedList = taskAcceptedListTmp;
-		else if (taskAcceptedListTmp.size() != 0){
-			taskAcceptedList.clear();
-			taskAcceptedList.addAll(taskAcceptedListTmp);
-		}
-		
-		return taskAcceptedList;
+		return taskAcceptedListTmp;
 	} 
 	
 	//获取我的任务列表
@@ -239,13 +219,7 @@ public class DataModel {
 			map.put("postscript", json.getString("missionps"));
 			myTaskListTmp.add(map);
 		}
-		if (myTaskList == null)
-			myTaskList = myTaskListTmp;
-		else if (myTaskListTmp.size() != 0){
-			myTaskList.clear();
-			myTaskList.addAll(myTaskListTmp);
-		}
-		return myTaskList;
+		return myTaskListTmp;
 	} 
 	
 	//获取好友列表
@@ -323,12 +297,13 @@ public class DataModel {
 	}
 	
 	//更新信息
-	public static String updateInfo(String name, String realname, String mobliePhone) {
+	public static String updateInfo(String name, String realname, String mobliePhone, String headimg) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("label", "changeinfo"));
 		params.add(new BasicNameValuePair("name", name));
 		params.add(new BasicNameValuePair("realname", realname));
 		params.add(new BasicNameValuePair("phone", mobliePhone));
+		params.add(new BasicNameValuePair("headimg", headimg));
 		return sendMesToServer(params);
 	}
 	

@@ -182,6 +182,8 @@ public class InfoCenterActivity extends Activity{
 				}
 				else if (DataModel.NEW_MES_FLAG == true && result.size() == 0)
 					new GetDataTask().execute();
+				else
+					mMoreBnt.setText("¸ü¶à");
 				adapter.notifyDataSetChanged();
 			}
 			else if (DataModel.NEW_MES_FLAG == true)

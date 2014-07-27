@@ -81,7 +81,7 @@ public class PersonInfoActivity extends Activity {
 				String name = userNameTextView.getText().toString();
 				String realname = realNameEditText.getText().toString();
 				String mobliePhone = mobilePhoneEditText.getText().toString();
-				String result = DataModel.updateInfo(name, realname, mobliePhone);
+				String result = DataModel.updateInfo(name, realname, mobliePhone, DataModel.mUserName + ".jpg");
 				if (result.equals(DataModel.UPDATE_SUCCESS)) {
 					Toast.makeText(PersonInfoActivity.this, "±£´æ³É¹¦" , Toast.LENGTH_SHORT).show();
 					DataModel.mRealName = realname;

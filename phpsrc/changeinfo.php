@@ -4,7 +4,7 @@
     $name=$_POST["realname"];
     //$password=$_POST["password"];
     $phone=$_POST["phone"];
-    $headimg=$_POST["headimg"]
+    $headimg=$_POST["headimg"];
 
 		include 'mysqlconnect.php'; 
 		$query="select * from user where username='$uname'";
