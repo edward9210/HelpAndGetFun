@@ -76,7 +76,7 @@
 		            android:lines="1"
 		            android:background="@color/white"
 		            android:ems="10"
-		            android:inputType="textPersonName" >
+		            android:inputType="textPassword" >
 		        </EditText>
 	        </LinearLayout>
 	    </LinearLayout>
