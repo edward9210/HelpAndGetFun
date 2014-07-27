@@ -14,7 +14,6 @@
         android:layout_marginRight="10dp"
         android:gravity="center_vertical"
         android:orientation="vertical" >
-
         <ImageView
             android:id="@+id/login_logo"
             android:layout_width="match_parent"
@@ -23,27 +22,64 @@
             android:layout_marginTop="10dp"
             android:scaleType="center"
             android:src="@drawable/login_logo" />
-
-        <EditText
-            android:id="@+id/userNameET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/login_user"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:paddingLeft="50dp" >
-
-            <requestFocus />
-        </EditText>
-
-        <EditText
-            android:id="@+id/pwdET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/login_pwd"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:paddingLeft="50dp" />
+		<LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_vertical"
+	        android:background="@drawable/radius"
+	        android:padding="2dp"
+	        android:orientation="vertical" >
+	        <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+	        	<ImageView
+	        	    android:layout_width="wrap_content"
+            		android:layout_height="wrap_content"
+            		android:layout_margin="15dp"
+	        	    android:src="@drawable/login_userlogo"/>
+	        	<EditText
+		            android:id="@+id/userNameET"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="center"
+		            android:layout_marginRight="15dp"
+		            android:lines="1"
+		            android:background="@color/white"
+		            android:ems="10"
+		            android:inputType="textPersonName" >
+		
+		            <requestFocus />
+		        </EditText>
+	        </LinearLayout>
+	        <ImageView
+        	    android:layout_width="match_parent"
+           		android:layout_height="match_parent"
+        	    android:src="@drawable/login_line"/>
+	        <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+	        	<ImageView
+	        	    android:layout_width="wrap_content"
+            		android:layout_height="wrap_content"
+            		android:layout_marginLeft="17dp"
+            		android:layout_marginTop="15dp"
+            		android:layout_marginRight="15dp"
+            		android:layout_marginBottom="15dp"
+	        	    android:src="@drawable/login_pwdlogo"/>
+	        	<EditText
+		            android:id="@+id/pwdET"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="center"
+		            android:layout_marginLeft="2dp"
+		            android:layout_marginRight="15dp"
+		            android:lines="1"
+		            android:background="@color/white"
+		            android:ems="10"
+		            android:inputType="textPersonName" >
+		        </EditText>
+	        </LinearLayout>
+	    </LinearLayout>
 
         <Button
             android:id="@+id/login_button"
