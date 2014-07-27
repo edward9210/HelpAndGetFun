@@ -81,5 +81,13 @@
     {
         include 'getupdateinfo.php';
     }
+    if ($_POST["label"]=="getinfolist") 
+    {
+        include 'getinfolist.php';
+    }
+    if ($_POST["label"]=="sendmes") 
+    {
+        include 'sendmes.php';
+    }
     //print_r($_POST);
 ?>
