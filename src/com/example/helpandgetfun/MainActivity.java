@@ -1,5 +1,8 @@
 package com.example.helpandgetfun;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -78,6 +81,7 @@ public class MainActivity extends FragmentActivity {
     			    	try {
     			    		Log.d("MainActivity", "get message from server");
     			    		if (DataModel.getUpdateInfo() == true) {
+    			    			DataModel.NEW_MES_FLAG = true;
     			    			Bundle bundle = new Bundle();
     							bundle.putString("type", "NewMes");
     					    	Message mes = new Message();
@@ -86,6 +90,7 @@ public class MainActivity extends FragmentActivity {
     			    			Log.d("MainActivity", "You get a new message");
     			    		}
     			    		else {
+    			    			DataModel.NEW_MES_FLAG = false;
     			    			Bundle bundle = new Bundle();
     							bundle.putString("type", "NoNewMes");
     					    	Message mes = new Message();

@@ -1,7 +1,10 @@
 package com.example.helpandgetfun;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +13,7 @@ import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -41,6 +45,9 @@ public class FriendListActivity extends Activity{
 
 		setAllWidget();
 		setAllListener();
+		
+		mMoreBnt.setText("加载中...");
+		new GetDataTask().execute();
 	}
 
 	private void setAllWidget() {
@@ -48,25 +55,22 @@ public class FriendListActivity extends Activity{
 		mCancelbnt = (ImageButton) findViewById(R.id.friendlist_cancelbutton);
 		mAddFriend = (ImageButton) findViewById(R.id.friendlist_addfriend_bnt);
 
-		try {
-			DataModel.getFriendList();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		if (DataModel.myFriendList == null)
+			DataModel.myFriendList = new ArrayList<Map<String, Object>>();
+		
 		adapter = new MyAdapter(this, DataModel.myFriendList , R.layout.friendlist_item,
 				new String[]{"headImg", "userName"},
 				new int[]{R.id.friendlist_headimg, R.id.friendlist_username});
 
 		mListView = (ListView) findViewById(R.id.friendlist_lv);
+		mListView.setAdapter(adapter);
+		
 		mMoreBnt = new Button(this);
 		mMoreBnt.setText("更多");
 		mMoreBnt.setBackgroundColor(Color.TRANSPARENT);
 		mMoreBnt.setTextSize((float) 20.0);
 		mMoreBnt.setGravity(Gravity.CENTER);
 		mListView.addFooterView(mMoreBnt);
-		mListView.setAdapter(adapter);
 	}
 
 	private void setAllListener() {
@@ -153,12 +157,48 @@ public class FriendListActivity extends Activity{
 		public void handleMessage(Message msg) {
 		    switch (msg.what) {
 		    case MORE_FINISHED:
-		    	adapter.setCount(adapter.getCount() + 10);
-				adapter.notifyDataSetChanged();
+		    	if (DataModel.myFriendList.size() > adapter.getCount()) {
+		    		if (DataModel.myFriendList.size() >= adapter.getCount() + 10)
+		    			adapter.setCount(adapter.getCount() + 10);
+		    		else
+		    			adapter.setCount(DataModel.myFriendList.size());
+			    	adapter.notifyDataSetChanged();
+		    	}
 				mMoreBnt.setText("更多");
-				//Toast.makeText(HomePage.this, "more!!!" , Toast.LENGTH_SHORT).show();
 		    	break;
+		    	
 		    }
 		}
 	};
+	
+	private class GetDataTask extends AsyncTask<Void, Void, List<Map<String, Object> > > {
+
+		@Override
+		protected void onPostExecute(List<Map<String, Object> > result) {
+			if (result != null) {
+				DataModel.myFriendList.clear();
+				if (result.size() != 0) {
+					mMoreBnt.setText("更多");
+					DataModel.myFriendList.addAll(result);
+				}
+				else
+					mMoreBnt.setText("更多");
+				adapter.notifyDataSetChanged();
+			}
+			else
+				new GetDataTask().execute();
+			super.onPostExecute(result);
+		}
+
+		@Override
+		protected List<Map<String, Object> > doInBackground(Void... params) {
+			try {
+				return DataModel.getFriendList();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+	}
 }

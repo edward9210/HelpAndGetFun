@@ -35,7 +35,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 public class DataModel {
-	public static List< Map<String, Object> > homePageList, otherList, taskAcceptedList, myTaskList, myFriendList;
+	public static List< Map<String, Object> > homePageList, otherList, taskAcceptedList, myTaskList, myFriendList, infoList;
 	private static String ServerURL = "http://172.18.157.167/phpsrc/";
 	public static String mUserName, mRealName, mPhone, mPassword;
 	public static String CONECTION_ERROR = "Connection_Error";
@@ -48,7 +48,9 @@ public class DataModel {
 	public static String DELETETASK_SUCCESS = "success";
 	public static String DELETEFRIEND_SUCCESS = "success";
 	public static String UPDATE_SUCCESS = "success";
+	public static String SENDMES_SUCCESS = "success";
 	public static boolean LOGIN_FLAG = false;
+	public static boolean NEW_MES_FLAG = false;
 	
 	public static List<Map<String, Object> > getHomePageData() throws JSONException{
 		/* 测试用数据
@@ -91,7 +93,7 @@ public class DataModel {
 		}
 		if (homePageList == null)
 			homePageList =homePageListTmp;
-		else {
+		else if (homePageListTmp.size() != 0){
 			homePageList.clear();
 			homePageList.addAll(homePageListTmp);
 		}
@@ -140,7 +142,7 @@ public class DataModel {
 		}
 		if (otherList == null)
 			otherList =otherListTmp;
-		else {
+		else if (otherListTmp.size() != 0){
 			otherList.clear();
 			otherList.addAll(otherListTmp);
 		}
@@ -189,7 +191,7 @@ public class DataModel {
 		}
 		if (taskAcceptedList == null)
 			taskAcceptedList = taskAcceptedListTmp;
-		else {
+		else if (taskAcceptedListTmp.size() != 0){
 			taskAcceptedList.clear();
 			taskAcceptedList.addAll(taskAcceptedListTmp);
 		}
@@ -239,7 +241,7 @@ public class DataModel {
 		}
 		if (myTaskList == null)
 			myTaskList = myTaskListTmp;
-		else {
+		else if (myTaskListTmp.size() != 0){
 			myTaskList.clear();
 			myTaskList.addAll(myTaskListTmp);
 		}
@@ -262,15 +264,32 @@ public class DataModel {
 			map.put("userName", json.getString("user2"));
 			myFriendListTmp.add(map);
 		}
-		if (myFriendList == null)
-			myFriendList = myFriendListTmp;
-		else {
-			myFriendList.clear();
-			myFriendList.addAll(myFriendListTmp);
-		}
-		return myFriendList;
+		return myFriendListTmp;
 	}
 	
+	//获取消息列表
+	public static List<Map<String, Object> > getInfoList() throws JSONException{
+		List< Map<String, Object> > InfoListTmp = new ArrayList<Map<String, Object>>();
+		
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("label", "getinfolist"));
+		params.add(new BasicNameValuePair("name", mUserName));
+		JSONArray jsonArray = sendMesToServerJSONArray(params);
+		//String str = jsonArray.toString();
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject json = (JSONObject)jsonArray.get(i);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("senderName", json.getString("sender"));
+			String mes = json.getString("mes");
+			if (mes.equals("accept your task"))
+				map.put("senderMes", "接受了你的任务");
+			else
+				map.put("senderMes", mes);
+			InfoListTmp.add(map);
+		}
+
+		return InfoListTmp;
+	} 
 	
 	//进行登陆操作
 	public static String login(String name, String password) {
@@ -387,7 +406,16 @@ public class DataModel {
 		return false;
 	}
 	
-	//发送数据，使用的时http
+	public static String sendMes(String senderName, String content) {
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("label", "sendmes"));
+		params.add(new BasicNameValuePair("uname", mUserName));
+		params.add(new BasicNameValuePair("sendername", senderName));
+		params.add(new BasicNameValuePair("content", content));
+		return sendMesToServer(params);
+	}
+	
+	//发送数据，使用的是http
 	//List<NameValuePair> params 是指数据的（key，value）的list
 	private static String sendMesToServer(List<NameValuePair> params) {
 		HttpPost httpRequest = new HttpPost(ServerURL);

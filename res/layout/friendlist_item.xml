@@ -27,7 +27,7 @@
 	        android:layout_marginLeft="15dp"
 	        android:layout_toRightOf="@+id/friendlist_headimg"
 	        android:gravity="center"
-	        android:text="Edward"
+	        android:text=""
 	        android:textColor="@color/black"
 	        android:textSize="20dp" />
 

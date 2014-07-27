@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingBottom="5dp"
+    android:background="@drawable/radius"
+    android:orientation="vertical" 
+    android:paddingTop="5dp" >
+
+	<RelativeLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="30dp" >
+
+	    <TextView
+	        android:id="@+id/textView1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="15dp"
+	        android:text="来自："
+	        android:textColor="@color/black"
+	        android:textSize="14dp" />
+
+	    <TextView
+	        android:id="@+id/info_sender_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@+id/textView1"
+	        android:text=""
+	        android:textColor="@color/black"
+	        android:layout_centerVertical="true"
+	        android:textSize="14dp" />
+
+	</RelativeLayout>
+	
+
+
+    <TextView
+        android:id="@+id/info_sender_mes" 	
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       	android:padding="10dp"
+       	android:text=""
+        android:textSize="12dp" />
+	
+    <EditText
+        android:id="@+id/info_reply_mes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:hint="快捷回复"
+        android:scrollHorizontally="false" 
+        android:lines="3"
+        android:layout_marginLeft="10dp"
+	    android:layout_marginRight="10dp"
+        android:gravity="top"
+        android:visibility="gone"
+        android:paddingLeft="10dp" />
+    
+   	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+	    <Button
+		    android:id="@+id/info_send_mes_bnt"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    style="@style/btn_style"
+		    android:layout_marginLeft="10dp"
+		    android:layout_marginRight="10dp"
+		    android:layout_marginTop = "0dp"
+		    android:focusable="false"
+		    android:visibility="gone"
+		    android:text = "发消息" />
+	    
+	    <Button
+		    android:id="@+id/info_cancel_bnt"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    style="@style/btn_red_style"
+		    android:layout_marginLeft="10dp"
+		    android:layout_marginRight="10dp"
+		    android:layout_marginTop = "0dp"
+		    android:focusable="false"
+		    android:visibility="gone"
+		    android:text = "取消" />
+	    
+	</LinearLayout>
+
+</LinearLayout>

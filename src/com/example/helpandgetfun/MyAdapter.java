@@ -24,6 +24,8 @@ public class MyAdapter extends SimpleAdapter{
 	
 	@Override
 	public int getCount() {
+		if (mData == null)
+			return 0;
 		if (mData.size() < 10)
 			return mData.size();
 		else
