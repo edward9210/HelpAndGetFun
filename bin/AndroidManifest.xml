@@ -24,25 +24,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="LoginActivity"
+        <activity android:name="com.example.helpandgetfun.viewcontroller.LoginActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity> 
-        <activity android:name="RegisterActivity"
+        <activity android:name="com.example.helpandgetfun.viewcontroller.RegisterActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity> 
-        <activity android:name="ResetPwdActivity"
+        <activity android:name="com.example.helpandgetfun.viewcontroller.ResetPwdActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity> 
-        <activity android:name="MainActivity" android:launchMode="singleTask"
+        <activity android:name="com.example.helpandgetfun.viewcontroller.MainActivity" android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>
-        <activity android:name="AddTaskActivity"
+        <activity android:name="com.example.helpandgetfun.viewcontroller.AddTaskActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>
-        <activity android:name="FriendListActivity"  
+        <activity android:name="com.example.helpandgetfun.viewcontroller.FriendListActivity"  
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>  
-        <activity android:name="PersonInfoActivity"
+        <activity android:name="com.example.helpandgetfun.viewcontroller.PersonInfoActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>   
-        <activity android:name="FriendInfoActivity"
+        <activity android:name="com.example.helpandgetfun.viewcontroller.FriendInfoActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>
-        <activity android:name="AddFriendActivity"
+        <activity android:name="com.example.helpandgetfun.viewcontroller.AddFriendActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>  
-        <activity android:name="InfoCenterActivity"
+        <activity android:name="com.example.helpandgetfun.viewcontroller.InfoCenterActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>
             
     </application>

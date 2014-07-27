@@ -6,7 +6,7 @@
   if ($name1!="" && $name2!=""){
     include 'mysqlconnect.php';
     $rownum=mysql_num_rows(mysql_query("select * from user where username='$name2'", $id));
-    if($rownum>0) 
+    if($rownum>0 and $name1 != $name2) 
     {
       $query="insert into is_friend(user1,user2) value('$name1','$name2')";
       $result=mysql_query($query,$id);

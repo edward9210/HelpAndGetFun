@@ -1,5 +1,8 @@
 package com.example.helpandgetfun;
 
+import com.example.helpandgetfun.R;
+import com.example.helpandgetfun.viewcontroller.LoginActivity;
+
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;

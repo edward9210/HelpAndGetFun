@@ -80,35 +80,35 @@
 
     <fragment
         android:id="@+id/fragement_homepage"
-        android:name="com.example.helpandgetfun.FragmentHomePage"
+        android:name="com.example.helpandgetfun.fragment.FragmentHomePage"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="10" />
 
     <fragment
         android:id="@+id/fragement_other"
-        android:name="com.example.helpandgetfun.FragmentOtherPage"
+        android:name="com.example.helpandgetfun.fragment.FragmentOtherPage"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="10" />
     
     <fragment
         android:id="@+id/fragement_task_accepted"
-        android:name="com.example.helpandgetfun.FragmentTaskAcceptedPage"
+    	android:name="com.example.helpandgetfun.fragment.FragmentTaskAcceptedPage"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="10" />
     
 	<fragment
         android:id="@+id/fragement_mytask"
-        android:name="com.example.helpandgetfun.FragmentMyTaskPage"
+        android:name="com.example.helpandgetfun.fragment.FragmentMyTaskPage"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="10" />
 	
 	<fragment
         android:id="@+id/fragement_aboutme"
-        android:name="com.example.helpandgetfun.FragmentAboutMePage"
+    	android:name="com.example.helpandgetfun.fragment.FragmentAboutMePage"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="10" />
