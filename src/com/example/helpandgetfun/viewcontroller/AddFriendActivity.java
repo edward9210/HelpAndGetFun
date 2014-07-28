@@ -51,6 +51,8 @@ public class AddFriendActivity extends Activity {
 				//Toast.makeText(AddFriendActivity.this, "addFriendButton!!!" , Toast.LENGTH_SHORT).show();
 				final String friendName = userNameEt.getText().toString();
 				if (friendName.length() > 0) {
+					addFriendButton.setText("关注好友中...");
+					addFriendButton.setClickable(false);
 					new Thread(new Runnable() {
 					    public void run() {
 					    	String result = DataUtils.addFriend(friendName);
@@ -90,6 +92,8 @@ public class AddFriendActivity extends Activity {
 		public void handleMessage(Message msg) {
 			Bundle bundle = msg.getData();
 			String result = bundle.getString("result");
+			addFriendButton.setText("关注好友");
+			addFriendButton.setClickable(true);
 			if (result.equals(DataUtils.ADDFRIEND_SUCCESS)) {
 				Toast.makeText(AddFriendActivity.this, "关注成功" , Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(); 

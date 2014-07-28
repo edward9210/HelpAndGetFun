@@ -24,6 +24,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -83,23 +85,24 @@ public class PersonInfoActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				//Toast.makeText(PersonInfoActivity.this, "saveButton!!!" , Toast.LENGTH_SHORT).show();
-				String name = userNameTextView.getText().toString();
-				String realname = realNameEditText.getText().toString();
-				String mobliePhone = mobilePhoneEditText.getText().toString();
-				String result = DataUtils.updateInfo(name, realname, mobliePhone, DataUtils.mUserName + ".jpg");
-				if (result.equals(DataUtils.UPDATE_SUCCESS)) {
-					Toast.makeText(PersonInfoActivity.this, "保存成功" , Toast.LENGTH_SHORT).show();
-					DataUtils.mRealName = realname;
-					DataUtils.mPhone = mobliePhone;
-					Intent intent = new Intent(); 
-		        	intent.setClass(PersonInfoActivity.this, MainActivity.class); /* 调用一个新的Activity */
-		        	startActivity(intent);
-		        	/* 关闭原本的Activity */ 
-		        	PersonInfoActivity.this.finish();
-				}
-				else {
-					Toast.makeText(PersonInfoActivity.this, "保存失败" , Toast.LENGTH_SHORT).show();
-				}
+				saveButton.setText("保存中...");
+		    	saveButton.setClickable(false);
+				final String name = userNameTextView.getText().toString();
+				final String realname = realNameEditText.getText().toString();
+				final String mobliePhone = mobilePhoneEditText.getText().toString();
+				new Thread(new Runnable() {
+				    public void run() {
+				    	String result = DataUtils.updateInfo(name, realname, mobliePhone, DataUtils.mUserName + ".jpg");
+				    	Bundle bundle = new Bundle();
+				    	bundle.putString("result", result);
+				    	bundle.putString("realname", realname);
+				    	bundle.putString("mobliePhone", mobliePhone);
+				    	Message mes = new Message();
+				    	mes.setData(bundle);
+				    	mUIHandler.sendMessage(mes);
+				    }
+				}).start();
+				
 			}
 		
 		});
@@ -169,5 +172,30 @@ public class PersonInfoActivity extends Activity {
    
         }  
     } 
+	
+	private Handler mUIHandler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			Bundle bundle = msg.getData();
+			String result = bundle.getString("result");
+			String realname = bundle.getString("realname");
+			String mobliePhone = bundle.getString("mobliePhone");
+			saveButton.setText("保存");
+	    	saveButton.setClickable(true);
+	    	if (result.equals(DataUtils.UPDATE_SUCCESS)) {
+				Toast.makeText(PersonInfoActivity.this, "保存成功" , Toast.LENGTH_SHORT).show();
+				DataUtils.mRealName = realname;
+				DataUtils.mPhone = mobliePhone;
+				Intent intent = new Intent(); 
+	        	intent.setClass(PersonInfoActivity.this, MainActivity.class); /* 调用一个新的Activity */
+	        	startActivity(intent);
+	        	/* 关闭原本的Activity */ 
+	        	PersonInfoActivity.this.finish();
+			}
+			else {
+				Toast.makeText(PersonInfoActivity.this, "保存失败" , Toast.LENGTH_SHORT).show();
+			}
+		}
+	};
 
 }

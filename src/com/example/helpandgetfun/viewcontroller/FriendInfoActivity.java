@@ -11,6 +11,8 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,19 +54,20 @@ public class FriendInfoActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				//Toast.makeText(FriendInfoActivity.this, "deleteButton!!!" , Toast.LENGTH_SHORT).show();
-				String friendName = userNameTv.getText().toString();
-				if (DataUtils.deleteFriend(friendName).equals(DataUtils.DELETEFRIEND_SUCCESS)) {
-					Toast.makeText(FriendInfoActivity.this, "删除成功" , Toast.LENGTH_SHORT).show();
-					Intent intent = new Intent(); 
-		        	intent.setClass(FriendInfoActivity.this, FriendListActivity.class); /* 调用一个新的Activity */
-		        	startActivity(intent);
-		        	/* 关闭原本的Activity */ 
-		        	FriendInfoActivity.this.finish();
-				}
-				else
-					Toast.makeText(FriendInfoActivity.this, "删除失败" , Toast.LENGTH_SHORT).show();
+				deleteButton.setText("删除中...");
+		    	deleteButton.setClickable(false);
+				new Thread(new Runnable() {
+				    public void run() {
+				    	String friendName = userNameTv.getText().toString();
+				    	String result = DataUtils.deleteFriend(friendName);
+				    	Bundle bundle = new Bundle();
+				    	bundle.putString("result", result);
+				    	Message mes = new Message();
+				    	mes.setData(bundle);
+				    	mUIHandler.sendMessage(mes);
+				    }
+				}).start();
+
 			}
 		
 		});
@@ -84,4 +87,24 @@ public class FriendInfoActivity extends Activity {
 		});
 		
 	}
+	
+	private Handler mUIHandler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			Bundle bundle = msg.getData();
+			String result = bundle.getString("result");
+			deleteButton.setText("删除");
+	    	deleteButton.setClickable(true);
+	    	if (result.equals(DataUtils.DELETEFRIEND_SUCCESS)) {
+				Toast.makeText(FriendInfoActivity.this, "删除成功" , Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(); 
+	        	intent.setClass(FriendInfoActivity.this, FriendListActivity.class); /* 调用一个新的Activity */
+	        	startActivity(intent);
+	        	/* 关闭原本的Activity */ 
+	        	FriendInfoActivity.this.finish();
+			}
+			else
+				Toast.makeText(FriendInfoActivity.this, "删除失败" , Toast.LENGTH_SHORT).show();
+		}
+	};
 }

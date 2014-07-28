@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.helpandgetfun.viewcontroller.LoginActivity"
+            android:windowSoftInputMode="adjustResize" 
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity> 
         <activity android:name="com.example.helpandgetfun.viewcontroller.RegisterActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity> 
