@@ -81,6 +81,8 @@ public class LoginActivity extends Activity {
 				/* 发送登陆信息 */
 				final String name = userNameEditText.getText().toString();
 				final String pwd = pwdEditText.getText().toString();
+				loginButton.setText("登陆中...");
+		    	loginButton.setClickable(false);
 				if (name.length() != 0 && pwd.length() != 0) {
 					new Thread(new Runnable() {
 					    public void run() {
@@ -139,6 +141,8 @@ public class LoginActivity extends Activity {
 			Bundle bundle = msg.getData();
 			String result = bundle.getString("result");
 			String name = bundle.getString("name");
+			loginButton.setText("登陆");
+	    	loginButton.setClickable(true);
 			if (result.equals(DataUtils.LOGIN_SUCCESS)) {
 				Toast.makeText(LoginActivity.this, "登陆成功" , Toast.LENGTH_SHORT).show();
 				

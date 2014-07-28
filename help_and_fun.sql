@@ -1,7 +1,3 @@
-DROP DATABASE IF EXISTS `help_and_fun`;
-
-CREATE DATABASE `help_and_fun`;
-USE `help_and_fun`;
 
 DROP TABLE IF EXISTS `user`;
 
