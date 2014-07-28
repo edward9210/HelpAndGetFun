@@ -3,7 +3,7 @@
     android:id="@+id/item_layout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/homepage_item"
+    android:background="@drawable/radius"
     android:paddingTop = "5dp"
     android:paddingBottom="10dp"
     android:orientation="vertical" >
@@ -147,6 +147,23 @@
             android:text="无" />
 
     </LinearLayout>
+    <EditText
+        android:id="@+id/task_reply_mes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:hint="快捷回复"
+        android:scrollHorizontally="false" 
+        android:lines="3"
+        android:layout_marginLeft="10dp"
+	    android:layout_marginRight="10dp"
+	    android:layout_marginBottom="10dp"
+        android:gravity="top"
+        android:background="@drawable/edit_text_bg"
+		android:paddingTop="5dp"
+		android:textColor="@color/black"
+		android:visibility="gone"
+        android:paddingLeft="10dp" />
     <Button
 	    android:id="@+id/task_info_accept"
 	    android:layout_width="match_parent"
@@ -159,17 +176,48 @@
 	    style="@style/btn_style"
 	    android:focusable="false"
 	    android:text = "接受任务" />
-	<Button
-	    android:id="@+id/task_info_delete"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_marginLeft="10dp"
-	    android:layout_marginRight="10dp"
-	    android:layout_marginBottom="10dp"
-	    android:layout_marginTop = "0dp"
-	    style="@style/btn_red_style"
-	    android:visibility="gone"
-	    android:focusable="false"
-	    android:text = "删除任务" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <Button
+		    android:id="@+id/task_send_mes"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:layout_marginLeft="10dp"
+		    android:layout_marginRight="10dp"
+		    android:layout_marginBottom="10dp"
+		    android:layout_marginTop = "0dp"
+		    style="@style/btn_style"
+		    android:visibility="gone"
+		    android:focusable="false"
+		    android:text = "发消息" />
+        <Button
+		    android:id="@+id/task_mes_cancel"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:layout_marginLeft="10dp"
+		    android:layout_marginRight="10dp"
+		    android:layout_marginBottom="10dp"
+		    android:layout_marginTop = "0dp"
+		    style="@style/btn_red_style"
+		    android:visibility="gone"
+		    android:focusable="false"
+		    android:text = "返回" />
+		<Button
+		    android:id="@+id/task_info_delete"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:layout_marginLeft="10dp"
+		    android:layout_marginRight="10dp"
+		    android:layout_marginBottom="10dp"
+		    android:layout_marginTop = "0dp"
+		    style="@style/btn_red_style"
+		    android:visibility="gone"
+		    android:focusable="false"
+		    android:text = "删除任务" />
+	</LinearLayout>
 
 </LinearLayout>
