@@ -20,6 +20,8 @@
       //print_r($res);
       $result=json_encode($res);//,JSON_UNESCAPED_UNICODE
       $result2=urldecode($result);
+      $query="update info set state=1 where receiver='$name'";
+  	  mysql_query($query,$id);
       print($result2);
   	}
     mysql_close($id);
