@@ -297,8 +297,13 @@ public class MainActivity extends FragmentActivity {
 			else if (type.equals("NewMes")) {
 				aboutmeNotification.setVisibility(View.VISIBLE);
 				notification.setVisibility(View.VISIBLE);
+				if (DataUtils.NEW_MES_CALL_FLAG == false) {
+					DataUtils.NEW_MES_CALL_FLAG = true;
+					Toast.makeText(getApplicationContext(), "您收到了新消息" , Toast.LENGTH_SHORT).show();
+				}
 			}
 			else if (type.equals("NoNewMes")) {
+				DataUtils.NEW_MES_CALL_FLAG = false;
 				aboutmeNotification.setVisibility(View.INVISIBLE);
 				notification.setVisibility(View.INVISIBLE);
 			}

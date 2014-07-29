@@ -89,5 +89,9 @@
     {
         include 'sendmes.php';
     }
+    if ($_POST["label"]=="finishmission") 
+    {
+        include 'finishmission.php';
+    }
     //print_r($_POST);
 ?>

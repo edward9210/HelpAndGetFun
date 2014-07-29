@@ -1,5 +1,6 @@
 package com.example.helpandgetfun.fragment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -83,60 +84,64 @@ public class FragmentTaskAcceptedPage extends Fragment implements OnRefreshListe
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				final Button deleteTaskBnt = (Button) view.findViewById(R.id.task_info_delete);
-				final Button sendMesBnt = (Button) view.findViewById(R.id.task_send_mes);
-				final Button cancelMesBnt = (Button) view.findViewById(R.id.task_mes_cancel);
-				final EditText mesEt = (EditText) view.findViewById(R.id.task_reply_mes);
-				final TextView tc = (TextView) view.findViewById(R.id.item_task_content);
-				final TextView name = (TextView) view.findViewById(R.id.item_username); 
-				if (deleteTaskBnt.getVisibility() == View.GONE && sendMesBnt.getVisibility() == View.GONE) {
-					deleteTaskBnt.setVisibility(View.VISIBLE);
-					sendMesBnt.setVisibility(View.VISIBLE);
-				}
-				else if (deleteTaskBnt.getVisibility() == View.VISIBLE && sendMesBnt.getVisibility() == View.VISIBLE) {
-					deleteTaskBnt.setVisibility(View.GONE);
-					sendMesBnt.setVisibility(View.GONE);
-				}
-				deleteTaskBnt.setOnClickListener(new Button.OnClickListener(){
-					@Override
-					public void onClick(View v) {
-						String taskContent = tc.getText().toString();
-						deleteTaskBnt.setText("删除中...");
-						deleteTaskBnt.setClickable(false);
-						new DeleteTask(deleteTaskBnt, sendMesBnt).execute(taskContent);
+				TextView stateTv = (TextView) view.findViewById(R.id.item_state);
+				String state = stateTv.getText().toString();
+				if (!state.equals("已完成")) {
+					final Button deleteTaskBnt = (Button) view.findViewById(R.id.task_info_delete);
+					final Button sendMesBnt = (Button) view.findViewById(R.id.task_send_mes);
+					final Button cancelMesBnt = (Button) view.findViewById(R.id.task_mes_cancel);
+					final EditText mesEt = (EditText) view.findViewById(R.id.task_reply_mes);
+					final TextView tc = (TextView) view.findViewById(R.id.item_task_content);
+					final TextView name = (TextView) view.findViewById(R.id.item_username); 
+					if (deleteTaskBnt.getVisibility() == View.GONE && sendMesBnt.getVisibility() == View.GONE) {
+						deleteTaskBnt.setVisibility(View.VISIBLE);
+						sendMesBnt.setVisibility(View.VISIBLE);
 					}
-				});
-				
-				sendMesBnt.setOnClickListener(new Button.OnClickListener(){
-					@Override
-					public void onClick(View v) {
-						if (mesEt.getVisibility() == View.GONE) {
-							mesEt.setVisibility(View.VISIBLE);
-							mesEt.requestFocus();
-							deleteTaskBnt.setVisibility(View.GONE);
-							cancelMesBnt.setVisibility(View.VISIBLE);
+					else if (deleteTaskBnt.getVisibility() == View.VISIBLE && sendMesBnt.getVisibility() == View.VISIBLE) {
+						deleteTaskBnt.setVisibility(View.GONE);
+						sendMesBnt.setVisibility(View.GONE);
+					}
+					deleteTaskBnt.setOnClickListener(new Button.OnClickListener(){
+						@Override
+						public void onClick(View v) {
+							String taskContent = tc.getText().toString();
+							deleteTaskBnt.setText("删除中...");
+							deleteTaskBnt.setClickable(false);
+							new DeleteTask(deleteTaskBnt, sendMesBnt).execute(taskContent);
 						}
-						else {
-							String mes = mesEt.getText().toString();
-							if (mes.length() == 0)
-								Toast.makeText(getActivity().getApplicationContext(), "输入内容为空" , Toast.LENGTH_SHORT).show();
+					});
+					
+					sendMesBnt.setOnClickListener(new Button.OnClickListener(){
+						@Override
+						public void onClick(View v) {
+							if (mesEt.getVisibility() == View.GONE) {
+								mesEt.setVisibility(View.VISIBLE);
+								mesEt.requestFocus();
+								deleteTaskBnt.setVisibility(View.GONE);
+								cancelMesBnt.setVisibility(View.VISIBLE);
+							}
 							else {
-								sendMesBnt.setText("发送中...");
-								sendMesBnt.setClickable(false);
-								new SendDataTask(name.getText().toString(), mes, sendMesBnt, cancelMesBnt, mesEt).execute();
+								String mes = mesEt.getText().toString();
+								if (mes.length() == 0)
+									Toast.makeText(getActivity().getApplicationContext(), "输入内容为空" , Toast.LENGTH_SHORT).show();
+								else {
+									sendMesBnt.setText("发送中...");
+									sendMesBnt.setClickable(false);
+									new SendDataTask(name.getText().toString(), mes, sendMesBnt, cancelMesBnt, mesEt).execute();
+								}
 							}
 						}
-					}
-				});
-				cancelMesBnt.setOnClickListener(new Button.OnClickListener(){
-					@Override
-					public void onClick(View v) {
-						mesEt.setVisibility(View.GONE);
-						cancelMesBnt.setVisibility(View.GONE);
-						deleteTaskBnt.setVisibility(View.VISIBLE);
-						mesEt.setText("");
-					}
-				});
+					});
+					cancelMesBnt.setOnClickListener(new Button.OnClickListener(){
+						@Override
+						public void onClick(View v) {
+							mesEt.setVisibility(View.GONE);
+							cancelMesBnt.setVisibility(View.GONE);
+							deleteTaskBnt.setVisibility(View.VISIBLE);
+							mesEt.setText("");
+						}
+					});
+				}
 			}
 			
 		});
@@ -170,6 +175,9 @@ public class FragmentTaskAcceptedPage extends Fragment implements OnRefreshListe
 			try {
 				return DataUtils.getTaskAcceptedData();
 			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

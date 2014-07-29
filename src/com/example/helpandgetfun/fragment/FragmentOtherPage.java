@@ -1,5 +1,6 @@
 package com.example.helpandgetfun.fragment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-
 import com.example.helpandgetfun.adapter.*;
 import com.example.helpandgetfun.utils.*;
 import com.example.helpandgetfun.fragment.*;
@@ -140,6 +140,9 @@ public class FragmentOtherPage extends Fragment implements OnRefreshListener<Lis
 			try {
 				return DataUtils.getOtherData();
 			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

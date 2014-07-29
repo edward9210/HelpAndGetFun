@@ -36,6 +36,7 @@ import com.example.helpandgetfun.R;
 import com.example.helpandgetfun.R.drawable;
 
 import android.R.bool;
+import android.R.integer;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -44,8 +45,10 @@ import android.provider.SyncStateContract.Constants;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter.ViewBinder;
 
 public class DataUtils {
 	public static List< Map<String, Object> > homePageList, otherList, taskAcceptedList, myTaskList, myFriendList, infoList;
@@ -63,8 +66,10 @@ public class DataUtils {
 	public static String DELETEFRIEND_SUCCESS = "success";
 	public static String UPDATE_SUCCESS = "success";
 	public static String SENDMES_SUCCESS = "success";
+	public static String FINISHTASK_SUCCESS = "success";
 	public static boolean LOGIN_FLAG = false;
 	public static boolean NEW_MES_FLAG = false;
+	public static boolean NEW_MES_CALL_FLAG = false;
 	public static Bitmap imgBm = null;
 	
 	public static List<Map<String, Object> > getHomePageData() throws JSONException, IOException{
@@ -95,14 +100,18 @@ public class DataUtils {
 			Map<String, Object> map = new HashMap<String, Object>();
 			if (json.getString("headimg").length() > 0) {
 				writeBitmapFile(DataUtils.getImg(json.getString("headimg")), json.getString("user"));
+				map.put("headImg", DataUtils.getImg(json.getString("headimg")));
 			}
-			map.put("headImg", R.drawable.homepage_friendlist);
+			else
+				map.put("headImg", R.drawable.homepage_headimg2);
 			map.put("userName", json.getString("user"));
 			map.put("date", json.getString("missiontime"));
 			if (json.getString("missionstate").equals("0"))
 				map.put("state", "等待中");
-			else
+			else if (json.getString("missionstate").equals("1"))
 				map.put("state", "进行中");
+			else
+				map.put("state", "已完成");
 			map.put("taskContent", json.getString("missionname"));
 			map.put("executeTime", json.getString("missiondeadline"));
 			map.put("Location", json.getString("missionplace"));
@@ -114,7 +123,7 @@ public class DataUtils {
 	
 	
 	//获取陌生人发布的任务
-	public static List<Map<String, Object> > getOtherData() throws JSONException{
+	public static List<Map<String, Object> > getOtherData() throws JSONException, IOException{
 		/* 测试用数据
 		otherList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -139,13 +148,20 @@ public class DataUtils {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject json = (JSONObject)jsonArray.get(i);
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("headImg", R.drawable.homepage_friendlist);
+			if (json.getString("headimg").length() > 0) {
+				writeBitmapFile(DataUtils.getImg(json.getString("headimg")), json.getString("user"));
+				map.put("headImg", DataUtils.getImg(json.getString("headimg")));
+			}
+			else
+				map.put("headImg", R.drawable.homepage_headimg2);
 			map.put("userName", json.getString("user"));
 			map.put("date", json.getString("missiontime"));
 			if (json.getString("missionstate").equals("0"))
 				map.put("state", "等待中");
-			else
+			else if (json.getString("missionstate").equals("1"))
 				map.put("state", "进行中");
+			else
+				map.put("state", "已完成");
 			map.put("taskContent", json.getString("missionname"));
 			map.put("executeTime", json.getString("missiondeadline"));
 			map.put("Location", json.getString("missionplace"));
@@ -156,7 +172,7 @@ public class DataUtils {
 	} 
 	
 	//获取已接任务列表
-	public static List<Map<String, Object> > getTaskAcceptedData() throws JSONException {
+	public static List<Map<String, Object> > getTaskAcceptedData() throws JSONException, IOException {
 		/*
 		taskAcceptedList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -181,13 +197,20 @@ public class DataUtils {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject json = (JSONObject)jsonArray.get(i);
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("headImg", R.drawable.homepage_friendlist);
+			if (json.getString("headimg").length() > 0) {
+				writeBitmapFile(DataUtils.getImg(json.getString("headimg")), json.getString("user"));
+				map.put("headImg", DataUtils.getImg(json.getString("headimg")));
+			}
+			else
+				map.put("headImg", R.drawable.homepage_headimg2);
 			map.put("userName", json.getString("user"));
 			map.put("date", json.getString("missiontime"));
 			if (json.getString("missionstate").equals("0"))
 				map.put("state", "等待中");
-			else
+			else if (json.getString("missionstate").equals("1"))
 				map.put("state", "进行中");
+			else
+				map.put("state", "已完成");
 			map.put("taskContent", json.getString("missionname"));
 			map.put("executeTime", json.getString("missiondeadline"));
 			map.put("Location", json.getString("missionplace"));
@@ -198,7 +221,7 @@ public class DataUtils {
 	} 
 	
 	//获取我的任务列表
-	public static List<Map<String, Object> > getMyTaskData() throws JSONException {
+	public static List<Map<String, Object> > getMyTaskData() throws JSONException, IOException {
 		/* 测试数据
 		myTaskList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -224,13 +247,20 @@ public class DataUtils {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject json = (JSONObject)jsonArray.get(i);
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("headImg", R.drawable.homepage_friendlist);
+			if (json.getString("headimg").length() > 0) {
+				writeBitmapFile(DataUtils.getImg(json.getString("headimg")), mUserName);
+				map.put("headImg", DataUtils.getImg(json.getString("headimg")));
+			}
+			else
+				map.put("headImg", R.drawable.homepage_headimg2);
 			map.put("userName", mUserName);
 			map.put("date", json.getString("missiontime"));
 			if (json.getString("missionstate").equals("0"))
 				map.put("state", "等待中");
-			else
+			else if (json.getString("missionstate").equals("1"))
 				map.put("state", "进行中");
+			else
+				map.put("state", "已完成");
 			map.put("taskContent", json.getString("missionname"));
 			map.put("executeTime", json.getString("missiondeadline"));
 			map.put("Location", json.getString("missionplace"));
@@ -384,6 +414,14 @@ public class DataUtils {
 	public static String deleteMyTask(String taskName) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("label", "deletemission"));
+		params.add(new BasicNameValuePair("uname", mUserName));
+		params.add(new BasicNameValuePair("mname", taskName));
+		return sendMesToServer(params);
+	}
+	
+	public static String finishMyTask(String taskName) {
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("label", "finishmission"));
 		params.add(new BasicNameValuePair("uname", mUserName));
 		params.add(new BasicNameValuePair("mname", taskName));
 		return sendMesToServer(params);
@@ -615,5 +653,28 @@ public class DataUtils {
 			e.printStackTrace();
 		}
 		return null; 
+	}
+	
+	public static boolean isDateValid(int year, int month, int day) {
+		if (year < 0 || month < 0 || day < 0)
+			return false;
+		int maxDay = -1;
+		switch (month) {
+		case 4: case 6: case 9: case 11:
+			maxDay = 30;
+			break;
+		case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+			maxDay = 31;
+			break;
+		case 2:
+			if((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
+				maxDay = 29;
+			else
+				maxDay = 28;
+			break;
+		}
+		if (maxDay == -1 || day > maxDay)
+			return false;
+		return true;
 	}
 }

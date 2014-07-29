@@ -63,56 +63,67 @@ public class AddTaskActivity extends Activity {
 				//Toast.makeText(AddTaskActivity.this, "addTaskButton!!!" , Toast.LENGTH_SHORT).show();
 				final String missonName = taskContentEt.getText().toString();
 				int flag = 0;
-				int year = 0, month = 0, day = 0, hour = 0, minute = 0;
-				if (yearEt.getText().toString().length() > 0)
-					year = Integer.parseInt(yearEt.getText().toString());
-				else
-					flag = 1;
-				if (monthEt.getText().toString().length() > 0)
-					month = Integer.parseInt(monthEt.getText().toString());
-				else
-					flag = 1;
-				if (dayEt.getText().toString().length() > 0)
-					day = Integer.parseInt(dayEt.getText().toString());
-				else
-					flag = 1;
-				if (hourEt.getText().toString().length() > 0)
-					hour = Integer.parseInt(hourEt.getText().toString());
-				else
-					flag = 1;
-				if (minuteEt.getText().toString().length() > 0)
-					minute = Integer.parseInt(minuteEt.getText().toString());
-				else
-					flag = 1;
-				String startTimeTmp = "", endTimeTmp = "";
-				if (flag == 0) {
-					startTimeTmp = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
-					Calendar calendar = Calendar.getInstance();
-					calendar.set(year, month - 1, day, hour, minute);		
-					endTimeTmp = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(calendar.getTime());
-				}
-				final String place = locationEt.getText().toString();
-				final String postScript = postScriptEt.getText().toString();
-				
-				if (missonName.length() > 0 && place.length() > 0 && flag == 0) {
-					addTaskButton.setText("发布任务中...");
-			    	addTaskButton.setClickable(false);
-			    	final String startTime = startTimeTmp, endTime = endTimeTmp;
-					new Thread(new Runnable() {
-					    public void run() {
-					    	String result = DataUtils.addTask(DataUtils.mUserName, missonName, startTime, endTime, place, postScript);
-					    	Bundle bundle = new Bundle();
-					    	bundle.putString("result", result);
-					    	Message mes = new Message();
-					    	mes.setData(bundle);
-					    	mUIHandler.sendMessage(mes);
-					    }
-					}).start();
+				long year = 0, month = 0, day = 0, hour = 0, minute = 0;
+				try {
+					if (yearEt.getText().toString().length() > 0)
+						year = Integer.parseInt(yearEt.getText().toString());
+					else
+						flag = 1;
+					if (monthEt.getText().toString().length() > 0)
+						month = Integer.parseInt(monthEt.getText().toString());
+					else
+						flag = 1;
+					if (dayEt.getText().toString().length() > 0)
+						day = Integer.parseInt(dayEt.getText().toString());
+					else
+						flag = 1;
+					if (hourEt.getText().toString().length() > 0)
+						hour = Integer.parseInt(hourEt.getText().toString());
+					else
+						flag = 1;
+					if (minuteEt.getText().toString().length() > 0)
+						minute = Integer.parseInt(minuteEt.getText().toString());
+					else
+						flag = 1;
+					String startTimeTmp = "", endTimeTmp = "";
+					if (flag == 0) {
+						startTimeTmp = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
+						Calendar calendar = Calendar.getInstance();
+						calendar.set((int)year, (int)month - 1, (int)day, (int)hour, (int)minute, 0);		
+						endTimeTmp = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(calendar.getTime());
+					}
+					final String place = locationEt.getText().toString();
+					final String postScript = postScriptEt.getText().toString();
 					
-					
+					if (missonName.length() > 0 && place.length() > 0 && flag == 0) {
+						
+				    	final String startTime = startTimeTmp, endTime = endTimeTmp;
+				    	if (DataUtils.isDateValid((int)year, (int)month, (int)day) && year >= 2014 && month > 0 && month <= 12 && day > 0 && day <= 31 && minute >= 0 && minute <= 59 && hour >= 0 && hour < 24) {
+				    		addTaskButton.setText("发布任务中...");
+					    	addTaskButton.setClickable(false);
+							new Thread(new Runnable() {
+							    public void run() {
+							    	String result = DataUtils.addTask(DataUtils.mUserName, missonName, startTime, endTime, place, postScript);
+							    	Bundle bundle = new Bundle();
+							    	bundle.putString("result", result);
+							    	Message mes = new Message();
+							    	mes.setData(bundle);
+							    	mUIHandler.sendMessage(mes);
+							    }
+							}).start();
+				    	}
+				    	else {
+				    		Toast.makeText(AddTaskActivity.this, "输入日期错误" , Toast.LENGTH_SHORT).show();
+						}
+						
+						
+					}
+					else
+						Toast.makeText(AddTaskActivity.this, "必填项没填" , Toast.LENGTH_SHORT).show();
 				}
-				else
-					Toast.makeText(AddTaskActivity.this, "必填项没填" , Toast.LENGTH_SHORT).show();
+				catch (Exception e) {
+					Toast.makeText(AddTaskActivity.this, "输入日期错误" , Toast.LENGTH_SHORT).show();
+				}
 			}
 		
 		});

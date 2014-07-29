@@ -42,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter.ViewBinder;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -193,5 +194,7 @@ public class FragmentHomePage extends Fragment implements OnRefreshListener<List
             mListView.onRefreshComplete();
         }
 	}
+	
+
 }
 

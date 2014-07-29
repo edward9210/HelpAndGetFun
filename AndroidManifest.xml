@@ -25,15 +25,18 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.helpandgetfun.viewcontroller.LoginActivity"
-            android:windowSoftInputMode="adjustResize" 
+            android:windowSoftInputMode="adjustUnspecified|stateHidden|adjustResize"  
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity> 
         <activity android:name="com.example.helpandgetfun.viewcontroller.RegisterActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden|adjustResize" 
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity> 
         <activity android:name="com.example.helpandgetfun.viewcontroller.ResetPwdActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden|adjustResize" 
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity> 
         <activity android:name="com.example.helpandgetfun.viewcontroller.MainActivity" android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>
         <activity android:name="com.example.helpandgetfun.viewcontroller.AddTaskActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden|adjustResize" 
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>
         <activity android:name="com.example.helpandgetfun.viewcontroller.FriendListActivity"  
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>  

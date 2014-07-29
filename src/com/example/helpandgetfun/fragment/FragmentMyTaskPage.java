@@ -1,5 +1,6 @@
 package com.example.helpandgetfun.fragment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -81,27 +82,57 @@ public class FragmentMyTaskPage extends Fragment implements OnRefreshListener<Li
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				Button b = (Button) view.findViewById(R.id.task_info_delete);
+				TextView stateTv = (TextView) view.findViewById(R.id.item_state);
+				String state = stateTv.getText().toString();
+				Button b;
 				final TextView tc = (TextView) view.findViewById(R.id.item_task_content);
-				if (b.getVisibility() == View.GONE)
-					b.setVisibility(View.VISIBLE);
-				else if (b.getVisibility() == View.VISIBLE)
-					b.setVisibility(View.GONE);
-				b.setOnClickListener(new Button.OnClickListener(){
-					@Override
-					public void onClick(View v) {
-						String taskContent = tc.getText().toString();
-						String result = DataUtils.deleteMyTask(taskContent);
-						if (result.equals(DataUtils.DELETETASK_SUCCESS)) {
-							new GetDataTask().execute();
-							Toast.makeText(getActivity().getApplicationContext(), "成功删除任务" , Toast.LENGTH_SHORT).show();
+				if (state.equals("等待中")) {
+					 b = (Button) view.findViewById(R.id.task_info_delete);
+					 if (b.getVisibility() == View.GONE)
+							b.setVisibility(View.VISIBLE);
+						else if (b.getVisibility() == View.VISIBLE)
+							b.setVisibility(View.GONE);
+					 b.setOnClickListener(new Button.OnClickListener(){
+						@Override
+						public void onClick(View v) {
+							String taskContent = tc.getText().toString();
+							String result = DataUtils.deleteMyTask(taskContent);
+							if (result.equals(DataUtils.DELETETASK_SUCCESS)) {
+								new GetDataTask().execute();
+								Toast.makeText(getActivity().getApplicationContext(), "成功删除任务" , Toast.LENGTH_SHORT).show();
+							}
+							else {
+								Toast.makeText(getActivity().getApplicationContext(), "删除任务失败" , Toast.LENGTH_SHORT).show();
+							}
+							v.setVisibility(View.GONE);
 						}
-						else {
-							Toast.makeText(getActivity().getApplicationContext(), "删除任务失败" , Toast.LENGTH_SHORT).show();
+					});
+				}
+				else if (state.equals("进行中")){
+					b = (Button) view.findViewById(R.id.task_info_accept);
+					b.setText("任务已完成");
+					if (b.getVisibility() == View.GONE)
+						b.setVisibility(View.VISIBLE);
+					else if (b.getVisibility() == View.VISIBLE)
+						b.setVisibility(View.GONE);
+					b.setOnClickListener(new Button.OnClickListener(){
+						@Override
+						public void onClick(View v) {
+							String taskContent = tc.getText().toString();
+							String result = DataUtils.finishMyTask(taskContent);
+							if (result.equals(DataUtils.FINISHTASK_SUCCESS)) {
+								new GetDataTask().execute();
+								Toast.makeText(getActivity().getApplicationContext(), "任务成功完成" , Toast.LENGTH_SHORT).show();
+							}
+							else {
+								Toast.makeText(getActivity().getApplicationContext(), "发送信息失败" , Toast.LENGTH_SHORT).show();
+							}
+							v.setVisibility(View.GONE);
 						}
-						v.setVisibility(View.GONE);
-					}
-				});
+					});
+				}		
+				
+				
 			}
 			
 		});
@@ -135,6 +166,9 @@ public class FragmentMyTaskPage extends Fragment implements OnRefreshListener<Li
 			try {
 				return DataUtils.getMyTaskData();
 			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

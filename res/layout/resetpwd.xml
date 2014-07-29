@@ -7,11 +7,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
-
-        <LinearLayout
-            android:background ="@drawable/resetpwd_topbar"
+		<RelativeLayout
+            android:background ="@drawable/homepage_topbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_gravity="center"
+            android:layout_height="55dp" >
 
             <ImageButton
                 android:id="@+id/resetpwd_cancelbutton"
@@ -22,7 +22,16 @@
                 android:padding="1dp"
                 android:background="@drawable/cancel_button_effect" />
 
-        </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="重置密码"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
