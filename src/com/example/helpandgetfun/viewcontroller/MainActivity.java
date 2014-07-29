@@ -1,5 +1,6 @@
 package com.example.helpandgetfun.viewcontroller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -11,8 +12,10 @@ import com.example.helpandgetfun.R.id;
 import com.example.helpandgetfun.R.layout;
 import com.example.helpandgetfun.utils.DataUtils;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.opengl.Visibility;
 import android.os.*;
 import android.support.v4.app.Fragment;  
@@ -44,7 +47,8 @@ public class MainActivity extends FragmentActivity {
 	private RadioButton mTaskAcceptedRb, mMyTaskRb;
 	private TextView mTopBarUserName;
 	private Button mLogoutBnt;
-	private ImageView notification, aboutmeNotification;
+	private ImageView notification, aboutmeNotification, headimg;
+	
 	
     @Override  
     protected void onCreate(Bundle savedInstanceState) {  
@@ -54,6 +58,8 @@ public class MainActivity extends FragmentActivity {
         initAndsetAllWidget();
         setAllListener();
         
+        DataUtils.imgBm = null;
+        
         new Thread(new Runnable() {
 		    public void run() {
 		    	JSONObject json;
@@ -62,9 +68,18 @@ public class MainActivity extends FragmentActivity {
 					DataUtils.mRealName = json.getString("realname");
 					DataUtils.mPhone = json.getString("phone");
 					DataUtils.mPassword = json.getString("password");
+					DataUtils.mheadimg = json.getString("headimg");
 					
 					Bundle bundle = new Bundle();
 					bundle.putString("type", "GetUserInfo_Success");
+					if (DataUtils.mheadimg.length() > 0) {
+						try {
+							DataUtils.imgBm = DataUtils.getImg(DataUtils.mheadimg);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 			    	Message mes = new Message();
 			    	mes.setData(bundle);
 			    	mUIHandler.sendMessage(mes);
@@ -261,6 +276,8 @@ public class MainActivity extends FragmentActivity {
 		notification = (ImageView) findViewById(R.id.main_page_notification);
 		
 		aboutmeNotification = (ImageView) findViewById(R.id.aboutme_info_center_notification);
+		
+		headimg = (ImageView) findViewById(R.id.topbar_image);
 	}
 
 	private void hideAllFragment() {
@@ -273,6 +290,8 @@ public class MainActivity extends FragmentActivity {
 		public void handleMessage(Message msg) {
 			Bundle bundle = msg.getData();
 			String type = bundle.getString("type");
+			if (DataUtils.imgBm != null)
+				headimg.setImageBitmap(DataUtils.imgBm);
 			if (type.equals("GetUserInfo_Success"))
 				mTopBarUserName.setText(DataUtils.mUserName);
 			else if (type.equals("NewMes")) {

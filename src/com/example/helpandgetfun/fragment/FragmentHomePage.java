@@ -1,5 +1,7 @@
 package com.example.helpandgetfun.fragment;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,8 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.AsyncTask;
@@ -34,6 +38,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -57,7 +62,7 @@ public class FragmentHomePage extends Fragment implements OnRefreshListener<List
 		DataUtils.homePageList = new ArrayList<Map<String, Object>>();
 		adapter = new MyAdapter(getActivity().getApplicationContext(), DataUtils.homePageList, R.layout.pulldown_item,
 					new String[]{"headImg", "userName", "date", "state", "taskContent", "executeTime", "Location", "postscript"},
-					new int[]{R.id.item_head_image, R.id.item_username, R.id.item_date, R.id.item_state, R.id.item_task_content,  R.id.item_time_content, R.id.item_location_content, R.id.item_addition_content});
+					new int[] {R.id.item_head_image, R.id.item_username, R.id.item_date, R.id.item_state, R.id.item_task_content,  R.id.item_time_content, R.id.item_location_content, R.id.item_addition_content});
 		
 		mListView = (PullToRefreshListView) getView().findViewById(R.id.homepage_itemList);
 		mListView.setOnRefreshListener(this);
@@ -119,9 +124,10 @@ public class FragmentHomePage extends Fragment implements OnRefreshListener<List
 				if (result.size() != 0) {
 					DataUtils.homePageList.addAll(result);
 				}
-				adapter.notifyDataSetChanged();
+				adapter.notifyDataSetChanged();	
 				mListView.onRefreshComplete();
 				isRefreshing = false;
+				
 			}
 			else
 				new GetDataTask().execute();		
@@ -137,6 +143,9 @@ public class FragmentHomePage extends Fragment implements OnRefreshListener<List
 			try {
 				return DataUtils.getHomePageData();
 			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

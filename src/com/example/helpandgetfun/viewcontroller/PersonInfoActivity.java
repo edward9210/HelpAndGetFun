@@ -64,6 +64,8 @@ public class PersonInfoActivity extends Activity {
 		userNameTextView.setText(DataUtils.mUserName);
 		realNameEditText.setText(DataUtils.mRealName);
 		mobilePhoneEditText.setText(DataUtils.mPhone);
+		if (DataUtils.imgBm != null)
+			headimg.setImageBitmap(DataUtils.imgBm);
 	}
 
 
@@ -173,7 +175,7 @@ public class PersonInfoActivity extends Activity {
 
             headimg.setImageBitmap(bitmap);  
    
-            DataUtils.writeBitmapFile(bitmap);
+            DataUtils.writeBitmapFile(bitmap, DataUtils.mUserName);
         }  
     } 
 	

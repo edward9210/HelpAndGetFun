@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +37,10 @@ import com.example.helpandgetfun.R.drawable;
 
 import android.R.bool;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Environment;
+import android.provider.SyncStateContract.Constants;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +49,9 @@ import android.widget.ListView;
 
 public class DataUtils {
 	public static List< Map<String, Object> > homePageList, otherList, taskAcceptedList, myTaskList, myFriendList, infoList;
-	private static String ServerURL = "http://1.helpandgetfun.sinaapp.com/phpsrc/";
-	public static String mUserName, mRealName, mPhone, mPassword;
+	private static String ServerURL = "http://1.helpandgetfun.vipsinaapp.com/phpsrc/";
+	private static String ImgServerURL = "http://helpandgetfun-headimg.stor.vipsinaapp.com/";
+	public static String mUserName, mRealName, mPhone, mPassword, mheadimg;
 	public static String CONECTION_ERROR = "Connection_Error";
 	public static String CONECTION_FAIL = "Connection_Fail";
 	public static String LOGIN_SUCCESS = "success";
@@ -60,8 +65,9 @@ public class DataUtils {
 	public static String SENDMES_SUCCESS = "success";
 	public static boolean LOGIN_FLAG = false;
 	public static boolean NEW_MES_FLAG = false;
+	public static Bitmap imgBm = null;
 	
-	public static List<Map<String, Object> > getHomePageData() throws JSONException{
+	public static List<Map<String, Object> > getHomePageData() throws JSONException, IOException{
 		/* 测试用数据
 		homePageList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -87,6 +93,9 @@ public class DataUtils {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject json = (JSONObject)jsonArray.get(i);
 			Map<String, Object> map = new HashMap<String, Object>();
+			if (json.getString("headimg").length() > 0) {
+				writeBitmapFile(DataUtils.getImg(json.getString("headimg")), json.getString("user"));
+			}
 			map.put("headImg", R.drawable.homepage_friendlist);
 			map.put("userName", json.getString("user"));
 			map.put("date", json.getString("missiontime"));
@@ -485,9 +494,9 @@ public class DataUtils {
 		return new JSONArray();
 	}
 	
-	public static void writeBitmapFile(Bitmap bitmap) {
+	public static void writeBitmapFile(Bitmap bitmap, String name) {
 		//将缩小的文件写在data文件夹中
-        String newPath = getSDPath() + "/" + DataUtils.mUserName + ".jpg";
+        String newPath = getSDPath() + "/" + name + ".jpg";
         File file = new File(newPath);
         try {
         	FileOutputStream out=new FileOutputStream(file);
@@ -592,5 +601,19 @@ public class DataUtils {
 	      }   
 	       return sdDir.toString(); 
 	       
+	}
+	
+	public static Bitmap getImg(String img) throws IOException {
+		URL url;
+		try {
+			url = new URL(ImgServerURL + img);
+			InputStream in = url.openStream();
+			//通过BitmapFactory获得实例  
+	        return BitmapFactory.decodeStream(in);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null; 
 	}
 }
