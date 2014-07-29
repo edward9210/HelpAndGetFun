@@ -1,12 +1,17 @@
 package com.example.helpandgetfun.utils;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +36,7 @@ import com.example.helpandgetfun.R.drawable;
 
 import android.R.bool;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -480,15 +486,16 @@ public class DataUtils {
 	}
 	
 	public static void writeBitmapFile(Bitmap bitmap) {
-		//将缩小的文件写在sd卡上
-        String newPath = "/mnt/sdcard/" + DataUtils.mUserName + ".jpg";
+		//将缩小的文件写在data文件夹中
+        String newPath = getSDPath() + "/" + DataUtils.mUserName + ".jpg";
         File file = new File(newPath);
         try {
-            FileOutputStream out=new FileOutputStream(file);
-           if(bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)){
-                out.flush();
-                out.close();
-            }
+        	FileOutputStream out=new FileOutputStream(file);
+        	if(bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)){
+		        out.flush();
+		        out.close();
+        	}
+        	Log.w("writeBitmapFile", "file create success!");
         } catch (FileNotFoundException e){
             e.printStackTrace();
         } catch (IOException e) {
@@ -497,14 +504,93 @@ public class DataUtils {
 	}
 	
 	public static void deleteBitmapFile() {
-		String strFileName = "/mnt/sdcard/" + DataUtils.mUserName + ".jpg";
+		String strFileName = getSDPath() + "/" + DataUtils.mUserName + ".jpg";
 		File file = new File(strFileName);
 		if (file.exists()) {
 			if(file.delete()){
 				Log.w("deleteBitmapFile", "file delete success!");
 			}else{
 				Log.w("deleteBitmapFile", "file delete fail!");
+			}
 		}
 	}
+	
+	// 参考于 http://blog.csdn.net/sxwyf248/article/details/7012496
+	public static String uploadFile() {
+		String filepath = getSDPath() +"/" + DataUtils.mUserName + ".jpg";
+		File uploadFile = new File(filepath);
+		if (uploadFile.exists()) {
+			String urlServer = ServerURL + "receiveImg.php";
+			String end = "\r\n";
+		    String twoHyphens = "--";
+		    String boundary = "******";
+		    try
+		    {
+		    	URL url = new URL(urlServer);
+		    	HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+		    	// 设置每次传输的流大小，可以有效防止手机因为内存不足崩溃
+		    	// 此方法用于在预先不知道内容长度时启用没有进行内部缓冲的 HTTP 请求正文的流。
+		    	httpURLConnection.setChunkedStreamingMode(128 * 1024);// 128K
+		    	// 允许输入输出流
+		    	httpURLConnection.setDoInput(true);
+		    	httpURLConnection.setDoOutput(true);
+		    	httpURLConnection.setUseCaches(false);
+		    	// 使用POST方法
+		    	httpURLConnection.setRequestMethod("POST");
+		    	httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
+		    	httpURLConnection.setRequestProperty("Charset", "UTF-8");
+		    	httpURLConnection.setRequestProperty("Content-Type","multipart/form-data;boundary=" + boundary);
+
+		    	DataOutputStream dos = new DataOutputStream(
+		    			httpURLConnection.getOutputStream());
+		    	dos.writeBytes(twoHyphens + boundary + end);
+		    	dos.writeBytes("Content-Disposition: form-data; name=\"uploadedfile\"; filename=\""
+		    			+ filepath.substring(filepath.lastIndexOf("/") + 1)
+		    			+ "\""
+		    			+ end);
+		    	dos.writeBytes(end);
+
+		    	FileInputStream fis = new FileInputStream(filepath);
+		    	byte[] buffer = new byte[8192]; // 8k
+		    	int count = 0;
+		    	// 读取文件
+		    	while ((count = fis.read(buffer)) != -1)
+		    	{
+		    		dos.write(buffer, 0, count);
+		    	}
+		    	fis.close();
+
+		    	dos.writeBytes(end);
+		    	dos.writeBytes(twoHyphens + boundary + twoHyphens + end);
+		    	dos.flush();
+
+		    	InputStream is = httpURLConnection.getInputStream();
+		    	InputStreamReader isr = new InputStreamReader(is, "utf-8");
+		    	BufferedReader br = new BufferedReader(isr);
+		    	String result = br.readLine();
+
+		    	dos.close();
+		    	is.close();
+		    	
+		    	return result;
+
+		    } catch (Exception e)
+		    {
+		    	e.printStackTrace();
+		    }
+		}
+
+		return null;
+	}
+	
+	public static String getSDPath(){ 
+	       File sdDir = null; 
+	       boolean sdCardExist = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在 
+	       if   (sdCardExist)   
+	       {                               
+	         sdDir = Environment.getExternalStorageDirectory();//获取跟目录 
+	      }   
+	       return sdDir.toString(); 
+	       
 	}
 }

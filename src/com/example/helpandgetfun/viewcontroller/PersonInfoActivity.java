@@ -93,10 +93,12 @@ public class PersonInfoActivity extends Activity {
 				new Thread(new Runnable() {
 				    public void run() {
 				    	String result = DataUtils.updateInfo(name, realname, mobliePhone, DataUtils.mUserName + ".jpg");
+				    	String uploadResult = DataUtils.uploadFile();
 				    	Bundle bundle = new Bundle();
 				    	bundle.putString("result", result);
 				    	bundle.putString("realname", realname);
 				    	bundle.putString("mobliePhone", mobliePhone);
+				    	bundle.putString("uploadResult", uploadResult);
 				    	Message mes = new Message();
 				    	mes.setData(bundle);
 				    	mUIHandler.sendMessage(mes);
@@ -112,6 +114,7 @@ public class PersonInfoActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				//Toast.makeText(PersonInfoActivity.this, "cancelButton!!!" , Toast.LENGTH_SHORT).show();
+				DataUtils.deleteBitmapFile();
 				Intent intent = new Intent(); 
 	        	intent.setClass(PersonInfoActivity.this, MainActivity.class); /* 调用一个新的Activity */
 	        	startActivity(intent);
@@ -170,6 +173,7 @@ public class PersonInfoActivity extends Activity {
 
             headimg.setImageBitmap(bitmap);  
    
+            DataUtils.writeBitmapFile(bitmap);
         }  
     } 
 	
@@ -180,10 +184,13 @@ public class PersonInfoActivity extends Activity {
 			String result = bundle.getString("result");
 			String realname = bundle.getString("realname");
 			String mobliePhone = bundle.getString("mobliePhone");
+			String uploadResult = bundle.getString("uploadResult");
 			saveButton.setText("保存");
 	    	saveButton.setClickable(true);
 	    	if (result.equals(DataUtils.UPDATE_SUCCESS)) {
 				Toast.makeText(PersonInfoActivity.this, "保存成功" , Toast.LENGTH_SHORT).show();
+				if (uploadResult != null)
+					Toast.makeText(PersonInfoActivity.this, uploadResult , Toast.LENGTH_SHORT).show();
 				DataUtils.mRealName = realname;
 				DataUtils.mPhone = mobliePhone;
 				Intent intent = new Intent(); 
@@ -195,6 +202,7 @@ public class PersonInfoActivity extends Activity {
 			else {
 				Toast.makeText(PersonInfoActivity.this, "保存失败" , Toast.LENGTH_SHORT).show();
 			}
+	    	
 		}
 	};
 
