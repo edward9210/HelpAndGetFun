@@ -72,6 +72,7 @@ public class DataUtils {
 	public static boolean NEW_MES_CALL_FLAG = false;
 	public static Bitmap imgBm = null;
 	public static boolean ADD_TASK_FLAG = false;
+	public static boolean PERSON_INFO_UPDATE = false;
 	
 	public static List<Map<String, Object> > getHomePageData() throws JSONException, IOException{
 		/* 测试用数据
@@ -637,8 +638,12 @@ public class DataUtils {
 	       if   (sdCardExist)   
 	       {                               
 	         sdDir = Environment.getExternalStorageDirectory();//获取跟目录 
-	      }   
-	       return sdDir.toString(); 
+	       }   
+	       File file = new File(sdDir.toString() + "/helpandfun/img");
+	       if(!file.exists()) {
+	    	   file.mkdirs();
+	       }
+	       return sdDir.toString() + "/helpandfun/img"; 
 	       
 	}
 	

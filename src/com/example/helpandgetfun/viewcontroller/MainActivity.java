@@ -1,5 +1,6 @@
 package com.example.helpandgetfun.viewcontroller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -16,6 +17,7 @@ import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.Visibility;
 import android.os.*;
 import android.support.v4.app.Fragment;  
@@ -88,6 +90,32 @@ public class MainActivity extends FragmentActivity {
 					e.printStackTrace();
 				}
 				
+		    }
+		}).start();
+        
+        new Thread(new Runnable() {
+		    public void run() {
+		    	while(true) {
+		    		if (DataUtils.PERSON_INFO_UPDATE == true) {
+		    			File file = new File (DataUtils.getSDPath() + '/' + DataUtils.mUserName + ".jpg");
+				    	String result;
+				    	if (file.exists()) {
+				    		DataUtils.imgBm = BitmapFactory.decodeFile(DataUtils.getSDPath() + '/' + DataUtils.mUserName + ".jpg");
+							Bundle bundle = new Bundle();
+							bundle.putString("type", "GetUserInfo_Success");
+							DataUtils.PERSON_INFO_UPDATE = false;
+					    	Message mes = new Message();
+					    	mes.setData(bundle);
+					    	mUIHandler.sendMessage(mes);
+						} 			
+		    		}
+		    		try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
+		    	}
 		    }
 		}).start();
         

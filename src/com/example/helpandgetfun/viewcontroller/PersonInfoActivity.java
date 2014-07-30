@@ -96,8 +96,10 @@ public class PersonInfoActivity extends Activity {
 				    public void run() {
 				    	File file = new File (DataUtils.getSDPath() + '/' + DataUtils.mUserName + ".jpg");
 				    	String result;
-				    	if (file.exists())
+				    	if (file.exists()) {
+				    		DataUtils.PERSON_INFO_UPDATE = true;
 				    		result = DataUtils.updateInfo(name, realname, mobliePhone, DataUtils.mUserName + ".jpg");
+				    	}
 				    	else
 				    		result = DataUtils.updateInfo(name, realname, mobliePhone, null);
 				    	String uploadResult = DataUtils.uploadFile();
