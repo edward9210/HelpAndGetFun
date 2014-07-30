@@ -94,7 +94,12 @@ public class PersonInfoActivity extends Activity {
 				final String mobliePhone = mobilePhoneEditText.getText().toString();
 				new Thread(new Runnable() {
 				    public void run() {
-				    	String result = DataUtils.updateInfo(name, realname, mobliePhone, DataUtils.mUserName + ".jpg");
+				    	File file = new File (DataUtils.getSDPath() + '/' + DataUtils.mUserName + ".jpg");
+				    	String result;
+				    	if (file.exists())
+				    		result = DataUtils.updateInfo(name, realname, mobliePhone, DataUtils.mUserName + ".jpg");
+				    	else
+				    		result = DataUtils.updateInfo(name, realname, mobliePhone, null);
 				    	String uploadResult = DataUtils.uploadFile();
 				    	Bundle bundle = new Bundle();
 				    	bundle.putString("result", result);

@@ -152,6 +152,7 @@ public class AddTaskActivity extends Activity {
 			addTaskButton.setText("发布任务");
 	    	addTaskButton.setClickable(true);
 	    	if (result.equals(DataUtils.ADDTASK_SUCCESS)) {
+	    		DataUtils.ADD_TASK_FLAG = true;
 				Toast.makeText(AddTaskActivity.this, "发布成功" , Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(); 
 	        	intent.setClass(AddTaskActivity.this, MainActivity.class); /* 调用一个新的Activity */

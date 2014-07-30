@@ -83,9 +83,9 @@ public class LoginActivity extends Activity {
 				/* 发送登陆信息 */
 				final String name = userNameEditText.getText().toString();
 				final String pwd = pwdEditText.getText().toString();
-				loginButton.setText("登陆中...");
-		    	loginButton.setClickable(false);
 				if (name.length() != 0 && pwd.length() != 0) {
+					loginButton.setText("登陆中...");
+			    	loginButton.setClickable(false);
 					new Thread(new Runnable() {
 					    public void run() {
 					    	String result = DataUtils.login(name, pwd);

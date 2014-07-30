@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.example.helpandgetfun.R;
 import com.example.helpandgetfun.R.id;
@@ -76,6 +77,22 @@ public class FragmentMyTaskPage extends Fragment implements OnRefreshListener<Li
 		
 		new GetDataTask().execute();
 		
+		new Thread(new Runnable() {
+		    public void run() {
+		    	while(true) {
+		    		if (DataUtils.ADD_TASK_FLAG == true) {
+		    			new GetDataTask().execute();
+		    			DataUtils.ADD_TASK_FLAG = false;
+		    		}
+		    		try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
+		    	}
+		    }
+		}).start();
 		mListView.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override

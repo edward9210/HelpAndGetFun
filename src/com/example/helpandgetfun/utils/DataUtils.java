@@ -71,6 +71,7 @@ public class DataUtils {
 	public static boolean NEW_MES_FLAG = false;
 	public static boolean NEW_MES_CALL_FLAG = false;
 	public static Bitmap imgBm = null;
+	public static boolean ADD_TASK_FLAG = false;
 	
 	public static List<Map<String, Object> > getHomePageData() throws JSONException, IOException{
 		/* ≤‚ ‘”√ ˝æ›
