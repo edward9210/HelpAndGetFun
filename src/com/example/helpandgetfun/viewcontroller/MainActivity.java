@@ -241,6 +241,7 @@ public class MainActivity extends FragmentActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				DataUtils.LOGIN_FLAG = false;
+				DataUtils.writeCache();
 				Intent intent = new Intent(); 
 	        	intent.setClass(MainActivity.this, LoginActivity.class); /* 调用一个新的Activity */
 	        	startActivity(intent);
@@ -306,6 +307,8 @@ public class MainActivity extends FragmentActivity {
 		aboutmeNotification = (ImageView) findViewById(R.id.aboutme_info_center_notification);
 		
 		headimg = (ImageView) findViewById(R.id.topbar_image);
+		
+		mTopBarUserName.setText(DataUtils.mUserName);
 	}
 
 	private void hideAllFragment() {
@@ -320,8 +323,9 @@ public class MainActivity extends FragmentActivity {
 			String type = bundle.getString("type");
 			if (DataUtils.imgBm != null)
 				headimg.setImageBitmap(DataUtils.imgBm);
-			if (type.equals("GetUserInfo_Success"))
+			if (type.equals("GetUserInfo_Success")) {
 				mTopBarUserName.setText(DataUtils.mUserName);
+			}
 			else if (type.equals("NewMes")) {
 				aboutmeNotification.setVisibility(View.VISIBLE);
 				notification.setVisibility(View.VISIBLE);

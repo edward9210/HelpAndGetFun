@@ -60,6 +60,10 @@ public class RegisterActivity extends Activity {
 					Toast.makeText(RegisterActivity.this, "必填项没填" , Toast.LENGTH_SHORT).show();
 				else if (name.length() < 6 || name.length() > 20)
 					Toast.makeText(RegisterActivity.this, "用户名长度错误" , Toast.LENGTH_SHORT).show();
+				else if (!name.matches("[0-9A-Za-z_]*"))
+					Toast.makeText(RegisterActivity.this, "用户名字符错误,只允许数字字母下划线" , Toast.LENGTH_SHORT).show();
+				else if (!mobliePhone.matches("[0-9]*") || (mobliePhone.length() != 11 && mobliePhone.length() != 6 && mobliePhone.length() != 4))
+					Toast.makeText(RegisterActivity.this, "手机号错误" , Toast.LENGTH_SHORT).show();
 				else if (!password.equals(passwordConfig))
 					Toast.makeText(RegisterActivity.this, "两次密码输入不一样" , Toast.LENGTH_SHORT).show();
 				else {

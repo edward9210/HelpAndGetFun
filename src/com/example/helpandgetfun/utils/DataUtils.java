@@ -1,15 +1,21 @@
 package com.example.helpandgetfun.utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.Flushable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReadWriteLock;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -52,8 +59,9 @@ import android.widget.SimpleAdapter.ViewBinder;
 
 public class DataUtils {
 	public static List< Map<String, Object> > homePageList, otherList, taskAcceptedList, myTaskList, myFriendList, infoList;
-	private static String ServerURL = "http://1.helpandgetfun.vipsinaapp.com/phpsrc/";
-	private static String ImgServerURL = "http://helpandgetfun-headimg.stor.vipsinaapp.com/";
+	public static JSONArray homePageJsonArray, otherJsonArray, taskAcceptedJsonArray, myTaskJsonArray;
+	private static String ServerURL = "http://1.helpandgetfun.sinaapp.com/phpsrc/";
+	private static String ImgServerURL = "http://helpandgetfun-headimg.stor.sinaapp.com/";
 	public static String mUserName, mRealName, mPhone, mPassword, mheadimg;
 	public static String CONECTION_ERROR = "Connection_Error";
 	public static String CONECTION_FAIL = "Connection_Fail";
@@ -73,6 +81,10 @@ public class DataUtils {
 	public static Bitmap imgBm = null;
 	public static boolean ADD_TASK_FLAG = false;
 	public static boolean PERSON_INFO_UPDATE = false;
+	public static boolean CACHE_HOMEPAGE_FLAG = false;
+	public static boolean CACHE_TASKACCEPTED_FLAG = false;
+	public static boolean CACHE_MYTASK_FLAG = false;
+	public static boolean CACHE_OTHER_FLAG = false;
 	
 	public static List<Map<String, Object> > getHomePageData() throws JSONException, IOException{
 		/* 测试用数据
@@ -95,7 +107,16 @@ public class DataUtils {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("label", "queryfriendmission"));
 		params.add(new BasicNameValuePair("name", mUserName));
-		JSONArray jsonArray = sendMesToServerJSONArray(params);
+		JSONArray jsonArray;
+		if (CACHE_HOMEPAGE_FLAG == false) {
+			jsonArray = sendMesToServerJSONArray(params);
+			homePageJsonArray = new JSONArray();
+			homePageJsonArray = jsonArray;
+		}
+		else  {
+			jsonArray = homePageJsonArray;
+			CACHE_HOMEPAGE_FLAG = false;
+		}
 		//String str = jsonArray.toString();
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject json = (JSONObject)jsonArray.get(i);
@@ -145,7 +166,16 @@ public class DataUtils {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("label", "queryothermission"));
 		params.add(new BasicNameValuePair("name", mUserName));
-		JSONArray jsonArray = sendMesToServerJSONArray(params);
+		JSONArray jsonArray;
+		if (CACHE_OTHER_FLAG == false) {
+			jsonArray = sendMesToServerJSONArray(params);
+			otherJsonArray = new JSONArray();
+			otherJsonArray = jsonArray;
+		}
+		else {
+			jsonArray = otherJsonArray;
+			CACHE_OTHER_FLAG = false;
+		}
 		//String str = jsonArray.toString();
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject json = (JSONObject)jsonArray.get(i);
@@ -194,7 +224,16 @@ public class DataUtils {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("label", "queryparticipated"));
 		params.add(new BasicNameValuePair("uname", mUserName));
-		JSONArray jsonArray = sendMesToServerJSONArray(params);
+		JSONArray jsonArray;
+		if (CACHE_TASKACCEPTED_FLAG == false) {
+			jsonArray = sendMesToServerJSONArray(params);
+			taskAcceptedJsonArray = new JSONArray();
+			taskAcceptedJsonArray = jsonArray;
+		}
+		else {
+			jsonArray = taskAcceptedJsonArray;
+			CACHE_TASKACCEPTED_FLAG = false;
+		}
 		//String str = jsonArray.toString();
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject json = (JSONObject)jsonArray.get(i);
@@ -244,7 +283,16 @@ public class DataUtils {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("label", "querycreated"));
 		params.add(new BasicNameValuePair("name", mUserName));
-		JSONArray jsonArray = sendMesToServerJSONArray(params);
+		JSONArray jsonArray;
+		if (CACHE_MYTASK_FLAG == false) {
+			jsonArray = sendMesToServerJSONArray(params);
+			myTaskJsonArray = new JSONArray();
+			myTaskJsonArray = jsonArray;
+		}
+		else {
+			jsonArray = myTaskJsonArray;
+			CACHE_MYTASK_FLAG = false;
+		}
 		//String str = jsonArray.toString();
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject json = (JSONObject)jsonArray.get(i);
@@ -482,13 +530,15 @@ public class DataUtils {
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
 				httpResponse = new DefaultHttpClient().execute(httpRequest);
 				InputStream inputStream = httpResponse.getEntity().getContent();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				byte[] buffer = new byte[4096];
 				int ch = -1;
 				String str = "";
 				while ((ch = inputStream.read(buffer)) != -1) {
-					String tmp = new String(buffer, "GB2312");
-					str += tmp;
+					baos.write(buffer, 0, ch);
 				}
+				baos.flush();
+				str = baos.toString("GB2312");
 				JSONObject json = new JSONObject(str);  
 				return json;
 			}
@@ -511,14 +561,17 @@ public class DataUtils {
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
 				httpResponse = new DefaultHttpClient().execute(httpRequest);
 				InputStream inputStream = httpResponse.getEntity().getContent();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				byte[] buffer = new byte[4096];
 				int ch = -1;
 				String str = "";
 				while ((ch = inputStream.read(buffer)) != -1) {
-					String tmp = new String(buffer, "GB2312");
-					str += tmp;
+					baos.write(buffer, 0, ch);
 				}
+				baos.flush();
+				str = baos.toString("GB2312");
 				if (str != null) {
+					Log.d("jsonStr", str);
 					JSONArray jsonArray = new JSONArray(str);  
 					return jsonArray;
 				}
@@ -639,11 +692,11 @@ public class DataUtils {
 	       {                               
 	         sdDir = Environment.getExternalStorageDirectory();//获取跟目录 
 	       }   
-	       File file = new File(sdDir.toString() + "/helpandfun/img");
+	       File file = new File(sdDir.toString() + "/helpandfun/cache");
 	       if(!file.exists()) {
 	    	   file.mkdirs();
 	       }
-	       return sdDir.toString() + "/helpandfun/img"; 
+	       return sdDir.toString() + "/helpandfun/cache"; 
 	       
 	}
 	
@@ -682,5 +735,84 @@ public class DataUtils {
 		if (maxDay == -1 || day > maxDay)
 			return false;
 		return true;
+	}
+	
+	public static void writeCache() {
+		String cacheStr = "[" + "{homepage:" + homePageJsonArray.toString() + "}" 
+				+ ",{taskaccepted:" + taskAcceptedJsonArray.toString() + "}"
+				+ ",{mytask:" + myTaskJsonArray.toString() + "}"
+				+ ",{othertask:" + otherJsonArray.toString() + "}" + "]";
+		Log.d("cacheStr", cacheStr);
+
+		File file = new File(getSDPath() + '/' + mUserName + ".txt");
+		FileWriter fw = null;
+		try {
+		    if(!file.exists()){
+		    	file.createNewFile();
+		    }
+		    fw = new FileWriter(file);
+		    BufferedWriter out = new BufferedWriter(fw);
+		    out.write(cacheStr, 0, cacheStr.length());
+		    out.close();
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+
+		Log.d("homePage", homePageJsonArray.toString());
+		Log.d("taskAccept", taskAcceptedJsonArray.toString());
+		Log.d("mytask", myTaskJsonArray.toString());
+		Log.d("otherTask", otherJsonArray.toString());
+	}
+	
+	public static void readCache() {
+		if (mUserName != null) {
+			File file = new File(getSDPath() + '/' + mUserName + ".txt");
+			if (file.exists()) {
+				try {
+					BufferedReader reader  = new BufferedReader(new FileReader(file));
+					String cacheStr = "";
+					String tmp;
+					while((tmp= reader.readLine()) != null)   
+						cacheStr += tmp;
+					reader.close();
+					JSONArray jsonArray = new JSONArray(cacheStr);
+					for (int i = 0; i < jsonArray.length(); i++) {
+						JSONObject jsonTask = (JSONObject)jsonArray.get(i);
+						Log.d("jsontask", jsonTask.toString());
+						if (!jsonTask.isNull("homepage")) {
+							homePageJsonArray = (JSONArray) jsonTask.get("homepage");
+						}
+						else if (!jsonTask.isNull("taskaccepted") ) {
+							taskAcceptedJsonArray = (JSONArray) jsonTask.get("taskaccepted");
+						}else if (!jsonTask.isNull("mytask")) {
+							myTaskJsonArray = (JSONArray) jsonTask.get("mytask");
+						}else if (!jsonTask.isNull("othertask")) {
+							otherJsonArray = (JSONArray) jsonTask.get("othertask");
+						}					
+					}
+					CACHE_HOMEPAGE_FLAG = true;
+					CACHE_TASKACCEPTED_FLAG = true;
+					CACHE_OTHER_FLAG = true;
+					CACHE_MYTASK_FLAG = true;
+					Log.d("homePage", homePageJsonArray.toString());
+					Log.d("taskAccept", taskAcceptedJsonArray.toString());
+					Log.d("mytask", myTaskJsonArray.toString());
+					Log.d("otherTask", otherJsonArray.toString());
+
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }

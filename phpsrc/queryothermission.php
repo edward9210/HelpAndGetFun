@@ -2,7 +2,7 @@
 <?php
       $name=$_POST["name"];
       include 'mysqlconnect.php';
-      $sel=mysql_query("select tmp.*,user.headimg from ((select * from cre_par,mission where cre_par.mission=mission.missionname and cre_par.cr_or_pr=0 and missionname in (select mission from cre_par where cr_or_pr=0 and user<>'$name' and user not in (select user2 from is_friend where user1='$name')) order by missiontime desc)as tmp, user) where user.username=tmp.user",$id);
+      $sel=mysql_query("select tmp.*,user.headimg from ((select * from cre_par,mission where cre_par.mission=mission.missionname and mission.missionstate<>2 and cre_par.cr_or_pr=0 and missionname in (select mission from cre_par where cr_or_pr=0 and user<>'$name' and user not in (select user2 from is_friend where user1='$name')) order by missiontime desc)as tmp, user) where user.username=tmp.user",$id);
       $rownum=mysql_num_rows($sel);
       $count=0;
       for($i=0;$i< $rownum;$i++){

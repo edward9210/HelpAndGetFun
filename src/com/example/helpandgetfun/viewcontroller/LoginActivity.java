@@ -149,7 +149,7 @@ public class LoginActivity extends Activity {
 				Toast.makeText(LoginActivity.this, "登陆成功" , Toast.LENGTH_SHORT).show();
 				
 				DataUtils.mUserName = name;
-				
+				DataUtils.readCache();
 				Intent intent = new Intent(); 
 	        	intent.setClass(LoginActivity.this, MainActivity.class); /* 调用一个新的Activity */
 	        	startActivity(intent);
