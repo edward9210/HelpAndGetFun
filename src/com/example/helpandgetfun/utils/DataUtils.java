@@ -321,7 +321,7 @@ public class DataUtils {
 	} 
 	
 	//获取好友列表
-	public static List<Map<String, Object> > getFriendList() throws JSONException {
+	public static List<Map<String, Object> > getFriendList() throws JSONException, IOException {
 		List< Map<String, Object> > myFriendListTmp = new ArrayList<Map<String, Object>>();
 		
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -332,7 +332,12 @@ public class DataUtils {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject json = (JSONObject)jsonArray.get(i);
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("headImg", R.drawable.homepage_headimg);
+			if (json.getString("headimg").length() > 0) {
+				writeBitmapFile(getImg(json.getString("headimg")), json.getString("user2"));
+				map.put("headImg", getImg(json.getString("headimg")));
+			}
+			else
+				map.put("headImg", R.drawable.homepage_headimg2);
 			map.put("userName", json.getString("user2"));
 			myFriendListTmp.add(map);
 		}

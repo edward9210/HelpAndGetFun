@@ -16,7 +16,7 @@
 	        android:layout_height="53dp"
 	        android:layout_marginLeft="5dp"
 	        android:adjustViewBounds="false"
-	        android:src="@drawable/homepage_headimg"
+	        android:src="@drawable/homepage_headimg2"
 	        android:padding="5dp" />
 
 	    <TextView

@@ -2,7 +2,7 @@
 <?php
       $uname=$_POST["uname"];
       include 'mysqlconnect.php';
-      $sel=mysql_query("select user2 from is_friend where user1='$uname'",$id);
+      $sel=mysql_query("select tmp.*,user.headimg from (select user2 from is_friend where user1='$uname')as tmp, user where tmp.user2=user.username",$id);
       $rownum=mysql_num_rows($sel);
       $count=0;
       for($i=0;$i< $rownum;$i++){

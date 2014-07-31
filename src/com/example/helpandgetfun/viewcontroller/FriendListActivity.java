@@ -1,6 +1,7 @@
 package com.example.helpandgetfun.viewcontroller;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -198,6 +199,9 @@ public class FriendListActivity extends Activity{
 			try {
 				return DataUtils.getFriendList();
 			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
