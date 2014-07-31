@@ -84,29 +84,33 @@ public class FragmentOtherPage extends Fragment implements OnRefreshListener<Lis
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				Button b = (Button) view.findViewById(R.id.task_info_accept);
-				final TextView tc = (TextView) view.findViewById(R.id.item_task_content);
-				final TextView on = (TextView) view.findViewById(R.id.item_username);
-				if (b.getVisibility() == View.GONE)
-					b.setVisibility(View.VISIBLE);
-				else if (b.getVisibility() == View.VISIBLE)
-					b.setVisibility(View.GONE);
-				b.setOnClickListener(new Button.OnClickListener(){
-					@Override
-					public void onClick(View v) {
-						String taskContent = tc.getText().toString();
-						String ownername = on.getText().toString();
-						String result = DataUtils.acceptTask(taskContent, ownername);
-						if (result.equals(DataUtils.ACCEPTTASK_SUCCESS)) {
-							new GetDataTask().execute();
-							Toast.makeText(getActivity().getApplicationContext(), "成功接受任务" , Toast.LENGTH_SHORT).show();
+				TextView stateTv = (TextView) view.findViewById(R.id.item_state);
+				String state = stateTv.getText().toString();
+				if (state.equals("等待中")) {
+					Button b = (Button) view.findViewById(R.id.task_info_accept);
+					final TextView tc = (TextView) view.findViewById(R.id.item_task_content);
+					final TextView on = (TextView) view.findViewById(R.id.item_username);
+					if (b.getVisibility() == View.GONE)
+						b.setVisibility(View.VISIBLE);
+					else if (b.getVisibility() == View.VISIBLE)
+						b.setVisibility(View.GONE);
+					b.setOnClickListener(new Button.OnClickListener(){
+						@Override
+						public void onClick(View v) {
+							String taskContent = tc.getText().toString();
+							String ownername = on.getText().toString();
+							String result = DataUtils.acceptTask(taskContent, ownername);
+							if (result.equals(DataUtils.ACCEPTTASK_SUCCESS)) {
+								new GetDataTask().execute();
+								Toast.makeText(getActivity().getApplicationContext(), "成功接受任务" , Toast.LENGTH_SHORT).show();
+							}
+							else {
+								Toast.makeText(getActivity().getApplicationContext(), "接受任务失败" , Toast.LENGTH_SHORT).show();
+							}
+							v.setVisibility(View.GONE);
 						}
-						else {
-							Toast.makeText(getActivity().getApplicationContext(), "接受任务失败" , Toast.LENGTH_SHORT).show();
-						}
-						v.setVisibility(View.GONE);
-					}
-				});
+					});
+				}
 			}
 
 		});

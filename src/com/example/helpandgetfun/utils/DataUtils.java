@@ -701,15 +701,22 @@ public class DataUtils {
 	}
 	
 	public static Bitmap getImg(String img) throws IOException {
-		URL url;
-		try {
-			url = new URL(ImgServerURL + img);
-			InputStream in = url.openStream();
-			//通过BitmapFactory获得实例  
-	        return BitmapFactory.decodeStream(in);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		String imgName = img.substring(0, img.length() - 4);
+		File file = new File(getSDPath() + '/' + img);
+		if (!file.exists()) {
+			URL url;
+			try {
+				url = new URL(ImgServerURL + img);
+				InputStream in = url.openStream();
+				//通过BitmapFactory获得实例  
+		        return BitmapFactory.decodeStream(in);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else {
+			return BitmapFactory.decodeFile(DataUtils.getSDPath() + '/' + img);
 		}
 		return null; 
 	}

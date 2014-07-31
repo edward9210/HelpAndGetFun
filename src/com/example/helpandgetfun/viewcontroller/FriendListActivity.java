@@ -141,6 +141,7 @@ public class FriendListActivity extends Activity{
 					bundle.putString("name", friendName.getText().toString());
 					bundle.putString("realname", json.getString("realname"));
 					bundle.putString("phone", json.getString("phone"));
+					bundle.putString("headimg", json.getString("headimg"));
 					Intent intent = new Intent(); 
 					intent.putExtras(bundle);
 		        	intent.setClass(FriendListActivity.this, FriendInfoActivity.class); 

@@ -1,6 +1,8 @@
 package com.example.helpandgetfun.viewcontroller;
 
 
+import java.io.IOException;
+
 import com.example.helpandgetfun.R;
 import com.example.helpandgetfun.R.id;
 import com.example.helpandgetfun.R.layout;
@@ -10,6 +12,7 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,6 +28,8 @@ public class FriendInfoActivity extends Activity {
 	private TextView realNameTv ,mobilePhoneTv, userNameTv;
 	private ImageButton cancelButton;
 	private Button deleteButton;
+	private ImageView headimgIv;
+	private Bitmap bitmap;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,6 +41,30 @@ public class FriendInfoActivity extends Activity {
 		userNameTv.setText(bundle.getString("name"));
 		realNameTv.setText(bundle.getString("realname"));
 		mobilePhoneTv.setText(bundle.getString("phone"));
+		
+		String headimgString = bundle.getString("headimg");
+		
+		if (headimgString.length() > 0) {
+			final String friendName = bundle.getString("name");
+			
+			new Thread(new Runnable() {
+			    public void run() {
+			    	String friendName = userNameTv.getText().toString();
+			    	try {			
+						Bundle bundle = new Bundle();
+				    	bundle.putString("result", "getHeadImg");
+				    	bitmap = DataUtils.getImg(friendName + ".jpg");
+				    	Message mes = new Message();
+				    	mes.setData(bundle);
+				    	mUIHandler.sendMessage(mes);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			    	
+			    }
+			}).start(); 
+		}
 	}
 
 
@@ -47,6 +76,7 @@ public class FriendInfoActivity extends Activity {
 		userNameTv = (TextView) findViewById(R.id.friend_info_username);
 		deleteButton = (Button) findViewById(R.id.friend_info_delete);
 		cancelButton = (ImageButton) findViewById(R.id.friend_info_cancelbutton);
+		headimgIv = (ImageView) findViewById(R.id.friend_info_headimg);
 	}
 
 	private void setAllListener() {
@@ -102,6 +132,9 @@ public class FriendInfoActivity extends Activity {
 	        	startActivity(intent);
 	        	/* 关闭原本的Activity */ 
 	        	FriendInfoActivity.this.finish();
+			}
+			else if (result.equals("getHeadImg")) {
+				headimgIv.setImageBitmap(bitmap);
 			}
 			else
 				Toast.makeText(FriendInfoActivity.this, "删除失败" , Toast.LENGTH_SHORT).show();
